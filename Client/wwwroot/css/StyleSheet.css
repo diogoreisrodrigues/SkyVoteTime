@@ -5,13 +5,13 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background-color: #022739;
+    
     background-size: cover;
 }
 
     .navbar img {
-        width: 360px;
-        cursor: pointer;
+        width: 65%;
+        height: 100%;
     }
 
     .navbar ul li {
@@ -23,7 +23,7 @@
 
         .navbar ul li a {
             text-decoration: none;
-            color: #fff;
+            color: #FFF;
             text-transform: uppercase;
         }
 
@@ -31,7 +31,7 @@
             content: '';
             height: 3px;
             width: 0;
-            background: #ffffff;
+            background: #FFF;
             position: absolute;
             left: 0;
             bottom: -10px;
@@ -42,17 +42,58 @@
             width: 100%;
         }
 
-.botao {
-    padding: 10px 0;
-    text-align: center;
-    margin: 0px 50px;
-    border-radius: 50px;
-    font-weight: bold;
-    font-size: 30px;
-    border: 2px solid #fff;
-    background: transparent;
-    color: #fff;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
+
+.page {
+    background-image: url("../Assets/background.png");
 }
+
+.title {
+    font-size: 50px;
+    color: #FFF;
+    /* And the Award goes to.. */
+
+    width: 667px;
+    height: 31.13px;
+    font-family: 'Gentium Basic';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 64px;
+    line-height: 24px;
+    /* or 38% */
+    letter-spacing: 0.01em;
+    color: #FFFFFF;
+    margin-top: 180px;
+}
+
+.loading-progress {
+    position: relative;
+    display: block;
+    width: 8rem;
+    height: 8rem;
+    margin: 20vh auto 1rem auto;
+}
+
+    .loading-progress circle {
+        fill: none;
+        stroke: #e0e0e0;
+        stroke-width: 0.6rem;
+        transform-origin: 50% 50%;
+        transform: rotate(-90deg);
+    }
+
+        .loading-progress circle:last-child {
+            stroke: #1b6ec2;
+            stroke-dasharray: calc(3.141 * var(--blazor-load-percentage, 0%) * 0.8), 500%;
+            transition: stroke-dasharray 0.05s ease-in-out;
+        }
+
+.loading-progress-text {
+    position: absolute;
+    text-align: center;
+    font-weight: bold;
+    inset: calc(20vh + 3.25rem) 0 auto 0.2rem;
+}
+
+    .loading-progress-text:after {
+        content: var(--blazor-load-percentage-text, "Loading");
+    }
