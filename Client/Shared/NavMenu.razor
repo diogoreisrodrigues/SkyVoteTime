@@ -1,0 +1,23 @@
+﻿
+
+
+<header class="navbar">
+  <a href="/index"><img src="Assets/logo.png" class="logo"></a>
+  <ul>
+    <li><a href="/FAQ">Movies</a> </li>
+    <li><a href="/Atendimento">Actors</a> </li>
+    <li><a href="/Tickets">Competitions</a> </li>
+    <a href="/Login"> <button type="button" class = "botao" style="width:200px;background: #18a4c7">Login</button></a>
+  </ul>
+</header>
+
+@code {
+    private bool collapseNavMenu = true;
+
+    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+}
