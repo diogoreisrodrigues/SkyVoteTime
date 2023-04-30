@@ -3,7 +3,7 @@
     display: flex;
     flex-direction: column;
 }
-
+/********************** DIOGO **********************/
 .navbar {
     width: 100%;
     margin: auto;
@@ -31,6 +31,10 @@
             text-decoration: none;
             color: #FFF;
             text-transform: uppercase;
+            font-family: Inter;
+            font-style: normal; 
+            font-size: 24px
+
         }
 
         .navbar ul li::after {
@@ -52,14 +56,15 @@
 .page {
     background-image: url("../Assets/background.png");
     overflow: hidden;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
 }
 
 .title {
     font-size: 50px;
     color: #FFF;
     /* And the Award goes to.. */
-
-    width: 667px;
     height: 31.13px;
     font-family: 'Gentium Basic';
     font-style: normal;
@@ -145,7 +150,7 @@
 
 .slide {
     height: 200px;
-    width: 250px;
+    width: 200px;
     display: flex;
     align-items: center;
     padding: 15px;
@@ -183,6 +188,74 @@ img {
     /* transform: rotateZ(180deg); */
 }
 
+
+poster, .movie_card {
+    box-shadow: 0 0 10px red !important;
+}
+
+.flip-card_i {
+    position: relative;
+    background-color: transparent;
+    width: 250px;
+    height: 360px;
+    /* perspective: 1000px; */
+    cursor: pointer;
+}
+
+@media only screen and (max-width: 298px) {
+    .flip-card_i {
+        width: 200px;
+        height: 400px;
+    }
+
+
+
+    .flip-card-back_i {
+        width: 200px !important;
+        height: 400px !important;
+    }
+
+    .flip-card_i img {
+        height: 400px !important;
+        width: 200px !important;
+    }
+
+    .flip-card-back_i h1 {
+        font-size: 32px;
+    }
+}
+
+.flip-card-inner_i {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+}
+
+
+.poster {
+    margin: 10px;
+    display: inline-block;
+    /* position: relative; */
+}
+/* Hover Images */
+.poster {
+    overflow: hidden;
+}
+
+.flim {
+    text-align: center;
+    position: absolute;
+    bottom: 0%;
+    background: rgb(0, 0, 0);
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    width: 100%;
+    font-size: 13px;
+}
+
 /********************** ARTUR **********************/
 
 .TitleNominees {
@@ -208,4 +281,43 @@ img {
 .Nominees {
     background-repeat: no-repeat;
     background-attachment: fixed;
+}
+
+
+/**************************************************************/
+
+
+.texto {
+    
+    font-family: 'Gentium Basic';
+    font-size: 22px;
+    color:white
+}
+
+.fundo {
+    background: rgb(0,0,0);
+    background: linear-gradient(185deg, rgba(0,0,0,0.7063200280112045) 100%, rgba(9,9,121,0) 100%);
+}
+
+.form-check {
+    font-family: 'Gentium Basic';
+    font-size: 16px;
+    color: white
+}
+
+
+input.form-check-input {
+    transform: scale(2);
+}
+
+.cat{
+    margin-left:10px;
+}
+
+.cat2 {
+    margin-left: 15px;
+}
+
+.switch {
+    margin-left: 40px;
 }
