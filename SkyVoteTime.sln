@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkyVoteTime.Server", "Server\SkyVoteTime.Server.csproj", "{5B0ADE17-1E0F-43E0-A910-F2E70FC5A757}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SkyVoteTime.Server", "Server\SkyVoteTime.Server.csproj", "{5B0ADE17-1E0F-43E0-A910-F2E70FC5A757}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkyVoteTime.Client", "Client\SkyVoteTime.Client.csproj", "{2553A82C-83FF-4316-A7D7-AAF717B56401}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SkyVoteTime.Client", "Client\SkyVoteTime.Client.csproj", "{2553A82C-83FF-4316-A7D7-AAF717B56401}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkyVoteTime.Shared", "Shared\SkyVoteTime.Shared.csproj", "{C58212E9-AD4F-4E07-89E9-C141E6114F13}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SkyVoteTime.Shared", "Shared\SkyVoteTime.Shared.csproj", "{C58212E9-AD4F-4E07-89E9-C141E6114F13}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
