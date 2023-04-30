@@ -182,3 +182,30 @@ img {
     top: 0;
     /* transform: rotateZ(180deg); */
 }
+
+/********************** ARTUR **********************/
+
+.TitleNominees {
+    font-size: 50px;
+    /* Nominees for Movie of the Year */
+    text-align: center;
+    font-family: 'Gentium Basic';
+    font-style: normal;
+    letter-spacing: 0.01em;
+    color: #FFFFFF;
+}
+
+.nomTitle {
+    height: 71px;
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 40px;
+    line-height: 60px;
+    display: flex;
+}
+
+.Nominees {
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
