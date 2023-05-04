@@ -56,8 +56,9 @@
 .page {
     background-image: url("../Assets/background.png");
     overflow: hidden;
-    background-size: contain;
+    background-size: cover;
     background-repeat: no-repeat;
+    background-attachment: fixed;
 }
 
 .title {
@@ -282,3 +283,41 @@ poster, .movie_card {
     background-attachment: fixed;
 }
 
+
+/**************************************************************/
+
+
+.texto {
+    
+    font-family: 'Gentium Basic';
+    font-size: 22px;
+    color:white
+}
+
+.fundo {
+    background: rgb(0,0,0);
+    background: linear-gradient(185deg, rgba(0,0,0,0.7063200280112045) 100%, rgba(9,9,121,0) 100%);
+}
+
+.form-check {
+    font-family: 'Gentium Basic';
+    font-size: 16px;
+    color: white
+}
+
+
+input.form-check-input {
+    transform: scale(2);
+}
+
+.cat{
+    margin-left:10px;
+}
+
+.cat2 {
+    margin-left: 15px;
+}
+
+.switch {
+    margin-left: 40px;
+}
