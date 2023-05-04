@@ -2,6 +2,8 @@
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    margin:0;
+    padding:0;
 }
 /********************** DIOGO **********************/
 .navbar {
@@ -14,7 +16,7 @@
     position: fixed;
     /*background: rgb(0,0,0);
     background: linear-gradient(180deg, rgba(0,0,0,1) 22%, rgba(0,0,0,0.9248074229691877) 44%, rgba(27,27,27,0.9668242296918768) 89%, rgba(22,22,22,0.7903536414565826) 100%);*/ 
-    background-image: url("../Assets/background.png");
+
 }
 
     .navbar img {
@@ -68,14 +70,13 @@
 
 .title {
     font-size: 50px;
-    color: #FFF;
     /* And the Award goes to.. */
     height: 31.13px;
     font-family: 'Gentium Basic';
     font-style: normal;
     font-weight: 400;
     font-size: 64px;
-    line-height: 24px;
+    ;
     /* or 38% */
     letter-spacing: 0.01em;
     color: #FFFFFF;

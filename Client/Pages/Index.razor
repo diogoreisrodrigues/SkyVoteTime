@@ -1,4 +1,9 @@
-﻿@page "/index"
+﻿@page "/"
+@using SkyVoteTime.Client.API;
+
+
+@inject TheMovieDBApi movieApi
+
 
 <PageTitle>SkyVoteTime</PageTitle>
 
@@ -88,9 +93,9 @@
 
 </div>
  
-<div class="container" style="text-align: center;">
+<div class="" style="text-align: center; background-color: #FFF">
     <div>
-        <h1 class="title" style="color: #FFF; margin-top: 250px;">2022 Winners</h1>
+        <h1 class="title" style="color: #000; margin-top: 250px;">2022 Winners</h1>
     </div>
     <div class="container" style="">
         <div>
@@ -113,83 +118,24 @@ margin-top: 50px; margin-bottom: 0px;
         <div style="display: flex;">
 
             <hr>
+            @foreach (var movie in movieList.results)
+            {
              <div class="poster">
               <div class="flip-card_i">
                 <div class="flip-card-inner_i">
                   <div class="flip-card-front_i">
-                      <img src="Assets/Everything.jpg" alt="Avatar" style="width:250px;height:360px;">
+                          <img src="https://image.tmdb.org/t/p/w342/@movie.poster_path" alt="Avatar" style="width:250px;height:360px;">
                   </div>
 
                 </div>
                 <div class="flim">
-                  <b>EveryThing Everywere all at once</b><br>IMDb - 8.8
+                  <b>@movie.title</b><br>IMDb - 8.8
                 </div>
               </div>
             </div>
-        
+            }
 
-            <hr>
-             <div class="poster">
-              <div class="flip-card_i">
-                <div class="flip-card-inner_i">
-                  <div class="flip-card-front_i">
-                      <img src="Assets/banshees.jpg" alt="Avatar" style="width:250px;height:360px;">
-                  </div>
-
-                </div>
-                <div class="flim">
-                  <b>Banshees of Inisheer</b><br>IMDb - 8.8
-                </div>
-              </div>
-            </div>
-        
-
-            <hr>
-             <div class="poster">
-              <div class="flip-card_i">
-                <div class="flip-card-inner_i">
-                  <div class="flip-card-front_i">
-                      <img src="Assets/cocaine_bear.jpg" alt="Avatar" style="width:250px;height:360px;">
-                  </div>
-
-                </div>
-                <div class="flim">
-                  <b>Cocaine Bear</b><br>IMDb - 8.8
-                </div>
-              </div>
-            </div>
             
-
-            <hr>
-             <div class="poster">
-              <div class="flip-card_i">
-                <div class="flip-card-inner_i">
-                  <div class="flip-card-front_i">
-                      <img src="Assets/batman.jpg" alt="Avatar" style="width:250px;height:360px;">
-                  </div>
-
-                </div>
-                <div class="flim">
-                  <b>Batman</b><br>IMDb - 8.8
-                </div>
-              </div>
-            </div>
-        
-
-            <hr>
-             <div class="poster">
-              <div class="flip-card_i">
-                <div class="flip-card-inner_i">
-                  <div class="flip-card-front_i">
-                      <img src="Assets/topgun.jpg" alt="Avatar" style="width:250px;height:360px;">
-                  </div>
-              
-                </div>
-                <div class="flim">
-                  <b>Top Gun Maverick</b><br>IMDb - 8.8
-                </div>
-              </div>
-        </div>
         </div>
 
         <div>
@@ -294,4 +240,12 @@ margin-top: 50px; margin-bottom: 0px;
 </div>
 
 
+@code{
+    private MovieList movieList;
 
+    protected override async Task OnInitializedAsync()
+    {
+        movieList = await movieApi.UpcomingMovieDetails();
+    }
+
+}
