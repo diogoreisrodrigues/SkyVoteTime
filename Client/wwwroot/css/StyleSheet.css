@@ -11,8 +11,10 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    
-    background-size: cover;
+    position: fixed;
+    /*background: rgb(0,0,0);
+    background: linear-gradient(180deg, rgba(0,0,0,1) 22%, rgba(0,0,0,0.9248074229691877) 44%, rgba(27,27,27,0.9668242296918768) 89%, rgba(22,22,22,0.7903536414565826) 100%);*/ 
+    background-image: url("../Assets/background.png");
 }
 
     .navbar img {
@@ -56,8 +58,11 @@
 .page {
     background-image: url("../Assets/background.png");
     overflow: hidden;
+
+    /*background-repeat: no-repeat;*/
     background-size: cover;
-    background-repeat: no-repeat;
+
+
     background-attachment: fixed;
 }
 
@@ -188,6 +193,93 @@ img {
     /* transform: rotateZ(180deg); */
 }
 
+
+
+
+/*------------------- PAGINA COMPETICOES --------------------*/
+
+.titleCompetitions {
+    font-size: 50px;
+    color: #FFF;
+    /* And the Award goes to.. */
+
+    
+    height: 31.13px;
+    font-family: 'Gentium Basic';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 64px;
+    line-height: 24px;
+    /* or 38% */
+    letter-spacing: 0.01em;
+    color: #FFFFFF;
+    margin-top: 8%;
+    text-align:center;
+}
+
+.competicao {
+    margin: auto;
+    margin-top:8%;
+    width: 35%;
+    height: 50px;
+    padding: 10px;
+    background-color:aliceblue;
+}
+
+.nomTitle {
+    font-family: 'Gentium Basic';
+    color: white;
+    margin-top: 6%;
+    font-size: 35px;
+    text-align: center;
+    background: rgb(176,128,4);
+    background: linear-gradient(180deg, rgba(176,128,4,0.3085609243697479) 100%, rgba(22,22,22,0.7903536414565826) 100%);
+    border-radius: 30px;
+}
+
+.texto {
+    font-family: 'Gentium Basic';
+    color: white;
+    margin-top:9%;
+    font-size: 25px;
+    border-radius: 30px;
+}
+
+.categorias {
+    text-align: center;
+    font-family: 'Gentium Basic';
+    color: white;
+    margin-top: 9%;
+    font-size: 25px;
+    margin-bottom: 2%;
+    border-radius: 30px;
+    background: rgb(110,110,110);
+    background: linear-gradient(180deg, rgba(110,110,110,0.5410539215686274) 100%, rgba(22,22,22,0.7903536414565826) 100%);
+    border: 1px solid white;
+    border: 1px solid white;
+}
+
+.botao {
+    text-align: center;
+    font-family: 'Gentium Basic';
+    color: black;
+    margin-top: 9%;
+    font-size: 25px;
+    margin-bottom: 2%;
+    background-color: white;
+    border-radius: 30px;
+}
+
+
+hr {
+    margin-top: 5%;
+    margin-bottom: 5%;
+    border: 1px solid white;
+    border-radius: 5px;
+    opacity: 0.5;
+}
+
+/*-----------------------------------------------------------*/
 
 poster, .movie_card {
     box-shadow: 0 0 10px red !important;
@@ -321,3 +413,4 @@ input.form-check-input {
 .switch {
     margin-left: 40px;
 }
+
