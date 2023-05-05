@@ -14,6 +14,10 @@ namespace SkyVoteTime.Client.API
 
         public string UpcomingMovie { get; set; }
 
+        public string PersonList { get; set; }
+
+        public PersonList personListResults;
+
         private MovieList movieList;
 
 
@@ -44,6 +48,44 @@ namespace SkyVoteTime.Client.API
             else
             {
                 UpcomingMovie = null;
+                return null;
+            }
+        }//grab 
+
+        public async Task<MovieList> searchMovieDetails(string Query)
+        {
+            clearYourHead(); // 
+            // grab upcoming movie details
+            HttpResponseMessage upcomingMovie = await client.GetAsync(
+                "https://api.themoviedb.org/3/search/movie?api_key=8ec9575a406e1b25a8d68e65b07e7319&language=en-US&query=" + Query);
+            if (upcomingMovie.IsSuccessStatusCode)
+            {
+                UpcomingMovie = await upcomingMovie.Content.ReadAsStringAsync();
+                movieList = JsonConvert.DeserializeObject<MovieList>(UpcomingMovie);
+                return movieList;
+            }
+            else
+            {
+                UpcomingMovie = null;
+                return null;
+            }
+        }//grab 
+
+        public async Task<PersonList> PersonListDetails(string Query)
+        {
+            clearYourHead(); // 
+            // grab upcoming movie details
+            HttpResponseMessage personList = await client.GetAsync(
+                "https://api.themoviedb.org/3/search/person?api_key=8ec9575a406e1b25a8d68e65b07e7319&language=en-US&query="+ Query );
+            if (personList.IsSuccessStatusCode)
+            {
+                PersonList = await personList.Content.ReadAsStringAsync();
+                personListResults = JsonConvert.DeserializeObject<PersonList>(PersonList);
+                return personListResults;
+            }
+            else
+            {
+                personListResults = null;
                 return null;
             }
         }//grab 
