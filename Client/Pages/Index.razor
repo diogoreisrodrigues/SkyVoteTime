@@ -111,25 +111,25 @@ font-size: 35px;
 line-height: 150%;
 /* identical to box height, or 60px */
 
-color: #FFFF;
+color: #000;
 margin-top: 50px; margin-bottom: 0px;
 "> Best Movie </p>
         </div>
         <div style="display: flex;">
 
             <hr>
-            @foreach (var movie in movieList.results)
+            @for(var i = 0; i < 4; i++)
             {
              <div class="poster">
               <div class="flip-card_i">
                 <div class="flip-card-inner_i">
                   <div class="flip-card-front_i">
-                          <img src="https://image.tmdb.org/t/p/w342/@movie.poster_path" alt="Avatar" style="width:250px;height:360px;">
+                          <img src="https://image.tmdb.org/t/p/w342/@movieList.results[i].poster_path" alt="Avatar" style="width:250px;height:360px;">
                   </div>
 
                 </div>
                 <div class="flim">
-                  <b>@movie.title</b><br>IMDb - 8.8
+                      <b>@movieList.results[i].title</b><br>IMDb - 8.8
                 </div>
               </div>
             </div>
@@ -151,7 +151,7 @@ font-size: 35px;
 line-height: 150%;
 /* identical to box height, or 60px */
 
-color: #FFFF;
+color: #000;
 margin-top: 50px; margin-bottom: 0px;
 "> Best Actors </p>
         </div>
@@ -221,20 +221,7 @@ margin-top: 50px; margin-bottom: 0px;
             </div>
 
 
-            <hr>
-             <div class="poster">
-              <div class="flip-card_i">
-                <div class="flip-card-inner_i">
-                  <div class="flip-card-front_i">
-                      <img src="Assets/michelleyeoh.jpg" alt="Avatar" style="width:250px;height:360px;">
-                  </div>
-
-                </div>
-                <div class="flim">
-                  <b>Michelle Yeoh</b><br>Age - xx
-                </div>
-              </div>
-        </div>
+            
         </div>
     </div>
 </div>
@@ -242,10 +229,12 @@ margin-top: 50px; margin-bottom: 0px;
 
 @code{
     private MovieList movieList;
+    
 
     protected override async Task OnInitializedAsync()
     {
         movieList = await movieApi.UpcomingMovieDetails();
+        
     }
 
 }
