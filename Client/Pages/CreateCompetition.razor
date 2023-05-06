@@ -1,4 +1,8 @@
 ﻿@page "/createcomp"
+@using SkyVoteTime.Shared
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JsRuntime
 
 <h1 class="title" style="text-align:center; margin-top:100px">CreateCompetition</h1>
 
@@ -7,122 +11,108 @@
 <div class="container rounded-3 fundo justify-content-center" style="width:55%; margin-top:70px;">
 
     <div class="container justify-content-center" style="width:80%">
-
-        <form>
-            <div class="texto" style="margin-top:50px;">
-                <label for="name">Name: </label>
-                <input type="name" class="form-control input-lg" id="exampleName" aria-describedby="NameHelp" placeholder="Enter the name of the Competition">
-            </div>
-            <br>
-            <div class="texto">
-                <label for="decription">Description: </label>
-                <input type="decsription" class="form-control input-lg" id="exampleDescription" placeholder="Enter the description for the competition">
-            </div>
-
-        </form>
-
-        <br>
-        <br>
-
-        <div class="dropdown">
-            <button class="btn btn-secondary btn-lg dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Competition Type
-            </button>
-            <div class="dropdown-menu col-xs-12" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="#">Filme</a>
-                <a class="dropdown-item" href="#">Ator</a>
-                <a class="dropdown-item" href="#">Diretor</a>
-            </div>
+        <div class="texto" style="margin-top:50px;">
+            <label for="name" style="color:white; font-size:large">Name:</label>
+            <input type="name" @bind="@competition.Name" class="form-control input-lg" id="exampleName" aria-describedby="NameHelp" placeholder="Enter the name of the Competition">
         </div>
-
-
-
+        <div class="texto">
+            <label for="decription" style="color:white; font-size:large">Description:</label>
+            <input type="decsription" @bind="@competition.Description" class="form-control input-lg" id="exampleDescription" placeholder="Enter the description for the competition">
+        </div>
+        <div class="texto">
+           <label for="type" style="color:white; font-size:large">Type:</label>
+            <InputSelect @bind-Value="@competition.Type" class="form-select form-select-xlg mb-3" name="type" id="type">
+                <option value="" selected disabled hidden>Choose here</option>
+                <option value="Movies">Movies</option>
+                <option value="Actors">Actors</option>
+                <option value="Directors">Directors</option>
+            </InputSelect>
+        </div>
         <br />
-        <br />
-        <br />
+       
+
         
-        <p class="texto">Category</p>
-        <br />
+            <!--
+            <p class="texto">Category</p>
+            <br />
 
-        <div class=" container check justify-content-center">
-            <div class="col-sm-1"></div>
-            <div class="col-sm-3">
-                <div class="form-check">
-                    <label class="form-check-label">
-                        <input type="checkbox" class="form-check-input" value="">
-                        <label for="cat" class="cat"> Action</label>
-                    </label>
+            <div class=" container check justify-content-center">
+                <div class="col-sm-2">
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input type="checkbox" name="category" class="form-check-input" value="Action" checked="@competition.CategoryList.Contains("Action")" @onchange="@(e => HandleCheckboxChange(e, "Action"))" >
+                            <label for="cat" class="cat"> Action</label>
+                        </label>
+                    </div>
+                    <br />
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input type="checkbox" name="category" class="form-check-input" value="Action" checked="@competition.CategoryList.Contains("Drama")" @onchange="@(e => HandleCheckboxChange(e, "Drama"))">
+                            <label for="cat" class="cat"> Drama</label>
+                        </label>
+                    </div>
+                    <br />
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input type="checkbox" name="category" class="form-check-input" value="Action" checked="@competition.CategoryList.Contains("Romance")" @onchange="@(e => HandleCheckboxChange(e, "Romance"))">
+                            <label for="cat" class="cat"> Romance</label>
+                        </label>
+                    </div>
+                    <br />
+                    <br />
+                    <br />
                 </div>
-                <br />       
-                <div class="form-check">
-                    <label class="form-check-label">
-                        <input type="checkbox" class="form-check-input" value="">
-                        <label for="cat" class="cat"> Drama</label>
-                    </label>
+                <div class="col-sm-2">
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input type="checkbox" name="category" class="form-check-input" value="Action" checked="@competition.CategoryList.Contains("Documentary")" @onchange="@(e => HandleCheckboxChange(e, "Documentary"))">
+                            <label for="cat" class="cat"> Documentary</label>
+                        </label>
+                    </div>
+                    <br />
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input type="checkbox" name="category" class="form-check-input" value="Action" checked="@competition.CategoryList.Contains("Suspense")" @onchange="@(e => HandleCheckboxChange(e, "Suspense"))">
+                            <label for="cat" class="cat"> Suspense</label>
+                        </label>
+                    </div>
+                    <br />
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input type="checkbox" name="category" class="form-check-input" value="Action" checked="@competition.CategoryList.Contains("Horror")" @onchange="@(e => HandleCheckboxChange(e, "Horror"))">
+                            <label for="cat" class="cat"> Horror</label>
+                        </label>
+                    </div>
+                    <br />
+                    <br />
+                    <br />
                 </div>
-                <br />
-                <div class="form-check">
-                    <label class="form-check-label">
-                        <input type="checkbox" class="form-check-input" value="">
-                        <label for="cat" class="cat"> Romance</label>
-                    </label>
+                <div class="col-sm-3">
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input type="checkbox" name="category" class="form-check-input" value="Action" checked="@competition.CategoryList.Contains("Science fiction")" @onchange="@(e => HandleCheckboxChange(e, "Science fiction"))">
+                            <label for="cat" class="cat"> Science fiction</label>
+                        </label>
+                    </div>
+                    <br />
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input type="checkbox" name="category" class="form-check-input" value="Action" checked="@competition.CategoryList.Contains("Comedy")" @onchange="@(e => HandleCheckboxChange(e, "Comedy"))">
+                            <label for="cat" class="cat"> Comedy</label>
+                        </label>
+                    </div>
+                    <br />
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input type="checkbox" name="category" class="form-check-input" value="Action" checked="@competition.CategoryList.Contains("Adventure")" @onchange="@(e => HandleCheckboxChange(e, "Adventure"))">
+                            <label for="cat" class="cat"> Adventure</label>
+                        </label>
+                    </div>
                 </div>
-                <br />
-                <br />
-                <br />
+
             </div>
-            <div class="col-sm-3">
-                <div class="form-check">
-                    <label class="form-check-label">
-                        <input type="checkbox" class="form-check-input" value="">
-                        <label for="cat" class="cat"> Documnetary</label>
-                    </label>
-                </div>
-                <br />
-                <div class="form-check">
-                    <label class="form-check-label">
-                        <input type="checkbox" class="form-check-input" value="">
-                        <label for="cat" class="cat"> Suspense</label>
-                    </label>
-                </div>
-                <br />
-                <div class="form-check">
-                    <label class="form-check-label">
-                        <input type="checkbox" class="form-check-input" value="">
-                        <label for="cat" class="cat"> Terror</label>
-                    </label>
-                </div>
-                <br />
-                <br />
-                <br />
-            </div>
-            <div class="col-sm-4">
-                <div class="form-check">
-                    <label class="form-check-label">
-                        <input type="checkbox" class="form-check-input" value="">
-                        <label for="cat" class="cat"> Science fiction</label>
-                    </label>
-                </div>
-                <br />
-                <div class="form-check" >
-                    <label class="form-check-label">
-                        <input type="checkbox" class="form-check-input" value="">
-                        <label for="cat" class="cat"> acao</label>
-                    </label>
-                </div>
-                <br />
-                <div class="form-check">
-                    <label class="form-check-label">
-                        <input type="checkbox" class="form-check-input" value="">
-                        <label for="cat" class="cat"> Adventure</label>
-                    </label>
-                </div>
-                <br />
-                <br />
-                <br />
-            </div
-            
-        </div>
+        }
+        -->
 
         <div class="form-check form-switch switch">
             <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
@@ -138,7 +128,7 @@
         </div>
         <div class="col-sm-2"></div>
         <div class="col-sm-1">
-            <button type="button" class="btn btn-warning btn-lg">Next</button>
+            <button type="button" class="btn btn-warning btn-lg" @onclick="@Save">Next</button>
         </div>
         <br>
         <br />
@@ -151,4 +141,39 @@
 <br>
 <br />
 <br />
+
+@code {
+    Competition competition = new Competition();
+    protected override async Task OnInitializedAsync()
+    {
+    }
+    protected async Task Save()
+    {
+        var response = await Http.PostAsJsonAsync("api/Competition", competition);
+        Competition competitionResponse = await response.Content.ReadFromJsonAsync<Competition>();
+            if (competitionResponse?.Id > 0)
+            {
+                await JsRuntime.InvokeVoidAsync("alert", "Saved Successfully!");
+                NavigationManager.NavigateTo("");
+            }
+    }
+    void Cancel()
+    {
+        NavigationManager.NavigateTo("");
+    }
+    /*
+    private void HandleCheckboxChange(ChangeEventArgs e, string category)
+    {
+        var isChecked = (bool)e.Value;
+        if (isChecked)
+        {
+            competition.CategoryList.Add(category);
+        }
+        else
+        {
+            competition.CategoryList.Remove(category);
+        }
+    }*/
+
+}
 

@@ -1,9 +1,12 @@
-﻿namespace SkyVoteTime.Server.Models
+﻿using System.Dynamic;
+
+namespace SkyVoteTime.Shared.Models
 {
     public class MovieList
     {
-        private List<Movie> results { get; set; }
+        public List<Movie> results { get; set; }
 
+        
 
     }
 }
