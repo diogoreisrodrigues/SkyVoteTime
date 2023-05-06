@@ -415,3 +415,7 @@ input.form-check-input {
     margin-left: 40px;
 }
 
+.checkInput {
+    align-content:center;
+    vertical-align:central;
+}

@@ -1,6 +1,11 @@
 ﻿@page "/createcomp"
 
-<h1 class="title" style="text-align:center; margin-top:100px">CreateCompetition</h1>
+@using SkyVoteTime.Client.API;
+
+
+@inject TheMovieDBApi movieApi
+
+<h1 class="title" style="text-align:center; margin-top:100px">Create Competition</h1>
 
 
 
@@ -40,8 +45,9 @@
         <br />
         <br />
         <br />
-        
-        <p class="texto">Category</p>
+
+        <!--
+            <p class="texto">Category</p>
         <br />
 
         <div class=" container check justify-content-center">
@@ -53,7 +59,7 @@
                         <label for="cat" class="cat"> Action</label>
                     </label>
                 </div>
-                <br />       
+                <br />
                 <div class="form-check">
                     <label class="form-check-label">
                         <input type="checkbox" class="form-check-input" value="">
@@ -121,8 +127,26 @@
                 <br />
                 <br />
             </div
-            
+
         </div>
+        -->
+        <!--Search Movie-->
+        <div class="form-group row">
+            <div class="col-xl-11">
+                <input class="form-control" type="text" @bind-value="@search" @bind-value:event="oninput" @onkeyup="KeyHandler" placeholder="Search movie" />
+            </div>
+            <div class="col-xs-2">
+                <input class="form-control" id="searchButton" type="submit" @onclick="GetPosters" value="Go" />
+            </div>
+        </div>
+
+
+        <!------------------------------------------------->
+
+
+
+
+
 
         <div class="form-check form-switch switch">
             <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
@@ -152,3 +176,60 @@
 <br />
 <br />
 
+@if(movieList!= null)
+{
+    @foreach (var i in @movieList.results)
+    {
+        <div class="poster">
+            <div class="flip-card_i">
+                <div class="flip-card-inner_i">
+                    <div class="flip-card-front_i">
+                        <img src="https://image.tmdb.org/t/p/w342/@i.poster_path" alt="Avatar" style="width:250px;height:360px;">
+                        <div class="form-check form-check-inline">
+                            <label class="form-check-label" for="inlineCheckbox1">1</label>
+                            <div class="col-xs-2">
+                                <input class="form-control" id="choose" type="submit" @bind-value="@i.id" @onclick="@(e => GetMovie(@i.id))" />
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="flim">
+                    <b>@i.title</b><br>IMDb - 8.8
+                </div>
+            </div>
+        </div>
+    }
+}
+
+
+
+
+@code {
+
+    private string search { get; set; }
+    private string moviePath;
+    private MovieList movieList;
+
+    //== Movie Search ==//
+    private async Task GetPosters()
+    {
+
+        movieList = await movieApi.searchMovieDetails(search);
+    } // MovieSearch()
+
+
+    private async Task KeyHandler(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter")
+        {
+            await GetPosters();
+        }
+    }
+
+    public async Task GetMovie(int id)
+    {
+        
+        await movieApi.GrabMovieAsync(id);
+    } // GetMovie()
+}   
