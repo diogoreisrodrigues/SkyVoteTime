@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
 using SkyVoteTime.Server.Data;
 using SkyVoteTime.Server.Models;
+using SkyVoteTime.Server.Repository;
+using SkyVoteTime.Server.Service;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +25,10 @@ builder.Services.AddAuthentication()
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
+
+// For DI registration
+builder.Services.AddTransient<IRepository<Competition>, CompetitionRepository>();
+builder.Services.AddTransient<ICompetitionService, CompetitionService>();
 
 var app = builder.Build();
 

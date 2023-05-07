@@ -5,7 +5,7 @@
 namespace SkyVoteTime.Server.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class mig1 : Migration
+    public partial class mig7 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

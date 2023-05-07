@@ -1,4 +1,8 @@
 ﻿@page "/createcomp"
+@using SkyVoteTime.Shared
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JsRuntime
 
 <h1 class="title" style="text-align:center; margin-top:100px">CreateCompetition</h1>
 
@@ -11,12 +15,12 @@
         <form>
             <div class="texto" style="margin-top:50px;">
                 <label for="name">Name: </label>
-                <input type="name" class="form-control input-lg" id="exampleName" aria-describedby="NameHelp" placeholder="Enter the name of the Competition">
+                <input type="name" class="form-control input-lg" @bind="@competition.Name" id="exampleName" aria-describedby="NameHelp" placeholder="Enter the name of the Competition">
             </div>
             <br>
             <div class="texto">
-                <label for="decription">Description: </label>
-                <input type="decsription" class="form-control input-lg" id="exampleDescription" placeholder="Enter the description for the competition">
+                <label for="description">Description: </label>
+                <input type="description" @bind="@competition.Description" class="form-control input-lg" id="exampleDescription" placeholder="Enter the description for the Competition">
             </div>
 
         </form>
@@ -46,7 +50,7 @@
 
         <div class=" container check justify-content-center">
             <div class="col-sm-1"></div>
-            <div class="col-sm-3">
+            <div class="col-sm-2">
                 <div class="form-check">
                     <label class="form-check-label">
                         <input type="checkbox" class="form-check-input" value="">
@@ -71,11 +75,11 @@
                 <br />
                 <br />
             </div>
-            <div class="col-sm-3">
+            <div class="col-sm-2">
                 <div class="form-check">
                     <label class="form-check-label">
                         <input type="checkbox" class="form-check-input" value="">
-                        <label for="cat" class="cat"> Documnetary</label>
+                        <label for="cat" class="cat"> Documentary</label>
                     </label>
                 </div>
                 <br />
@@ -89,14 +93,14 @@
                 <div class="form-check">
                     <label class="form-check-label">
                         <input type="checkbox" class="form-check-input" value="">
-                        <label for="cat" class="cat"> Terror</label>
+                        <label for="cat" class="cat"> Horror</label>
                     </label>
                 </div>
                 <br />
                 <br />
                 <br />
             </div>
-            <div class="col-sm-4">
+            <div class="col-sm-3">
                 <div class="form-check">
                     <label class="form-check-label">
                         <input type="checkbox" class="form-check-input" value="">
@@ -107,7 +111,7 @@
                 <div class="form-check" >
                     <label class="form-check-label">
                         <input type="checkbox" class="form-check-input" value="">
-                        <label for="cat" class="cat"> acao</label>
+                        <label for="cat" class="cat"> Comedy</label>
                     </label>
                 </div>
                 <br />
@@ -134,11 +138,11 @@
 
         <div class="col-sm-3"></div>
         <div class="col-sm-2">
-            <button type="button" class="btn btn-light btn-lg">Cancel</button>
+            <button type="button" @onclick="@Cancel" value="Cancel" class="btn btn-light btn-lg">Cancel</button>
         </div>
         <div class="col-sm-2"></div>
         <div class="col-sm-1">
-            <button type="button" class="btn btn-warning btn-lg">Next</button>
+            <button type="button" @onclick="@Save" value="Submit" class="btn btn-warning btn-lg">Submit</button>
         </div>
         <br>
         <br />
@@ -152,3 +156,23 @@
 <br />
 <br />
 
+@code {
+Competition competition = new Competition();
+protected override async Task OnInitializedAsync()
+{
+}
+protected async Task Save()
+{
+    var response = await Http.PostAsJsonAsync("api/Competition", @competition);
+    Competition competitionResponse = await response.Content.ReadFromJsonAsync<Competition>();
+        if (competitionResponse?.Id > 0)
+        {
+            await JsRuntime.InvokeVoidAsync("alert", "Saved Successfully!");
+            NavigationManager.NavigateTo("");
+        }
+    }
+    void Cancel()
+    {
+        NavigationManager.NavigateTo("");
+    }
+}
