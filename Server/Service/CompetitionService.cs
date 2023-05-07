@@ -22,7 +22,7 @@ namespace SkyVoteTime.Server.Service
                 data.Name = competition.Name;
                 //data.StartDate = competition.StartDate;
                 data.Description = competition.Description;
-                data.Movies = competition.Movies;
+                //data.Movies = competition.Movies;
                 await _competition.UpdateAsync(data);
                 return true;
             }

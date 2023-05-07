@@ -9,11 +9,11 @@ using SkyVoteTime.Server.Data;
 
 #nullable disable
 
-namespace SkyVoteTime.Server.Data.Migrations
+namespace SkyVoteTime.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230507172755_mig10")]
-    partial class mig10
+    [Migration("20230507184202_mig90")]
+    partial class mig90
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -383,9 +383,6 @@ namespace SkyVoteTime.Server.Data.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
