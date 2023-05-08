@@ -13,6 +13,8 @@ namespace SkyVoteTime.Shared.Models
 
         public string Description { get; set; }
 
+        public string CategoriesJson { get; set; }
+
         //public ICollection<Movie> Movies { get; set; }
     }
 }
