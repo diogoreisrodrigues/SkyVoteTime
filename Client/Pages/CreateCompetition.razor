@@ -1,5 +1,6 @@
 ﻿@page "/createcomp"
 @using SkyVoteTime.Shared
+@using System.Text.Json;
 @inject HttpClient Http
 @inject NavigationManager NavigationManager
 @inject IJSRuntime JsRuntime
@@ -53,21 +54,21 @@
             <div class="col-sm-2">
                 <div class="form-check">
                     <label class="form-check-label">
-                        <input type="checkbox" class="form-check-input" value="">
+                        <input type="checkbox" @onchange="@(e => OnCategoryChecked("Action", e))" class="form-check-input" value="">
                         <label for="cat" class="cat"> Action</label>
                     </label>
                 </div>
                 <br />       
                 <div class="form-check">
                     <label class="form-check-label">
-                        <input type="checkbox" class="form-check-input" value="">
+                        <input type="checkbox" @onchange="@(e => OnCategoryChecked("Drama", e))" class="form-check-input" value="">
                         <label for="cat" class="cat"> Drama</label>
                     </label>
                 </div>
                 <br />
                 <div class="form-check">
                     <label class="form-check-label">
-                        <input type="checkbox" class="form-check-input" value="">
+                        <input type="checkbox" @onchange="@(e => OnCategoryChecked("Romance", e))" class="form-check-input" value="">
                         <label for="cat" class="cat"> Romance</label>
                     </label>
                 </div>
@@ -78,21 +79,21 @@
             <div class="col-sm-2">
                 <div class="form-check">
                     <label class="form-check-label">
-                        <input type="checkbox" class="form-check-input" value="">
+                        <input type="checkbox" @onchange="@(e => OnCategoryChecked("Documentary", e))" class="form-check-input" value="">
                         <label for="cat" class="cat"> Documentary</label>
                     </label>
                 </div>
                 <br />
                 <div class="form-check">
                     <label class="form-check-label">
-                        <input type="checkbox" class="form-check-input" value="">
+                        <input type="checkbox" @onchange="@(e => OnCategoryChecked("Suspense", e))" class="form-check-input" value="">
                         <label for="cat" class="cat"> Suspense</label>
                     </label>
                 </div>
                 <br />
                 <div class="form-check">
                     <label class="form-check-label">
-                        <input type="checkbox" class="form-check-input" value="">
+                        <input type="checkbox" @onchange="@(e => OnCategoryChecked("Horror", e))" class="form-check-input" value="">
                         <label for="cat" class="cat"> Horror</label>
                     </label>
                 </div>
@@ -103,21 +104,21 @@
             <div class="col-sm-3">
                 <div class="form-check">
                     <label class="form-check-label">
-                        <input type="checkbox" class="form-check-input" value="">
+                        <input type="checkbox" @onchange="@(e => OnCategoryChecked("Science fiction", e))" class="form-check-input" value="">
                         <label for="cat" class="cat"> Science fiction</label>
                     </label>
                 </div>
                 <br />
                 <div class="form-check" >
                     <label class="form-check-label">
-                        <input type="checkbox" class="form-check-input" value="">
+                        <input type="checkbox" @onchange="@(e => OnCategoryChecked("Comedy", e))" class="form-check-input" value="">
                         <label for="cat" class="cat"> Comedy</label>
                     </label>
                 </div>
                 <br />
                 <div class="form-check">
                     <label class="form-check-label">
-                        <input type="checkbox" class="form-check-input" value="">
+                        <input type="checkbox" @onchange="@(e => OnCategoryChecked("Adventure", e))" class="form-check-input" value="">
                         <label for="cat" class="cat"> Adventure</label>
                     </label>
                 </div>
@@ -158,11 +159,31 @@
 
 @code {
 Competition competition = new Competition();
+
+private List<string> selectedCategories = new List<string>();
+
+private void OnCategoryChecked(string categoryName, ChangeEventArgs e)
+{   
+    var isChecked = (bool)e.Value;
+
+    if (isChecked)
+    {
+        selectedCategories.Add(categoryName);
+    }
+    else
+    {
+        selectedCategories.Remove(categoryName);
+    }
+}
+
 protected override async Task OnInitializedAsync()
 {
 }
 protected async Task Save()
 {
+    competition.CategoriesJson = JsonSerializer.Serialize(selectedCategories);
+    Console.WriteLine(competition.CategoriesJson);
+
     var response = await Http.PostAsJsonAsync("api/Competition", @competition);
     Competition competitionResponse = await response.Content.ReadFromJsonAsync<Competition>();
         if (competitionResponse?.Id > 0)
@@ -175,4 +196,6 @@ protected async Task Save()
     {
         NavigationManager.NavigateTo("");
     }
+
+
 }
