@@ -1,8 +1,53 @@
 ﻿@page "/competitions"
+@using SkyVoteTime.Shared
+@using System.Text.Json;
+@inject HttpClient _httpClient
 
 <h1 class="titleCompetitions">Competitions</h1>
 
+@if (competitionList != null)
+{
+    @foreach (var p in competitionList)
+    {
+        <div class="container" style="background: rgba(0,0,0,0.7); margin-top:6%; border-radius: 20px; width: 70%;">
+            <div class="row">
+                <div class="col-md-4 offset-md-4  amarelo">
+                    <div class="nomTitle">
+                        @p.Name
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-10 offset-md-1 amarelo">
+                    <div class="texto">
+                        @p.Description
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                
+                @{
+                    List<String> categories = JsonSerializer.Deserialize<List<String>>(p.CategoriesJson);
+                    Console.WriteLine("ewbfhfbvvcer"+categories);
+                }
+                @foreach(var c in categories)
+                {
+                    <div class="col">
+                        <h4><span class="label label-default">@c</span></h4>
+                    </div>
+                }
+                
+                <div class="col-6">
 
+                </div>
+                <div class="col" style="text-align: right">
+                    <h3><span class="label label-warning">Vote here!</span></h3>
+                </div>
+            </div>
+            <br>
+        </div>
+    }
+}
 
 <div class="container" style="background: rgba(0,0,0,0.7); margin-top:6%; border-radius: 20px;">
     <div class="row">
@@ -163,6 +208,15 @@
     </div>
 </div>
 
+@code {
+    List<Competition> competitionList = new List<Competition>();
+    protected override async Task OnInitializedAsync()
+    {
+        var response = await _httpClient.GetAsync("api/competition");
+        response.EnsureSuccessStatusCode();
+        competitionList = await response.Content.ReadFromJsonAsync<List<Competition>>();
+    }
+}
 
 
 

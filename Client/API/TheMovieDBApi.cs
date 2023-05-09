@@ -20,7 +20,7 @@ namespace SkyVoteTime.Client.API
 
         private MovieList movieList;
 
-
+        private Movie movie;
 
         /*
         public async Task<List<Movie>> GetPopularMoviesAsync()
@@ -51,6 +51,28 @@ namespace SkyVoteTime.Client.API
                 return null;
             }
         }//grab 
+
+        public async Task GrabMovieAsync(int movieID)
+        {
+            clearYourHead(); // 
+
+            // grabs the movie info
+            HttpResponseMessage movieInfo =
+                await client.GetAsync("https://api.themoviedb.org/3/movie/" +
+                    movieID + "?api_key=d194eb72915bc79fac2eb1a70a71ddd3&language=en-US");
+            // grabs the movie credits - includes cast
+            Console.WriteLine(movieID);
+            HttpResponseMessage castInfo =
+                await client.GetAsync("https://api.themoviedb.org/3/movie/" +
+                movieID + "/credits?api_key=d194eb72915bc79fac2eb1a70a71ddd3");
+            // null checks
+            if (movieInfo.IsSuccessStatusCode)
+            {
+                string Details = await movieInfo.Content.ReadAsStringAsync();
+                movie = JsonConvert.DeserializeObject<Movie>(Details);
+            }
+
+        } // GrabMovieAsync()
 
         public async Task<MovieList> searchMovieDetails(string Query)
         {
