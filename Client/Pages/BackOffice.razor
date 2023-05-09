@@ -1,0 +1,157 @@
+﻿@page "/"
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JsRuntime
+
+
+<div class="container-lg my-5" style="background-color: #FFF; padding: 20px; border-radius: 20px;">
+    <div class="row">
+        <div class="col-10">
+            <h1 style="margin-bottom: 25px;     
+    text-transform: uppercase;
+    font-family: Inter;
+    font-style: normal;
+    font-size: 24px;">BackOffice - Competitions</h1>
+        </div>
+        <div class="col-2" >
+            <button type="button" class="btn btn-lg btn-dark" style= "margin: 0;
+  position: absolute;
+  top: 50%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+">Create Competition</button>
+        </div> 
+        
+    </div>
+    
+
+    <div>
+        <table class="table">
+          <thead class="thead-dark">
+            <tr>
+              <th scope="col">#Id</th>
+              <th scope="col">Name</th>
+              <th scope="col">Description</th>
+              <th scope="col">Categories</th>
+              <th scope="col">Nominees</th>
+              <th scope="col">Status</th>
+              <th scope="col">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">1</th>
+              <td>Best movies</td>
+              <td>Decide here what's the best movie of this year!</td>
+              <td>Any</td>
+              <td>The Shawshank Redemption, The Godfather, Pulp Fiction, The Dark Knight</td>
+              <td>Public</td>
+              <td style="display: flex">
+                  <img src="Assets/edit.png" style="max-width: 30px;" >
+                  <img src="Assets/delete.png" style="max-width: 30px;" >
+              </td>
+
+            </tr>
+            <tr>
+              <th scope="row">2</th>
+              <td>Best movies</td>
+              <td>Decide here what's the best movie of this year!</td>
+              <td>Any</td>
+              <td>The Shawshank Redemption, The Godfather, Pulp Fiction, The Dark Knight</td>
+              <td>Public</td>
+              <td style="display: flex">
+                  <img src="Assets/edit.png" style="max-width: 30px;" >
+                  <img src="Assets/delete.png" style="max-width: 30px;" >
+              </td>
+            </tr>
+            <tr>
+              <th scope="row">3</th>
+              <td>Best movies</td>
+              <td>Decide here what's the best movie of this year!</td>
+              <td>Any</td>
+              <td>The Shawshank Redemption, The Godfather, Pulp Fiction, The Dark Knight</td>
+              <td>Public</td>
+              <td style="display: flex">
+                  <img src="Assets/edit.png" style="max-width: 30px;" >
+                  <img src="Assets/delete.png" style="max-width: 30px;" >
+              </td>
+            </tr>
+            <tr>
+              <th scope="row">4</th>
+              <td>Best movies</td>
+              <td>Decide here what's the best movie of this year!</td>
+              <td>Any</td>
+              <td>The Shawshank Redemption, The Godfather, Pulp Fiction, The Dark Knight</td>
+              <td>Public</td>
+              <td style="display: flex">
+                  <img src="Assets/edit.png" style="max-width: 30px;" >
+                  <img src="Assets/delete.png" style="max-width: 30px;" >
+              </td>
+            </tr>
+            <tr>
+              <th scope="row">5</th>
+              <td>Best movies</td>
+              <td>Decide here what's the best movie of this year!</td>
+              <td>Any</td>
+              <td>The Shawshank Redemption, The Godfather, Pulp Fiction, The Dark Knight</td>
+              <td>Public</td>
+              <td style="display: flex">
+                  <img src="Assets/edit.png" style="max-width: 30px;" >
+                  <img src="Assets/delete.png" style="max-width: 30px;" >
+              </td>
+            </tr>
+            <tr>
+              <th scope="row">6</th>
+              <td>Best movies</td>
+              <td>Decide here what's the best movie of this year!</td>
+              <td>Any</td>
+              <td>The Shawshank Redemption, The Godfather, Pulp Fiction, The Dark Knight</td>
+              <td>Public</td>
+              <td style="display: flex">
+                  <img src="Assets/edit.png" style="max-width: 30px;" >
+                  <img src="Assets/delete.png" style="max-width: 30px;" >
+              </td>
+            </tr>
+            <tr>
+              <th scope="row">7</th>
+              <td>Best movies</td>
+              <td>Decide here what's the best movie of this year!</td>
+              <td>Any</td>
+              <td>The Shawshank Redemption, The Godfather, Pulp Fiction, The Dark Knight</td>
+              <td>Public</td>
+              <td style="display: flex">
+                  <img src="Assets/edit.png" style="max-width: 30px;" >
+                  <img src="Assets/delete.png" style="max-width: 30px;" >
+              </td>
+            </tr>
+          </tbody>
+        </table>
+    </div>
+</div>
+@code {
+    public int Id;
+
+    List<Competition> competitionList = new List<Competition>();
+    protected override async Task OnInitializedAsync()
+    {
+        var response = await Http.GetAsync("api/competition");
+        response.EnsureSuccessStatusCode();
+        competitionList = await response.Content.ReadFromJsonAsync<List<Competition>>();
+    }
+
+    protected async Task Delete(int Id)
+    {
+        var response = await Http.DeleteAsync("api/Person/" + Id);
+        bool deleteResponse = await response.Content.ReadFromJsonAsync<bool>();
+        if (deleteResponse)
+        {
+            await JsRuntime.InvokeVoidAsync("alert", "Deleted Successfully!");
+            NavigationManager.NavigateTo("personlist");
+        }
+    }
+    void Cancel()
+    {
+        NavigationManager.NavigateTo("personlist");
+    }
+
+}
