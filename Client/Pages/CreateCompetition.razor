@@ -1,9 +1,12 @@
 ﻿@page "/createcomp"
+@using SkyVoteTime.Client.API;
 @using SkyVoteTime.Shared
 @using System.Text.Json;
 @inject HttpClient Http
 @inject NavigationManager NavigationManager
 @inject IJSRuntime JsRuntime
+
+@inject TheMovieDBApi movieApi;
 
 <h1 class="title" style="text-align:center; margin-top:100px">CreateCompetition</h1>
 
@@ -125,9 +128,49 @@
                 <br />
                 <br />
                 <br />
-            </div
-            
+            </div>
         </div>
+
+        <!--Search Movie-->
+        <div class="form-group row">
+            <div class="col-xl-11">
+                <input class="form-control" type="text" @bind-value="@search" @bind-value:event="oninput" @onkeyup="KeyHandler" placeholder="Search movie" />
+            </div>
+            <div class="col-xs-2">
+                <input class="form-control" id="searchButton" type="submit" @onclick="GetPosters" value="Go" />
+            </div>
+            <div>
+            </div>
+        </div>
+
+        <div style="display:flex; flex-wrap: wrap; overflow-y: auto;">
+            @if (movieList != null)
+            {
+                @foreach (var i in @movieList.results)
+                {
+                    <div class="poster">
+                        <div class="flip-card_i" style="max-width: 150px; max-height: 250px;">
+                            <div class="flip-card-inner_i">
+                                <div class="flip-card-front_i">
+                                    <img src="https://image.tmdb.org/t/p/w342/@i.poster_path" alt="Avatar" style="width:250px;height:360px;">
+                                    <div class="form-check form-check-inline">
+                                        <label class="form-check-label" for="inlineCheckbox1">1</label>
+                                        <div class="col-xs-2">
+                                            <input class="form-control" id="choose" type="submit" @bind-value="@i.id" @onclick="@(e => GetMovie(@i.id))" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="flim">
+                                <b>@i.title</b><br>IMDb - 8.8
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+
 
         <div class="form-check form-switch switch">
             <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
@@ -157,10 +200,38 @@
 <br />
 <br />
 
-@code {
-Competition competition = new Competition();
 
-private List<string> selectedCategories = new List<string>();
+@code {
+    Competition competition = new Competition();
+
+    private List<string> selectedCategories = new List<string>();
+    private List<string> selectedMovies = new List<string>();
+
+    private string search { get; set; }
+    private string moviePath;
+    private MovieList movieList;
+
+    //== Movie Search ==//
+    private async Task GetPosters()
+    {
+
+        movieList = await movieApi.searchMovieDetails(search);
+    } // MovieSearch()
+
+
+    private async Task KeyHandler(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter")
+        {
+            await GetPosters();
+        }
+    }
+
+    public async Task GetMovie(int id)
+    {
+        OnMovieButtonClick(id.ToString());
+        await movieApi.GrabMovieAsync(id);
+} // GetMovie()
 
 private void OnCategoryChecked(string categoryName, ChangeEventArgs e)
 {   
@@ -176,6 +247,14 @@ private void OnCategoryChecked(string categoryName, ChangeEventArgs e)
     }
 }
 
+private void OnMovieButtonClick(string movieId)
+{
+    if (!selectedMovies.Contains(movieId))
+    {
+        selectedMovies.Add(movieId);
+    }
+}
+
 protected override async Task OnInitializedAsync()
 {
 }
@@ -183,6 +262,9 @@ protected async Task Save()
 {
     competition.CategoriesJson = JsonSerializer.Serialize(selectedCategories);
     Console.WriteLine(competition.CategoriesJson);
+
+    competition.MoviesJson = JsonSerializer.Serialize(selectedMovies);
+    Console.WriteLine(competition.MoviesJson);
 
     var response = await Http.PostAsJsonAsync("api/Competition", @competition);
     Competition competitionResponse = await response.Content.ReadFromJsonAsync<Competition>();
@@ -192,6 +274,7 @@ protected async Task Save()
             NavigationManager.NavigateTo("");
         }
     }
+
     void Cancel()
     {
         NavigationManager.NavigateTo("");
