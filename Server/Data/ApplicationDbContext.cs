@@ -15,6 +15,8 @@ namespace SkyVoteTime.Server.Data
         }
         public DbSet<Competition> Competitions { get; set; }
         public DbSet<Category> Categories { get; set; }
+        public DbSet<Competition> Type { get; set; }
+        public DbSet<Competition> isPublic { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

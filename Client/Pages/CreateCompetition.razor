@@ -202,13 +202,13 @@
                 Competition Type
             </button>
             <div class="dropdown-menu col-xs-12" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="#">Filme</a>
-                <a class="dropdown-item" href="#">Ator</a>
-                <a class="dropdown-item" href="#">Diretor</a>
+                <a class="dropdown-item" @onclick="(e) => ChoseType(1)">Filme</a>
+                <a class="dropdown-item" @onclick="(e) => ChoseType(2)">Ator</a>
+                <a class="dropdown-item" @onclick="(e) => ChoseType(3)">Diretor</a>
             </div>
         </div>
 
-
+        
 
         <br />
         <br />
@@ -218,91 +218,117 @@
         <br />
 
         <div class=" container check justify-content-center">
-            <div class="col-sm-1"></div>
-            <div class="col-sm-2">
-                <div class="form-check">
-                    <label class="form-check-label">
-                        <input type="checkbox" @onchange="@(e => OnCategoryChecked("Action", e))" class="form-check-input" value="">
-                        <label for="cat" class="cat"> Action</label>
-                    </label>
+            @if (CompType == "filme")
+            {
+                <div class="col-sm-1"></div>
+                <div class="col-sm-2">
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input type="checkbox" @onchange="@(e => OnCategoryChecked("Action", e))" class="form-check-input" value="">
+                            <label for="cat" class="cat"> Action</label>
+                        </label>
+                    </div>
+                    <br />
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input type="checkbox" @onchange="@(e => OnCategoryChecked("Drama", e))" class="form-check-input" value="">
+                            <label for="cat" class="cat"> Drama</label>
+                        </label>
+                    </div>
+                    <br />
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input type="checkbox" @onchange="@(e => OnCategoryChecked("Romance", e))" class="form-check-input" value="">
+                            <label for="cat" class="cat"> Romance</label>
+                        </label>
+                    </div>
+                    <br />
+                    <br />
+                    <br />
                 </div>
-                <br />       
-                <div class="form-check">
-                    <label class="form-check-label">
-                        <input type="checkbox" @onchange="@(e => OnCategoryChecked("Drama", e))" class="form-check-input" value="">
-                        <label for="cat" class="cat"> Drama</label>
-                    </label>
+                <div class="col-sm-2">
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input type="checkbox" @onchange="@(e => OnCategoryChecked("Documentary", e))" class="form-check-input" value="">
+                            <label for="cat" class="cat"> Documentary</label>
+                        </label>
+                    </div>
+                    <br />
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input type="checkbox" @onchange="@(e => OnCategoryChecked("Suspense", e))" class="form-check-input" value="">
+                            <label for="cat" class="cat"> Suspense</label>
+                        </label>
+                    </div>
+                    <br />
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input type="checkbox" @onchange="@(e => OnCategoryChecked("Horror", e))" class="form-check-input" value="">
+                            <label for="cat" class="cat"> Horror</label>
+                        </label>
+                    </div>
+                    <br />
+                    <br />
+                    <br />
                 </div>
-                <br />
-                <div class="form-check">
-                    <label class="form-check-label">
-                        <input type="checkbox" @onchange="@(e => OnCategoryChecked("Romance", e))" class="form-check-input" value="">
-                        <label for="cat" class="cat"> Romance</label>
-                    </label>
+                <div class="col-sm-3">
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input type="checkbox" @onchange="@(e => OnCategoryChecked("Science fiction", e))" class="form-check-input" value="">
+                            <label for="cat" class="cat"> Science fiction</label>
+                        </label>
+                    </div>
+                    <br />
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input type="checkbox" @onchange="@(e => OnCategoryChecked("Comedy", e))" class="form-check-input" value="">
+                            <label for="cat" class="cat"> Comedy</label>
+                        </label>
+                    </div>
+                    <br />
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input type="checkbox" @onchange="@(e => OnCategoryChecked("Adventure", e))" class="form-check-input" value="">
+                            <label for="cat" class="cat"> Adventure</label>
+                        </label>
+                    </div>
+                    <br />
+                    <br />
+                    <br />
                 </div>
-                <br />
-                <br />
-                <br />
-            </div>
-            <div class="col-sm-2">
-                <div class="form-check">
-                    <label class="form-check-label">
-                        <input type="checkbox" @onchange="@(e => OnCategoryChecked("Documentary", e))" class="form-check-input" value="">
-                        <label for="cat" class="cat"> Documentary</label>
-                    </label>
-                </div>
-                <br />
-                <div class="form-check">
-                    <label class="form-check-label">
-                        <input type="checkbox" @onchange="@(e => OnCategoryChecked("Suspense", e))" class="form-check-input" value="">
-                        <label for="cat" class="cat"> Suspense</label>
-                    </label>
-                </div>
-                <br />
-                <div class="form-check">
-                    <label class="form-check-label">
-                        <input type="checkbox" @onchange="@(e => OnCategoryChecked("Horror", e))" class="form-check-input" value="">
-                        <label for="cat" class="cat"> Horror</label>
-                    </label>
-                </div>
-                <br />
-                <br />
-                <br />
-            </div>
-            <div class="col-sm-3">
-                <div class="form-check">
-                    <label class="form-check-label">
-                        <input type="checkbox" @onchange="@(e => OnCategoryChecked("Science fiction", e))" class="form-check-input" value="">
-                        <label for="cat" class="cat"> Science fiction</label>
-                    </label>
-                </div>
-                <br />
-                <div class="form-check" >
-                    <label class="form-check-label">
-                        <input type="checkbox" @onchange="@(e => OnCategoryChecked("Comedy", e))" class="form-check-input" value="">
-                        <label for="cat" class="cat"> Comedy</label>
-                    </label>
-                </div>
-                <br />
-                <div class="form-check">
-                    <label class="form-check-label">
-                        <input type="checkbox" @onchange="@(e => OnCategoryChecked("Adventure", e))" class="form-check-input" value="">
-                        <label for="cat" class="cat"> Adventure</label>
-                    </label>
-                </div>
-                <br />
-                <br />
-                <br />
-            </div>
+            }
+            
         </div>
 
         <!--Search Movie-->
         <div class="form-group row">
             <div class="col-xl-10">
-                <input class="form-control" type="text" @bind-value="@search" @bind-value:event="oninput" @onkeyup="KeyHandler" placeholder="Search movie" />
+                @if (CompType == "filme")
+                {
+                    <input class="form-control" type="text" @bind-value="@search" @bind-value:event="oninput" @onkeyup="KeyHandlerfime" placeholder="Search the Competitor" />
+                }
+                @if (CompType == "ator")
+                {
+                    <input class="form-control" type="text" @bind-value="@search" @bind-value:event="oninput" @onkeyup="KeyHandlerAtor" placeholder="Search the Competitor" />
+                }
+                @if (CompType == "diretor")
+                {
+                    <input class="form-control" type="text" @bind-value="@search" @bind-value:event="oninput" @onkeyup="KeyHandlerDiretor" placeholder="Search the Competitor" />
+                }
             </div>
             <div class="col-xs-2">
-                <input class="form-control" id="searchButton" type="submit" @onclick="GetPosters" value="Go" />
+                @if (CompType == "filme")
+                {
+                    <input class="form-control" id="searchButton" type="submit" @onclick="GetPosters" value="Go" />
+                }
+                @if (CompType == "ator")
+                {
+                    <input class="form-control" id="searchButton" type="submit" @onclick="GetPostersAtor" value="Go" />
+                }
+                @if (CompType == "diretor")
+                {
+                    <input class="form-control" id="searchButton" type="submit" @onclick="GetPostersDiretor" value="Go" />
+                }
             </div>
             <div>
             </div>
@@ -331,7 +357,7 @@
                                     <label>Overview:</label> <br>
                                     <span style="font-size: 11px" >@i.overview</span> <br>
                                     <div class="checkbox-wrapper-24" >
-                                        <input type="checkbox" id="check-24" name="check" @bind-value="@i.id" @onclick="@(e => GetMovie(@i.id))" />
+                                    <input type="submit" id="check-24" class="btn btn-secondary" name="check" value="click" @onclick="@(e => GetMovie(@i.id))" />
                                         <label for="check-24">
                                             <span><!-- This span is needed to create the "checkbox" element --></span>Add as Nominee!
                                         </label>
@@ -343,9 +369,49 @@
                         </div><!--movie-card-->
                     }
              }
-    
 
-</div><!--container-->
+        </div><!--container-->
+
+        <div class="containerMovie">
+
+            @if (personListResults != null)
+            {
+                @foreach (var i in @personListResults.results)
+                {
+
+                    <div class="movie-card">
+                        <div class="movie-header">
+                            <img src="https://image.tmdb.org/t/p/w342/@i.profile_path" class="movie-header" />
+                        </div><!--movie-header-->
+
+                        <div class="movie-content">
+                            <div class="movie-content-header">
+                                <a href="#">
+                                    <h3 class="movie-title">@i.name</h3>
+                                </a>
+                            </div>
+                            <div class="movie-info">
+
+                                <label>Known for::</label> <br>
+                                <span style="font-size: 11px">@i.known_for_department</span> <br>
+                                <div class="checkbox-wrapper-24">
+                                    <input type="submit" id="check-24" class="btn btn-secondary" name="check" value="click" @onclick="@(e => GetMovie(@i.id))" />
+                                    <label for="check-24">
+                                        <span><!-- This span is needed to create the "checkbox" element --></span>Add as Nominee!
+                                    </label>
+                                </div>
+
+
+                            </div>
+                        </div><!--movie-content-->
+                    </div>
+
+                    <!--movie-card-->
+                }
+            }
+
+
+        </div><!--container-->
 
 
         <div class="form-check form-switch switch">
@@ -380,12 +446,17 @@
 @code {
     Competition competition = new Competition();
 
+    private string selectedType;
+
     private List<string> selectedCategories = new List<string>();
     private List<string> selectedMovies = new List<string>();
 
     private string search { get; set; }
     private string moviePath;
     private MovieList movieList;
+    public PersonList personListResults;
+
+    private string CompType;
 
     //== Movie Search ==//
     private async Task GetPosters()
@@ -394,12 +465,40 @@
         movieList = await movieApi.searchMovieDetails(search);
     } // MovieSearch()
 
+     private async Task GetPostersAtor()
+    {
 
-    private async Task KeyHandler(KeyboardEventArgs e)
+        personListResults = await movieApi.searchActorsDetails(search);
+    } // MovieSearch()
+
+    private async Task GetPostersDiretor()
+    {
+
+        personListResults = await movieApi.searchDirectorsDetails(search);
+    } // MovieSearch()
+
+
+    private async Task KeyHandlerfime(KeyboardEventArgs e)
     {
         if (e.Key == "Enter")
         {
             await GetPosters();
+        }
+    }
+
+    private async Task KeyHandlerAtor(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter")
+        {
+            await GetPostersAtor();
+        }
+    }
+
+    private async Task KeyHandlerDiretor(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter")
+        {
+            await GetPostersDiretor();
         }
     }
 
@@ -409,19 +508,41 @@
         await movieApi.GrabMovieAsync(id);
     } // GetMovie()
 
-private void OnCategoryChecked(string categoryName, ChangeEventArgs e)
-{   
-    var isChecked = (bool)e.Value;
+    public async Task GetPerson(int id)
+    {
+        OnPersonButtonClick(id.ToString());
+        await movieApi.GrabPersonAsync(id);
+    } // GetMovie()
 
-    if (isChecked)
-    {
-        selectedCategories.Add(categoryName);
+    private void OnCategoryChecked(string categoryName, ChangeEventArgs e)
+    {   
+        var isChecked = (bool)e.Value;
+
+        if (isChecked)
+        {
+            selectedCategories.Add(categoryName);
+        }
+        else
+        {
+            selectedCategories.Remove(categoryName);
+        }
     }
-    else
+
+    private void ChoseType(int tipo)
     {
-        selectedCategories.Remove(categoryName);
+        if (tipo == 1)
+        {
+            CompType = "filme";
+        }
+        else if (tipo == 2)
+        {
+            CompType = "ator";
+        }
+        else if (tipo == 3)
+        {
+            CompType = "diretor";
+        }
     }
-}
 
 private void OnMovieButtonClick(string movieId)
 {
@@ -430,6 +551,14 @@ private void OnMovieButtonClick(string movieId)
         selectedMovies.Add(movieId);
     }
 }
+
+    private void OnPersonButtonClick(string personId)
+    {
+        if (!selectedMovies.Contains(personId))
+        {
+            selectedMovies.Add(personId);
+        }
+    }
 
 protected override async Task OnInitializedAsync()
 {

@@ -22,6 +22,8 @@ namespace SkyVoteTime.Client.API
 
         private Movie movie;
 
+        private Person person;
+
         /*
         public async Task<List<Movie>> GetPopularMoviesAsync()
         {
@@ -74,6 +76,33 @@ namespace SkyVoteTime.Client.API
 
         } // GrabMovieAsync()
 
+
+        public async Task GrabPersonAsync(int personID)
+        {
+            clearYourHead(); // 
+
+            // grabs the movie info
+            HttpResponseMessage personInfo =
+                await client.GetAsync("https://api.themoviedb.org/3/person/" +
+                    personID + "?api_key=d194eb72915bc79fac2eb1a70a71ddd3&language=en-US");
+            // grabs the movie credits - includes cast
+            Console.WriteLine(personID);
+            HttpResponseMessage castInfo =
+                await client.GetAsync("https://api.themoviedb.org/3/person/" +
+                personID + "/credits?api_key=d194eb72915bc79fac2eb1a70a71ddd3");
+            // null checks
+            if (personInfo.IsSuccessStatusCode)
+            {
+                string Details = await personInfo.Content.ReadAsStringAsync();
+                person = JsonConvert.DeserializeObject<Person>(Details);
+            }
+
+        } // GrabMovieAsync()
+
+
+
+
+
         public async Task<MovieList> searchMovieDetails(string Query)
         {
             clearYourHead(); // 
@@ -93,7 +122,8 @@ namespace SkyVoteTime.Client.API
             }
         }//grab 
 
-        public async Task<PersonList> PersonListDetails(string Query)
+
+        public async Task<PersonList> searchActorsDetails(string Query)
         {
             clearYourHead(); // 
             // grab upcoming movie details
@@ -111,6 +141,26 @@ namespace SkyVoteTime.Client.API
                 return null;
             }
         }//grab 
+
+        public async Task<PersonList> searchDirectorsDetails(string Query)
+        {
+            clearYourHead(); // 
+            // grab upcoming movie details
+            HttpResponseMessage personList = await client.GetAsync(
+                "https://api.themoviedb.org/3/search/person?api_key=8ec9575a406e1b25a8d68e65b07e7319&language=en-US&query=" + Query);
+            if (personList.IsSuccessStatusCode)
+            {
+                PersonList = await personList.Content.ReadAsStringAsync();
+                personListResults = JsonConvert.DeserializeObject<PersonList>(PersonList);
+                return personListResults;
+            }
+            else
+            {
+                personListResults = null;
+                return null;
+            }
+        }//grab
+
 
         public void clearYourHead()
         {
