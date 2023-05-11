@@ -1,212 +1,64 @@
-﻿@page "/competitions"
+@page "/competitions"
 @using SkyVoteTime.Shared
 @using System.Text.Json;
 @inject HttpClient _httpClient
 
 <h1 class="titleCompetitions">Competitions</h1>
 
+
 @if (competitionList != null)
 {
-    @foreach (var p in competitionList)
+    @foreach (Competition competition in competitionList)
     {
-        <div class="container" style="background: rgba(0,0,0,0.7); margin-top:6%; border-radius: 20px; width: 70%;">
+
+        List<String> categories = JsonSerializer.Deserialize<List<String>>(competition.CategoriesJson);
+
+        <div class="container" style="background: rgba(0,0,0,0.7); margin-top:6%; border-radius: 20px;">
             <div class="row">
                 <div class="col-md-4 offset-md-4  amarelo">
                     <div class="nomTitle">
-                        @p.Name
+                        @competition.Name
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-10 offset-md-1 amarelo">
                     <div class="texto">
-                        @p.Description
+                        @competition.Description
                     </div>
                 </div>
             </div>
             <div class="row">
-                
-                @{
-                    List<String> categories = JsonSerializer.Deserialize<List<String>>(p.CategoriesJson);
-                    Console.WriteLine("ewbfhfbvvcer"+categories);
-                }
-                @foreach(var c in categories)
-                {
-                    <div class="col">
-                        <h4><span class="label label-default">@c</span></h4>
-                    </div> 
-                }
-                
-                <div class="col-6">
-
+                <div class="col-1">
                 </div>
-                <div class="col" style="text-align: right">
-                            <h3><span class="label label-warning"><a href="/nom/@p.Id"> Vote here! </a> </span></h3>
+
+                @foreach (var category in categories)
+                {
+
+                    <div class="col-1 categorias">
+                        @category
+                    </div>
+
+                }
+
+                <div class="col-8">
+                </div>
+                <div class="col-1 botao">
+                    <a href="/nom/@competition.Id"> Vote here! </a>
                 </div>
             </div>
-            <br>
         </div>
     }
+
 }
 
-<div class="container" style="background: rgba(0,0,0,0.7); margin-top:6%; border-radius: 20px;">
-    <div class="row">
-        <div class="col-md-4 offset-md-4  amarelo">
-            <div class="nomTitle">
-                Movie of the Year
-            </div>
+ <div class="row">
+        <div class="card">
+            <h4>What is a Frontend Develoment?</h4>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ullam porro similique aliquid debitis ipsam soluta dolorum ipsa! Voluptate, suscipit iure.</p>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-md-10 offset-md-1 amarelo">
-            <div class="texto">
-                The Movie of the Year is a unique award that is given to the best movie for the given year, elected by the whole cinema world.
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-1">
-        </div>
-        <div class="col-1 categorias">
-            any
-        </div>
-        <div class="col-8">
-        </div>
-        <div class="col-1 botao">
-            select
-        </div>
-        <div class="col-1">
-        </div>
-    </div>
-</div> 
+ </div>
 
-
-<div class="row">
-    <div class="col-1">
-    </div>
-    <div class="col-10">
-        <hr class="linha">
-    </div>
-    <div class="col-1">
-    </div>
-</div>
-
-<div class="container" style="background: rgba(0,0,0,0.7); margin-top:6%; border-radius: 20px;">
-    <div class="row">
-        <div class="col-md-4 offset-md-4  amarelo">
-            <div class="nomTitle">
-                Movie of the Year
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-10 offset-md-1 amarelo">
-            <div class="texto">
-                The Movie of the Year is a unique award that is given to the best movie for the given year, elected by the whole cinema world.
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-1">
-        </div>
-        <div class="col-1 categorias">
-            any
-        </div>
-        <div class="col-8">
-        </div>
-        <div class="col-1 botao">
-            select
-        </div>
-        <div class="col-1">
-        </div>
-    </div>
-</div> 
-
-
-
-
-<div class="row">
-    <div class="col-1">
-    </div>
-    <div class="col-10">
-        <hr class="linha">
-    </div>
-    <div class="col-1">
-    </div>
-</div>
-
-<div class="container" style="background: rgba(0,0,0,0.7); margin-top:6%; border-radius: 20px;">
-    <div class="row">
-        <div class="col-md-4 offset-md-4  amarelo">
-            <div class="nomTitle">
-                Movie of the Year
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-10 offset-md-1 amarelo">
-            <div class="texto">
-                The Movie of the Year is a unique award that is given to the best movie for the given year, elected by the whole cinema world.
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-1">
-        </div>
-        <div class="col-1 categorias">
-            any
-        </div>
-        <div class="col-8">
-        </div>
-        <div class="col-1 botao">
-            select
-        </div>
-        <div class="col-1">
-        </div>
-    </div>
-</div>
-
-
-<div class="row">
-    <div class="col-1">
-    </div>
-    <div class="col-10">
-        <hr class="linha">
-    </div>
-    <div class="col-1">
-    </div>
-</div>
-
-<div class="container" style="background: rgba(0,0,0,0.7); margin-top:6%; border-radius: 20px;">
-    <div class="row">
-        <div class="col-md-4 offset-md-4  amarelo">
-            <div class="nomTitle">
-                Movie of the Year
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-10 offset-md-1 amarelo">
-            <div class="texto">
-                The Movie of the Year is a unique award that is given to the best movie for the given year, elected by the whole cinema world.
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-1">
-        </div>
-        <div class="col-1 categorias">
-            any
-        </div>
-        <div class="col-8">
-        </div>
-        <div class="col-1 botao">
-            select
-        </div>
-        <div class="col-1">
-        </div>
-    </div>
-</div>
 
 @code {
     List<Competition> competitionList = new List<Competition>();

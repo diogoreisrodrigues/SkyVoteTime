@@ -26,10 +26,13 @@ namespace SkyVoteTime.Server.Repository
         {
             return await _dbContext.Competitions.ToListAsync();
         }
-        public async Task<Competition> GetByIdAsync(int Id)
+        public async Task<Competition> GetByIdAsync(int id)
         {
-            return await _dbContext.Competitions.FirstOrDefaultAsync(x => x.Id == Id);
+            return await _dbContext.Competitions
+                .Include(c => c.Movies)
+                .FirstOrDefaultAsync(c => c.Id == id);
         }
+
         public async Task DeleteAsync(int id)
         {
             var data = _dbContext.Competitions.FirstOrDefault(x => x.Id == id);
