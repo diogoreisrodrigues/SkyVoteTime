@@ -202,9 +202,8 @@
                 Competition Type
             </button>
             <div class="dropdown-menu col-xs-12" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="#">Filme</a>
-                <a class="dropdown-item" href="#">Ator</a>
-                <a class="dropdown-item" href="#">Diretor</a>
+                <a class="dropdown-item" @onclick="(e) => ChoseType(1)">Filme</a>
+                
             </div>
         </div>
 
@@ -214,10 +213,15 @@
         <br />
         <br />
         
+        @if(compType == "filme"){
+
         <p class="texto">Category</p>
         <br />
 
         <div class=" container check justify-content-center">
+
+            
+
             <div class="col-sm-1"></div>
             <div class="col-sm-2">
                 <div class="form-check">
@@ -294,15 +298,25 @@
                 <br />
                 <br />
             </div>
+            
         </div>
+        }
 
         <!--Search Movie-->
         <div class="form-group row">
             <div class="col-xl-10">
-                <input class="form-control" type="text" @bind-value="@search" @bind-value:event="oninput" @onkeyup="KeyHandler" placeholder="Search movie" />
+                @if (compType == "filme")
+                {
+                        <input class="form-control" type="text" @bind-value="@search" @bind-value:event="oninput" @onkeyup="KeyHandlerfime" placeholder="Search the Competitor" />
+                }
+                
             </div>
             <div class="col-xs-2">
-                <input class="form-control" id="searchButton" type="submit" @onclick="GetPosters" value="Go" />
+                @if (compType == "filme")
+                {
+                        <input class="form-control" id="searchButton" type="submit" @onclick="GetPosters" value="Go" />
+                }
+                
             </div>
             <div>
             </div>
@@ -312,26 +326,27 @@
 
              @if (movieList != null)
              {
-                    @foreach (var i in @movieList.results)
+                    @foreach (Movie movie in @movieList.results)
                     {
+                    movie.id = 0;
 
                         <div class="movie-card">
                             <div class="movie-header">
-                                <img src="https://image.tmdb.org/t/p/w342/@i.poster_path" class="movie-header"/>
+                                        <img src="https://image.tmdb.org/t/p/w342/@movie.poster_path" class="movie-header"/>
                             </div><!--movie-header-->
 
                             <div class="movie-content">
                                 <div class="movie-content-header">
                                     <a href="#">
-                                        <h3 class="movie-title">@i.title</h3>
+                                                <h3 class="movie-title">@movie.title</h3>
                                     </a>
                                 </div>
                                 <div class="movie-info">
                 
                                     <label>Overview:</label> <br>
-                                    <span style="font-size: 11px" >@i.overview</span> <br>
+                                            <span style="font-size: 11px" >@movie.overview</span> <br>
                                     <div class="checkbox-wrapper-24" >
-                                        <input type="checkbox" id="check-24" name="check" @bind-value="@i.id" @onclick="@(e => GetMovie(@i.id))" />
+                                                        <input type="checkbox" id="check-24" name="check" @bind-value="@movie.id" @onclick="@(e => GetMovie(@movie))" />
                                         <label for="check-24">
                                             <span><!-- This span is needed to create the "checkbox" element --></span>Add as Nominee!
                                         </label>
@@ -378,7 +393,19 @@
 
 
 @code {
-    Competition competition = new Competition();
+    public Competition competition = new Competition
+    {
+        Movies = new List<Movie>(),
+        Description = "",
+        CategoriesJson = "",
+        Name = "",
+        Id = 0,
+        Type = ""
+    };
+
+    private String selectedType;
+
+    private String compType;
 
     private List<string> selectedCategories = new List<string>();
     private List<string> selectedMovies = new List<string>();
@@ -395,7 +422,32 @@
     } // MovieSearch()
 
 
-    private async Task KeyHandler(KeyboardEventArgs e)
+    
+
+    public void GetMovie(Movie movie)
+    {
+        if (!competition.Movies.Contains(movie))
+        {
+            competition.Movies.Add(movie);
+        }
+
+    } // GetMovie()
+
+    private void OnCategoryChecked(string categoryName, ChangeEventArgs e)
+    {   
+        var isChecked = (bool)e.Value;
+
+        if (isChecked)
+        {
+            selectedCategories.Add(categoryName);
+        }
+        else
+        {
+            selectedCategories.Remove(categoryName);
+        }
+    }
+
+    private async Task KeyHandlerfime(KeyboardEventArgs e)
     {
         if (e.Key == "Enter")
         {
@@ -403,51 +455,74 @@
         }
     }
 
-    public async Task GetMovie(int id)
+    /*private async Task KeyHandlerAtor(KeyboardEventArgs e)
     {
-        OnMovieButtonClick(id.ToString());
-        await movieApi.GrabMovieAsync(id);
-    } // GetMovie()
-
-private void OnCategoryChecked(string categoryName, ChangeEventArgs e)
-{   
-    var isChecked = (bool)e.Value;
-
-    if (isChecked)
-    {
-        selectedCategories.Add(categoryName);
-    }
-    else
-    {
-        selectedCategories.Remove(categoryName);
-    }
-}
-
-private void OnMovieButtonClick(string movieId)
-{
-    if (!selectedMovies.Contains(movieId))
-    {
-        selectedMovies.Add(movieId);
-    }
-}
-
-protected override async Task OnInitializedAsync()
-{
-}
-protected async Task Save()
-{
-    competition.CategoriesJson = JsonSerializer.Serialize(selectedCategories);
-    Console.WriteLine(competition.CategoriesJson);
-
-    competition.MoviesJson = JsonSerializer.Serialize(selectedMovies);
-    Console.WriteLine(competition.MoviesJson);
-
-    var response = await Http.PostAsJsonAsync("api/Competition", @competition);
-    Competition competitionResponse = await response.Content.ReadFromJsonAsync<Competition>();
-        if (competitionResponse?.Id > 0)
+        if (e.Key == "Enter")
         {
-            await JsRuntime.InvokeVoidAsync("alert", "Saved Successfully!");
-            NavigationManager.NavigateTo("");
+            await GetPostersAtor();
+        }
+    }*/
+
+    /*private async Task KeyHandlerDiretor(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter")
+        {
+            await GetPostersDiretor();
+        }
+    }*/
+
+    private void ChoseType(int tipo)
+    {
+        if (tipo == 1)
+        {
+            compType = "filme";
+            competition.Type = compType;
+        }
+        else if (tipo == 2)
+        {
+            compType = "ator";
+            competition.Type = compType;
+        }
+        else if (tipo == 3)
+        {
+            compType = "diretor";
+            competition.Type = compType;
+        }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+    }
+    protected async Task Save()
+    {
+        competition.CategoriesJson = JsonSerializer.Serialize(selectedCategories);
+        Console.WriteLine(competition.CategoriesJson);
+
+        var competitionconsole = JsonSerializer.Serialize(competition.Movies);
+        Console.WriteLine(competitionconsole);
+
+        var response = await Http.PostAsJsonAsync("api/Competition", competition);
+        Console.WriteLine(await response.Content.ReadAsStringAsync());
+
+        if (response.IsSuccessStatusCode)
+        {
+            Competition competitionResponse = await response.Content.ReadFromJsonAsync<Competition>();
+
+            if (competitionResponse != null && competitionResponse.Id > 0)
+            {
+                await JsRuntime.InvokeVoidAsync("alert", "Saved Successfully!");
+                NavigationManager.NavigateTo("");
+            }
+            else
+            {
+                // Handle invalid response or deserialization error
+                Console.WriteLine("Invalid competition response or deserialization error.");
+            }
+        }
+        else
+        {
+            // Handle HTTP request error
+            Console.WriteLine("HTTP request error: " + response.StatusCode);
         }
     }
 

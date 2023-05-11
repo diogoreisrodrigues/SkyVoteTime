@@ -52,7 +52,7 @@ namespace SkyVoteTime.Client.API
             }
         }//grab 
 
-        public async Task GrabMovieAsync(int movieID)
+        public async Task<Movie> GrabMovieAsync(int movieID)
         {
             clearYourHead(); // 
 
@@ -62,16 +62,18 @@ namespace SkyVoteTime.Client.API
                     movieID + "?api_key=d194eb72915bc79fac2eb1a70a71ddd3&language=en-US");
             // grabs the movie credits - includes cast
             Console.WriteLine(movieID);
-            HttpResponseMessage castInfo =
-                await client.GetAsync("https://api.themoviedb.org/3/movie/" +
-                movieID + "/credits?api_key=d194eb72915bc79fac2eb1a70a71ddd3");
             // null checks
             if (movieInfo.IsSuccessStatusCode)
             {
                 string Details = await movieInfo.Content.ReadAsStringAsync();
                 movie = JsonConvert.DeserializeObject<Movie>(Details);
+                return movie;
             }
-
+            else
+            {
+                return null;
+            }
+            
         } // GrabMovieAsync()
 
         public async Task<MovieList> searchMovieDetails(string Query)

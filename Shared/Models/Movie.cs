@@ -4,7 +4,7 @@ namespace SkyVoteTime.Shared.Models
 {
     public class Movie
     {
-        [Required]
+        
         public int id { get; set; }
 
         [Required]
@@ -19,5 +19,6 @@ namespace SkyVoteTime.Shared.Models
         public string overview { get; set; }
         [Required]
         public string poster_path { get; set; }
+
     }
 }
