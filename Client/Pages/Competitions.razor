@@ -1,4 +1,4 @@
-﻿@page "/competitions"
+@page "/competitions"
 @using SkyVoteTime.Shared
 @using System.Text.Json;
 @inject HttpClient _httpClient
@@ -34,9 +34,11 @@
 
                 @foreach (var category in categories)
                 {
+
                     <div class="col-1 categorias">
                         @category
                     </div>
+
                 }
 
                 <div class="col-8">
