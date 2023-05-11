@@ -1,4 +1,10 @@
-﻿@page "/nom"
+﻿@page "/nom/{Id}"
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JsRuntime
+@using System.Text.Json;
+@using SkyVoteTime.Client.API;
+@inject TheMovieDBApi movieApi
 
 <PageTitle>Nominees</PageTitle>
 
@@ -9,44 +15,50 @@
 
     <br />
 
-    <div class="container" style="background: rgba(0,0,0,0.7); border-radius: 20px;">
-        <div class="row">
-            <div class="col-sm-3">
-                <img style="display: flex; align-items: center; padding: 15px; perspective: 100px;" src="Assets/EverythingEverywhereAllAtOne.jpg" alt="" />
-            </div>
-            <div class="col-sm-9" style="color:white">
-                <div>
-                    <div class="nomTitle">Everything Everywhere All at Once</div>
-                    <div style="font-size: 135%">
-                        <b>Directors:</b> Daniel KwanDaniel and Daniel Scheinert
-                    </div>
-                    <br />
-                    <div style="font-size: 135%">
-                        <b>Actors:</b> Michelle Yeoh, Stephanie Hsu and Jamie Lee Curtis
-                    </div>
-                    <br />
-                    <div style="font-size: 135%">
-                        <b>Synopsis:</b> A middle-aged Chinese immigrant is swept up into an insane adventure in which she alone can save existence by exploring other universes and connecting with the lives she could have led.
-                    </div>
-                    <br />
-                    <br />
-                    <span class="badge">Action</span>
-                    <span class="badge">Adventure</span>
-                    <span class="badge">Comedy</span>
+    @foreach(Movie movie in competition.Movies ){
 
-                    <div class="col-md-12 text-right">
-                        <a type="button" class="btn btn-warning customButton"style="color:black; font-weight:bold" data-toggle="modal" data-target="#form">Vote here!</a>
-                    </div>
+        
 
-                    <br />
-                    <br />
+        <div class="container" style="background: rgba(0,0,0,0.7); border-radius: 20px;">
+            <div class="row">
+                <div class="col-sm-3">
+                    <img style="display: flex; align-items: center; padding: 15px; perspective: 100px;" src="Assets/EverythingEverywhereAllAtOne.jpg" alt="" />
+                </div>
+                <div class="col-sm-9" style="color:white">
+                    <div>
+                        <div class="nomTitle">Everything Everywhere All at Once</div>
+                        <div style="font-size: 135%">
+                            <b>Directors:</b> Daniel KwanDaniel and Daniel Scheinert
+                        </div>
+                        <br />
+                        <div style="font-size: 135%">
+                            <b>Actors:</b> Michelle Yeoh, Stephanie Hsu and Jamie Lee Curtis
+                        </div>
+                        <br />
+                        <div style="font-size: 135%">
+                            <b>Synopsis:</b> A middle-aged Chinese immigrant is swept up into an insane adventure in which she alone can save existence by exploring other universes and connecting with the lives she could have led.
+                        </div>
+                        <br />
+                        <br />
+                        <span class="badge">Action</span>
+                        <span class="badge">Adventure</span>
+                        <span class="badge">Comedy</span>
+
+                        <div class="col-md-12 text-right">
+                            <a type="button" class="btn btn-warning customButton"style="color:black; font-weight:bold" data-toggle="modal" data-target="#form">Vote here!</a>
+                        </div>
+
+                        <br />
+                        <br />
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <br />
-    <br />
+        <br />
+        <br />
+
+    }
 
     <div class="container" style="background: rgba(0,0,0,0.7); border-radius: 20px;">
         <div class="row">
@@ -184,3 +196,26 @@
 
 
 </div>
+
+@code{
+
+    [Parameter]
+    public string Id { get; set; }
+
+    public List<int> movieIds;
+
+    Competition competition = new Competition();
+
+    private Movie movie;
+
+    private MovieList movieList;
+
+    protected override async Task OnInitializedAsync()
+    {
+        competition = await Http.GetFromJsonAsync<Competition>("api/competition/" + Id);
+
+
+    }
+
+    void Cancel() => NavigationManager.NavigateTo("");
+}
