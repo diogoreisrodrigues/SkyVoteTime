@@ -1,0 +1,197 @@
+﻿@page "/editcompetition/{Id}"
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JsRuntime
+@using System.Text.Json;
+
+
+<PageTitle>Edit Competition</PageTitle>
+
+<div class="container-lg my-5" style="background-color: #FFF; padding: 20px; border-radius: 20px;">
+    <div class="row">
+        <div class="col-10">
+            <h1 style="margin-bottom: 25px; text-transform: uppercase; font-family: Inter; font-style: normal; font-size: 24px">Edit Competition</h1>
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="FirstName">Name</label>
+                <input @bind="@competition.Name" form="FirstName" class="form-control" />
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="LastName">Description</label>
+                <input @bind="@competition.Description" form="LastName" class="form-control" />
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="dropdown">
+            <label for="Type">Type</label>
+            <button class="btn btn-secondary btn-lg dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+            <div class="dropdown-menu col-xs-12" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="#">Filme</a>
+                <a class="dropdown-item" href="#">Ator</a>
+                <a class="dropdown-item" href="#">Diretor</a>
+            </div>
+        </div>
+    </div>
+    
+
+
+    <br>
+    <br>
+    <br>
+    <div class="col-md-12">
+        <div class="form-group">
+            <label for="Category">Category</label>
+        </div>
+    </div>
+
+
+    <div class="row">
+    
+    <div class="col-md-3">
+        <div class="form-check">
+            <label class="form-check-label">
+                <input type="checkbox" @onchange="@(e => OnCategoryChecked("Action", e))" class="form-check-input" value="">
+                <label style="color:black" for="cat" class="cat"> Action</label>
+            </label>
+        </div>
+        <br />
+        <div class="form-check">
+            <label class="form-check-label">
+                <input type="checkbox" @onchange="@(e => OnCategoryChecked("Drama", e))" class="form-check-input" value="">
+                <label style="color:black" for="cat" class="cat"> Drama</label>
+            </label>
+        </div>
+        <br />
+        <div class="form-check">
+            <label class="form-check-label">
+                <input type="checkbox" @onchange="@(e => OnCategoryChecked("Romance", e))" class="form-check-input" value="">
+                <label style="color:black" for="cat" class="cat"> Romance</label>
+            </label>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="form-check">
+            <label class="form-check-label">
+                <input type="checkbox" @onchange="@(e => OnCategoryChecked("Documentary", e))" class="form-check-input" value="">
+                <label style="color:black" for="cat" class="cat"> Documentary</label>
+            </label>
+        </div>
+        <br />
+        <div class="form-check">
+            <label class="form-check-label">
+                <input type="checkbox" @onchange="@(e => OnCategoryChecked("Suspense", e))" class="form-check-input" value="">
+                <label style="color:black" for="cat" class="cat"> Suspense</label>
+            </label>
+        </div>
+        <br />
+        <div class="form-check">
+            <label class="form-check-label">
+                <input type="checkbox" @onchange="@(e => OnCategoryChecked("Horror", e))" class="form-check-input" value="">
+                <label style="color:black" for="cat" class="cat"> Horror</label>
+            </label>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="form-check">
+            <label class="form-check-label">
+                <input type="checkbox" @onchange="@(e => OnCategoryChecked("Science fiction", e))" class="form-check-input" value="">
+                <label style="color:black" for="cat" class="cat"> Science fiction</label>
+            </label>
+        </div>
+        <br />
+        <div class="form-check">
+            <label class="form-check-label">
+                <input type="checkbox" @onchange="@(e => OnCategoryChecked("Comedy", e))" class="form-check-input" value="">
+                <label style="color:black" for="cat" class="cat"> Comedy</label>
+            </label>
+        </div>
+        <br />
+        <div class="form-check">
+            <label class="form-check-label">
+                <input type="checkbox" @onchange="@(e => OnCategoryChecked("Adventure", e))" class="form-check-input" value="">
+                <label style="color:black" for="cat" class="cat"> Adventure</label>
+            </label>
+        </div>
+    </div>
+    </div>
+
+
+    <div class="form-check form-switch switch">
+        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+        <label style="color:black" class="cat2" for="flexSwitchCheckDefault">Public</label>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <input type="button" class="btn btn-primary" @onclick="@Save" value="Save" />
+                <input type="button" class="btn" value="Cancel" />
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+@code{
+
+    [Parameter]
+    public string Id { get; set; }
+    Competition competition = new Competition();
+
+    private List<string> selectedCategories = new List<string>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        competition = await Http.GetFromJsonAsync<Competition>("api/competition/" + Id);
+        selectedCategories = JsonSerializer.Deserialize<List<string>>(competition.CategoriesJson);
+        Console.WriteLine("ESTA É A LISTA QUE VEM: " + string.Join(", ", selectedCategories));
+        selectedCategories.Clear();
+        Console.WriteLine("ESTA É A LISTA DEPOIS DE LIMPA UAA: " + string.Join(", ", selectedCategories));
+    }
+    protected async Task Save()
+    {
+        competition.CategoriesJson = JsonSerializer.Serialize(selectedCategories);
+        Console.WriteLine(competition.CategoriesJson);
+
+        var response = await Http.PutAsJsonAsync("api/Competition/" + Id, @competition);
+        bool competitionResponse = await response.Content.ReadFromJsonAsync<bool>();
+
+        if (competitionResponse)
+        {
+            await JsRuntime.InvokeVoidAsync("alert", "Updated Successfully!");
+            NavigationManager.NavigateTo("");
+        }
+    }
+
+    private void OnCategoryChecked(string categoryName, ChangeEventArgs e)
+{   
+    var isChecked = (bool)e.Value;
+
+    if (isChecked)
+    {
+        selectedCategories.Add(categoryName);
+    }
+    else
+    {
+        selectedCategories.Remove(categoryName);
+    }
+    Console.WriteLine("A LISTA ATUALIZADA É ESTA: " + string.Join(", ", selectedCategories));
+}
+
+    void Cancel()
+    {
+        NavigationManager.NavigateTo("");
+    }
+}
+}
