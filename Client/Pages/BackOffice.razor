@@ -32,14 +32,14 @@
             </tr>
           </thead>
           <tbody>
-            @foreach (var p in competitionList)
+            @foreach (var compet in competitionList)
             {
                 <tr>
-                    <th style="vertical-align: middle" scope="row">@p.Id</th>
-                    <td style="vertical-align: middle">@p.Name</td>
-                    <td style="vertical-align: middle">@p.Description</td>
+                        <th style="vertical-align: middle" scope="row">@compet.Id</th>
+                        <td style="vertical-align: middle">@compet.Name</td>
+                        <td style="vertical-align: middle">@compet.Description</td>
                     @{
-                        List<String> categories = JsonSerializer.Deserialize<List<String>>(p.CategoriesJson);
+                            List<String> categories = JsonSerializer.Deserialize<List<String>>(compet.CategoriesJson);
                     }
                     <td style="vertical-align: middle">
                         @foreach (var c in categories)
@@ -51,18 +51,30 @@
                             }
                         }
                     </td>
+                    <td style="vertical-align: middle">
+                            @foreach (Movie movie in compet.Movies)
+                            {
+                                <span>@movie.title</span>
+                                @if (movie != compet.Movies.Last())
+                                {
+                                    <span> | </span>
+                                }
+                            }
+                    </td>
                     <td style="vertical-align: middle">FALTA ISTO</td>
-                    <td style="vertical-align: middle">FALTA ISTO</td>
-                    <td><a class="btn btn-primary" href="/editcompetition/@p.Id">Edit</a></td>
-                    <td><button class="btn btn-danger" @onclick="() => Delete(p.Id)">Delete</button></td>
+                        <td><a class="btn btn-primary" href="/editcompetition/@compet.Id">Edit</a></td>
+                        <td><button class="btn btn-danger" @onclick="() => Delete(compet.Id)">Delete</button></td>
                 </tr>
             }
           </tbody>
         </table>
     </div>
 </div>
+
 @code {
     public int Id;
+
+    public Competition? competition;
 
     List<Competition> competitionList = new List<Competition>();
     protected override async Task OnInitializedAsync()

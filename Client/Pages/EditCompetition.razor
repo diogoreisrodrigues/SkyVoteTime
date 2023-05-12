@@ -3,6 +3,170 @@
 @inject NavigationManager NavigationManager
 @inject IJSRuntime JsRuntime
 @using System.Text.Json;
+@using SkyVoteTime.Client.API;
+@inject TheMovieDBApi movieApi;
+
+<style>
+
+    h1, h2, h3, h4, h5, p {
+        font-weight: 400;
+    }
+
+    a {
+        text-decoration: none;
+        color: inherit;
+    }
+
+        a:hover {
+            color: #6ABCEA;
+        }
+
+    .containerMovie {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+        max-width: 100%;
+        margin-top: 10vh;
+        margin-left: auto;
+        margin-right: auto;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        justify-content: center;
+    }
+
+    .movie-card {
+        background: #ffffff;
+        box-shadow: 0px 6px 18px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 30%;
+        margin: 2em;
+        border-radius: 10px;
+        display: inline-block;
+    }
+
+    .movie-header {
+        padding: 0;
+        margin: 0;
+        height: 367px;
+        width: 100%;
+        display: block;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        background-size: cover;
+        background-position: 100% 100%;
+    }
+
+
+    .header-icon-container {
+        position: relative;
+    }
+
+    .header-icon {
+        width: 100%;
+        height: 367px;
+        line-height: 367px;
+        text-align: center;
+        vertical-align: middle;
+        margin: 0 auto;
+        color: #ffffff;
+        font-size: 54px;
+        text-shadow: 0px 0px 20px #6abcea, 0px 5px 20px #6ABCEA;
+        opacity: .85;
+    }
+
+        .header-icon:hover {
+            background: rgba(0, 0, 0, 0.15);
+            font-size: 74px;
+            text-shadow: 0px 0px 20px #6abcea, 0px 5px 30px #6ABCEA;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            opacity: 1;
+        }
+
+    .movie-card:hover {
+        -webkit-transform: scale(1.03);
+        transform: scale(1.03);
+        box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.08);
+    }
+
+    .movie-content {
+        padding: 18px 18px 24px 18px;
+        margin: 0;
+    }
+
+    .movie-content-header, .movie-info {
+        display: table;
+        width: 100%;
+    }
+
+    .movie-title {
+        font-size: 24px;
+        margin: 0;
+        display: table-cell;
+    }
+
+    .imax-logo {
+        width: 50px;
+        height: 15px;
+        background: url("https://6a25bbd04bd33b8a843e-9626a8b6c7858057941524bfdad5f5b0.ssl.cf5.rackcdn.com/media_kit/3e27ede823afbf139c57f1c78a03c870.jpg") no-repeat;
+        background-size: contain;
+        display: table-cell;
+        float: right;
+        position: relative;
+        margin-top: 5px;
+    }
+
+    .movie-info {
+        margin-top: 1em;
+    }
+
+    .info-section {
+        display: table-cell;
+        text-transform: uppercase;
+        text-align: center;
+    }
+
+        .info-section:first-of-type {
+            text-align: left;
+        }
+
+        .info-section:last-of-type {
+            text-align: right;
+        }
+
+        .info-section label {
+            display: block;
+            color: rgba(0, 0, 0, 0.5);
+            margin-bottom: .5em;
+            font-size: 9px;
+        }
+
+        .info-section span {
+            font-weight: 700;
+            font-size: 11px;
+        }
+
+
+    .movie-card {
+        width: 95%;
+        max-width: 30%;
+        margin: 1em;
+        display: block;
+    }
+
+    .container {
+        padding: 0;
+    }
+
+    .checkbox-wrapper-24 {
+        margin-top: 10px;
+        text-align: center;
+    }
+
+    }
+</style>
 
 
 <PageTitle>Edit Competition</PageTitle>
@@ -28,30 +192,12 @@
             </div>
         </div>
     </div>
-
-    <div class="row">
-        <div class="dropdown">
-            <label for="Type">Type</label>
-            <button class="btn btn-secondary btn-lg dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
-            <div class="dropdown-menu col-xs-12" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="#">Filme</a>
-                <a class="dropdown-item" href="#">Ator</a>
-                <a class="dropdown-item" href="#">Diretor</a>
-            </div>
-        </div>
-    </div>
-    
-
-
-    <br>
-    <br>
     <br>
     <div class="col-md-12">
         <div class="form-group">
             <label for="Category">Category</label>
         </div>
     </div>
-
 
     <div class="row">
     
@@ -125,6 +271,86 @@
     </div>
     </div>
 
+    <div class="row">
+        @foreach (Movie movie in competition.Movies)
+        {
+            <div class="movie-card">
+                <div class="movie-header">
+                    <img src="https://image.tmdb.org/t/p/w342/@movie.poster_path" class="movie-header" />
+                </div><!--movie-header-->
+
+                <div class="movie-content">
+                    <div class="movie-content-header">
+                        <a href="#">
+                            <h3 class="movie-title">@movie.title</h3>
+                        </a>
+                    </div>
+                    <div class="movie-info">
+                        <div class="checkbox-wrapper-24">
+                            <button class="btn btn-danger" @onclick="() => DeleteMovie(movie, movie.Id)">Delete</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <!--Search Movie-->
+    <div class="form-group row">
+        <div class="col-xl-10">
+            @if (1 == 1) //METER SE O TYPE FOR FILME, QUE VEM DE TRÁS
+            {
+                <input class="form-control" type="text" @bind-value="@search" @bind-value:event="oninput" @onkeyup="KeyHandlerfime" placeholder="Search the Competitor" />
+            }
+
+        </div>
+        <div class="col-xs-2">
+            @if (1 == 1) //METER SE O TYPE FOR FILME, QUE VEM DE TRÁS
+            {
+                <input class="form-control" id="searchButton" type="submit" @onclick="GetPosters" value="Go" />
+            }
+
+        </div>
+        <div>
+        </div>
+    </div>
+
+    <div class="containerMovie">
+
+        @if (movieList != null)
+        {
+            @foreach (Movie movie in @movieList.results)
+            {
+                movie.Id = 0;
+
+                <div class="movie-card">
+                    <div class="movie-header">
+                        <img src="https://image.tmdb.org/t/p/w342/@movie.poster_path" class="movie-header" />
+                    </div><!--movie-header-->
+
+                    <div class="movie-content">
+                        <div class="movie-content-header">
+                            <a href="#">
+                                <h3 class="movie-title">@movie.title</h3>
+                            </a>
+                        </div>
+                        <div class="movie-info">
+
+                            <label>Overview:</label> <br>
+                            <span style="font-size: 11px">@movie.overview</span> <br>
+                            <div class="checkbox-wrapper-24">
+                                <input type="checkbox" id="check-24" name="check" @bind-value="@movie.Id" @onclick="@(e => GetMovie(@movie))" />
+                                <label for="check-24">
+                                    <span><!-- This span is needed to create the "checkbox" element --></span>Add as Nominee!
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+
 
     <div class="form-check form-switch switch">
         <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
@@ -149,15 +375,20 @@
     public string Id { get; set; }
     Competition competition = new Competition();
 
+    private String selectedType;
+
+    private String compType;
+
+    private string search { get; set; }
+    private MovieList movieList;
+
     private List<string> selectedCategories = new List<string>();
 
     protected override async Task OnInitializedAsync()
     {
         competition = await Http.GetFromJsonAsync<Competition>("api/competition/" + Id);
         selectedCategories = JsonSerializer.Deserialize<List<string>>(competition.CategoriesJson);
-        Console.WriteLine("ESTA É A LISTA QUE VEM: " + string.Join(", ", selectedCategories));
         selectedCategories.Clear();
-        Console.WriteLine("ESTA É A LISTA DEPOIS DE LIMPA UAA: " + string.Join(", ", selectedCategories));
     }
     protected async Task Save()
     {
@@ -174,8 +405,35 @@
         }
     }
 
+    private async Task DeleteMovie(Movie movie, int Id)
+    {
+        competition.Movies.Remove(movie);
+
+        bool confirmed = await JsRuntime.InvokeAsync<bool>("confirm", "Are you sure you want to delete this nominee?");
+        if (confirmed)
+        {
+            var response = await Http.DeleteAsync("api/Movie/" + Id);
+            Console.WriteLine("ESTE É O ID: " + Id);
+            bool deleteResponse = await response.Content.ReadFromJsonAsync<bool>();
+
+            if (response.IsSuccessStatusCode)
+            {
+                await JsRuntime.InvokeVoidAsync("alert", "Deleted Successfully!");
+                NavigationManager.NavigateTo("");
+            }
+            else
+            {
+                // Handle HTTP request error
+                Console.WriteLine("HTTP request error: " + response.StatusCode);
+            }
+        }
+
+        //await _dbContext.Movies.RemoveAsync(movie); 
+       // await _dbContext.SaveChangesAsync(); 
+    }
+
     private void OnCategoryChecked(string categoryName, ChangeEventArgs e)
-{   
+    {   
     var isChecked = (bool)e.Value;
 
     if (isChecked)
@@ -186,12 +444,57 @@
     {
         selectedCategories.Remove(categoryName);
     }
-    Console.WriteLine("A LISTA ATUALIZADA É ESTA: " + string.Join(", ", selectedCategories));
-}
+    }
+
+    private void ChoseType(int tipo)
+    {
+        if (tipo == 1)
+        {
+            compType = "filme";
+            competition.Type = compType;
+        }
+        else if (tipo == 2)
+        {
+            compType = "ator";
+            competition.Type = compType;
+        }
+        else if (tipo == 3)
+        {
+            compType = "diretor";
+            competition.Type = compType;
+        }
+    }
+
+    private async Task KeyHandlerfime(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter")
+        {
+            await GetPosters();
+        }
+    }
 
     void Cancel()
     {
         NavigationManager.NavigateTo("");
     }
+
+    //== Movie Search ==//
+    private async Task GetPosters()
+    {
+
+        movieList = await movieApi.searchMovieDetails(search);
+    } // MovieSearch()
+
+
+
+
+    public void GetMovie(Movie movie)
+    {
+        if (!competition.Movies.Contains(movie))
+        {
+            competition.Movies.Add(movie);
+        }
+
+    } // GetMovie()
 }
 }
