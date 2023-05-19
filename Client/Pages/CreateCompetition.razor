@@ -328,7 +328,7 @@
              {
                     @foreach (Movie movie in @movieList.results)
                     {
-                    movie.id = 0;
+                    movie.Id = 0;
 
                         <div class="movie-card">
                             <div class="movie-header">
@@ -346,7 +346,7 @@
                                     <label>Overview:</label> <br>
                                             <span style="font-size: 11px" >@movie.overview</span> <br>
                                     <div class="checkbox-wrapper-24" >
-                                                        <input type="checkbox" id="check-24" name="check" @bind-value="@movie.id" @onclick="@(e => GetMovie(@movie))" />
+                                                        <input type="checkbox" id="check-24" name="check" @bind-value="@movie.Id" @onclick="@(e => GetMovie(@movie))" />
                                         <label for="check-24">
                                             <span><!-- This span is needed to create the "checkbox" element --></span>Add as Nominee!
                                         </label>
@@ -411,7 +411,6 @@
     private List<string> selectedMovies = new List<string>();
 
     private string search { get; set; }
-    private string moviePath;
     private MovieList movieList;
 
     //== Movie Search ==//

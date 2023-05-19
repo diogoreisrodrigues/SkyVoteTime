@@ -1,4 +1,4 @@
-﻿@page "/competitions"
+@page "/competitions"
 @using SkyVoteTime.Shared
 @using System.Text.Json;
 @inject HttpClient _httpClient
@@ -29,13 +29,13 @@
                                     <span class="badge badge-pill badge-dark" style="margin-right: 15px; font-size: 20px;">@category</span>
                             }
                        </div>
-                               <div class="col-3" style="    text-align: right;
-">
+                               <div class="col-3" style="    text-align: right;">
                            <button class="button-50" role="button">
                                     <a href="/nom/@competition.Id" style="color: #fff"> Vote here! </a>
                            </button>
                        </div>
                
+
                 </div>
             </div>
         </div>

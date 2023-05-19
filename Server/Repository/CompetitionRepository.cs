@@ -24,7 +24,9 @@ namespace SkyVoteTime.Server.Repository
         }
         public async Task<List<Competition>> GetAllAsync()
         {
-            return await _dbContext.Competitions.ToListAsync();
+            return await _dbContext.Competitions
+                .Include(c => c.Movies)
+                .ToListAsync();
         }
         public async Task<Competition> GetByIdAsync(int id)
         {
