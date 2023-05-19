@@ -47,7 +47,7 @@
                             <span class="badge">Comedy</span>
 
                             <div class="col-md-12 text-right">
-                                <a type="button" class="btn btn-warning customButton"style="color:black; font-weight:bold" data-toggle="modal" data-target="#form">Vote here!</a>
+                                                <a type="button"  @onclick="() => Update(movie)" class="btn btn-warning customButton"style="color:black; font-weight:bold" data-toggle="modal" data-target="#form">Vote here!</a>
                             </div>
 
                             <br />
@@ -75,6 +75,8 @@
 
     public Competition? competition;
 
+    
+
     protected override async Task OnInitializedAsync()
     {
         Console.WriteLine(Id);
@@ -87,5 +89,50 @@
 
     }
 
-    void Cancel() => NavigationManager.NavigateTo("");
+    private async Task Update(Movie movie)
+    {
+
+        var vote = new Vote
+            {
+                Id = 0
+            };
+
+        movie.Votes ??= new List<Vote>();
+
+
+        
+        
+        movie.Votes.Add(vote);
+
+        bool confirmed = await JsRuntime.InvokeAsync<bool>("confirm", "Are you sure you want to Vote for this nominee?");
+        if (confirmed)
+        {
+            try
+            {
+                var response = await Http.PutAsJsonAsync("api/Movie/" + movie.Id, movie);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    await JsRuntime.InvokeVoidAsync("alert", "Vote Submited!");
+                    NavigationManager.NavigateTo("");
+                }
+                else
+                {
+                    // Handle HTTP request error
+                    Console.WriteLine("HTTP request error: " + response.StatusCode);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+
+    }
+
+
+
+    void Cancel() => NavigationManager.NavigateTo("competitions");
+
+
 }
