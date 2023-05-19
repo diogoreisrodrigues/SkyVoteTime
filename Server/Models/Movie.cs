@@ -20,5 +20,8 @@ namespace SkyVoteTime.Server.Models
         public string overview { get; set; }
         [Required]
         public string poster_path { get; set; }
+
+        public List<Vote>? Votes { get; set; }
+
     }
 }

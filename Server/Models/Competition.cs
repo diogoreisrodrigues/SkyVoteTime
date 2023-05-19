@@ -23,6 +23,9 @@ namespace SkyVoteTime.Server.Models
 
         public string Type { get; set; }
 
+        
+
+
         //public ICollection<Movie> Movies { get; set; }
     }
 }
