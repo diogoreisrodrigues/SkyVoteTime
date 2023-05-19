@@ -3,61 +3,48 @@
 @using System.Text.Json;
 @inject HttpClient _httpClient
 
+
 <h1 class="titleCompetitions">Competitions</h1>
 
+<div class="container">
 
-@if (competitionList != null)
-{
-    @foreach (Competition competition in competitionList)
+     @if (competitionList != null)
     {
+        @foreach (Competition competition in competitionList)
+        {
 
         List<String> categories = JsonSerializer.Deserialize<List<String>>(competition.CategoriesJson);
 
-        <div class="container" style="background: rgba(0,0,0,0.7); margin-top:6%; border-radius: 20px;">
-            <div class="row">
-                <div class="col-md-4 offset-md-4  amarelo">
-                    <div class="nomTitle">
-                        @competition.Name
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-10 offset-md-1 amarelo">
-                    <div class="texto">
-                        @competition.Description
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-1">
-                </div>
+        <div>
+            <div class="cardComp">
+              <div style="height: 189px">
+                <h1>@competition.Name</h1>
+                <p>@competition.Description</p>
+              </div>
+             
+                <div class="row">
+                       <div class="col-9" style="display: flex; align-items: center;">
+                            @foreach (var category in categories)
+                            {
+                                    <span class="badge badge-pill badge-dark" style="margin-right: 15px; font-size: 20px;">@category</span>
+                            }
+                       </div>
+                               <div class="col-3" style="    text-align: right;">
+                           <button class="button-50" role="button">
+                                    <a href="/nom/@competition.Id" style="color: #fff"> Vote here! </a>
+                           </button>
+                       </div>
+               
 
-                @foreach (var category in categories)
-                {
-
-                    <div class="col-1 categorias">
-                        @category
-                    </div>
-
-                }
-
-                <div class="col-8">
-                </div>
-                <div class="col-1 botao">
-                    <a href="/nom/@competition.Id"> Vote here! </a>
                 </div>
             </div>
         </div>
-    }
+        }
 
-}
+     }
 
- <div class="row">
-        <div class="card">
-            <h4>What is a Frontend Develoment?</h4>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ullam porro similique aliquid debitis ipsam soluta dolorum ipsa! Voluptate, suscipit iure.</p>
-        </div>
- </div>
+</div>
+
 
 
 @code {
