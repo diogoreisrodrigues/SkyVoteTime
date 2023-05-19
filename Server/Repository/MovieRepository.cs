@@ -4,7 +4,7 @@ using SkyVoteTime.Server.Models;
 
 namespace SkyVoteTime.Server.Repository
 {
-    public class MovieRepository
+    public class MovieRepository : IRepository<Movie>
     {
         ApplicationDbContext _dbContext;
         public MovieRepository(ApplicationDbContext applicationDbContext)

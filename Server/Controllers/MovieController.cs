@@ -32,8 +32,8 @@ namespace SkyVoteTime.Server.Controllers
         [HttpDelete("{id}")]
         public async Task<bool> DeleteMovie(int id)
         {
-            await _movieService.DeleteMovie(id);
-            return true;
+            return await _movieService.DeleteMovie(id);
+            //return true;
         }
         [HttpPut("{id}")]
         public async Task<bool> UpdateMovie(int id, [FromBody] Movie Object)
