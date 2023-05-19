@@ -5,7 +5,7 @@ namespace SkyVoteTime.Shared.Models
     public class Movie
     {
         
-        public int id { get; set; }
+        public int Id { get; set; }
 
         [Required]
         public string title { get; set; }

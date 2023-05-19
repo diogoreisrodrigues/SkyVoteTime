@@ -6,7 +6,7 @@ namespace SkyVoteTime.Server.Models
     public class Movie
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int id { get; set; }
+        public int Id { get; set; }
 
         [Required]
         public string title { get; set; }
