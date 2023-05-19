@@ -302,6 +302,16 @@
         </div>
         }
 
+
+
+        <div class="form-check form-switch switch">
+            <input class="form-check-input" type="checkbox" @onchange="@(e => OnPublicChecked(e))" role="switch" id="flexSwitchCheckDefault">
+            <label class="cat2" for="flexSwitchCheckDefault">Public</label>
+        </div>
+        <br>
+        <br />
+        <br />
+
         <!--Search Movie-->
         <div class="form-group row">
             <div class="col-xl-10">
@@ -363,13 +373,6 @@
 </div><!--container-->
 
 
-        <div class="form-check form-switch switch">
-            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
-            <label class="cat2" for="flexSwitchCheckDefault">Public</label>
-        </div>
-        <br>
-        <br />
-        <br />
 
         <div class="col-sm-3"></div>
         <div class="col-sm-2">
@@ -407,6 +410,8 @@
 
     private String compType;
 
+    private bool estaPub;
+
     private List<string> selectedCategories = new List<string>();
     private List<string> selectedMovies = new List<string>();
 
@@ -421,7 +426,7 @@
     } // MovieSearch()
 
 
-    
+
 
     public void GetMovie(Movie movie)
     {
@@ -446,6 +451,23 @@
         }
     }
 
+    private void OnPublicChecked(ChangeEventArgs e)
+    {
+
+        var isChecked = (bool)e.Value;
+
+        if (isChecked)
+        {
+            competition.isPublic = true;
+        }
+        else
+        {
+            competition.isPublic = false;
+        }
+
+        Console.WriteLine(competition.isPublic);
+    }
+
     private async Task KeyHandlerfime(KeyboardEventArgs e)
     {
         if (e.Key == "Enter")
@@ -455,19 +477,19 @@
     }
 
     /*private async Task KeyHandlerAtor(KeyboardEventArgs e)
-    {
-        if (e.Key == "Enter")
         {
-            await GetPostersAtor();
-        }
+            if (e.Key == "Enter")
+        {
+    await GetPostersAtor();
+    }
     }*/
 
     /*private async Task KeyHandlerDiretor(KeyboardEventArgs e)
-    {
-        if (e.Key == "Enter")
         {
+        if (e.Key == "Enter")
+            {
             await GetPostersDiretor();
-        }
+    }
     }*/
 
     private void ChoseType(int tipo)
@@ -496,6 +518,8 @@
     {
         competition.CategoriesJson = JsonSerializer.Serialize(selectedCategories);
         Console.WriteLine(competition.CategoriesJson);
+
+        //competition.isPublic = JsonSerializer.Serialize(estaPub);
 
         var competitionconsole = JsonSerializer.Serialize(competition.Movies);
         Console.WriteLine(competitionconsole);

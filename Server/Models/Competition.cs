@@ -15,6 +15,8 @@ namespace SkyVoteTime.Server.Models
 
         public string Description { get; set; }
 
+        public bool isPublic { get; set; }
+
         public string CategoriesJson { get; set; }
 
         public List<Movie> Movies { get; set; }
