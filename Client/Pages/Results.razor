@@ -1,0 +1,171 @@
+﻿@page "/winner/{Id}"
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JsRuntime
+
+<style>
+    ::-webkit-scrollbar {
+        width: 0px;
+        /* make scrollbar transparent */
+    }
+</style>
+
+<PageTitle>Competition Results</PageTitle>
+
+
+
+<div class="Nominees">
+    <div class="px-5 mx-5 my-5">
+        <h1 class="TitleNominees">And the Winner of @competition.Name  is...</h1>
+    </div>
+
+    <br />
+    
+    <div class="container" style="background: rgba(212, 190, 116, 0.7); border-radius: 20px;">
+        <div class="row">
+            <div class="col-sm-3">
+                <img style="display: flex; align-items: center; padding: 15px; perspective: 100px; height: 367.5px;" src="https://image.tmdb.org/t/p/w342/@winner.poster_path" alt="" />
+            </div>
+            <div class="col-sm-9" style="color:white">
+                <div style="height: 285px;">
+                    <h1 class="font-weight-bold">@winner.title</h1>
+                    <div class="my-2">
+                        <div style="font-size: 120%" class="my-3">
+                            <b>Directors:</b> Daniel KwanDaniel and Daniel Scheinert
+                        </div>
+
+                        <div style="font-size: 120%" class="my-3">
+                            <b>Actors:</b> Michelle Yeoh, Stephanie Hsu and Jamie Lee Curtis
+                        </div>
+
+                        <div style="font-size: 120%; max-height: 100px;overflow: overlay; " class="my-4">
+                            <b>Synopsis:</b> @winner.overview
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row ">
+                    <div class="col-9" style="display: flex; align-items: center;">
+
+                        <span class="badge badge-pill badge-dark" style="margin-right: 15px; font-size: 20px;background: rgba(255, 255, 255, 0.2); border: 1px solid #FFFFFF; box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25); border-radius: 20px; padding: 10px;">Ação</span>
+
+                    </div>
+	                <div class="col-3 text-white" style="text-align: right; font-size: 25px;">
+                        <p style="color:#fff"><b>Our Winner!</b> <i class="fa-solid fa-crown"></i> </p>
+	                </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <br />
+    <br />
+
+
+    @if (competition.Movies != null)
+    {
+
+        @foreach (Movie movie in competition.Movies)
+        {
+            if (movie == winner)
+			{
+				continue;
+			}
+            <div class="container" style="background: rgba(0,0,0,0.7); border-radius: 20px;">
+                <div class="row">
+                    <div class="col-sm-3">
+                        <img style="display: flex; align-items: center; padding: 15px; perspective: 100px;" src="https://image.tmdb.org/t/p/w342/@movie.poster_path" alt="" />
+                    </div>
+                    <div class="col-sm-9" style="color:white">
+                        <div style="height: 285px;">
+                            <!--<div class="nomTitle">@movie.title</div>-->
+                            <h1 class="font-weight-bold">@movie.title</h1>
+                            <div class="my-2">
+                                <div style="font-size: 120%" class="my-3">
+                                    <b>Directors:</b> Daniel KwanDaniel and Daniel Scheinert
+                                </div>
+
+                                <div style="font-size: 120%" class="my-3">
+                                    <b>Actors:</b> Michelle Yeoh, Stephanie Hsu and Jamie Lee Curtis
+                                </div>
+
+                                <div style="font-size: 120%; max-height: 100px;overflow: overlay; " class="my-4">
+                                    <b>Synopsis:</b> @movie.overview
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row ">
+                            <div class="col-9" style="display: flex; align-items: center;">
+
+                                <span class="badge badge-pill badge-dark" style="margin-right: 15px; font-size: 20px;background: rgba(255, 255, 255, 0.2); border: 1px solid #FFFFFF; box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25); border-radius: 20px; padding: 10px;">Ação</span>
+
+                            </div>
+                            <div class="col-3" style=" text-align: right;">
+
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <br />
+            <br />
+        }
+
+    }
+
+
+
+
+</div>
+
+
+@code {
+
+	[Parameter]
+	public string Id { get; set; }
+
+	public Competition? competition;
+
+    public Movie? winner;
+
+	protected override async Task OnInitializedAsync()
+	{
+		Console.WriteLine(Id);
+
+		competition = await Http.GetFromJsonAsync<Competition>("api/competition/" + Id);
+
+		Console.WriteLine(competition.ToString());
+
+        winner = SelectObjectWithLongestList<Movie>(competition);
+
+		Console.WriteLine(winner.ToString());
+
+	}
+
+	public Movie SelectObjectWithLongestList<T>(Competition competition)
+	{
+        Movie selectedObject = new Movie();
+		
+        int currentLength = 0;
+		int maxLength = 0;
+
+		foreach (var movie in competition.Movies)
+		{
+            currentLength = movie.Votes?.Count() ?? 0;
+
+			if (currentLength > maxLength)
+			{
+				maxLength = currentLength;
+				selectedObject = movie;
+			}
+		}
+
+		return selectedObject;
+	}
+
+}
