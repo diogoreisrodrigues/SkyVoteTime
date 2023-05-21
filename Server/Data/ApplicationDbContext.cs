@@ -16,6 +16,7 @@ namespace SkyVoteTime.Server.Data
         public DbSet<Competition> Competitions { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Movie> Movies { get; set; }
+        public DbSet<Vote> Votes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
