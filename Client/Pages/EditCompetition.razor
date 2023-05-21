@@ -401,7 +401,9 @@
         if (competitionResponse)
         {
             await JsRuntime.InvokeVoidAsync("alert", "Updated Successfully!");
-            NavigationManager.NavigateTo("/backoffice");
+
+            NavigationManager.NavigateTo("backoffice");
+
         }
     }
 
@@ -421,7 +423,7 @@
                 if (response.IsSuccessStatusCode)
                 {
                     await JsRuntime.InvokeVoidAsync("alert", "Deleted Successfully!");
-                    NavigationManager.NavigateTo("/editcompetition/" + competition);
+
                 }
                 else
                 {
@@ -500,6 +502,7 @@
         if (!competition.Movies.Contains(movie))
         {
             competition.Movies.Add(movie);
+            Console.WriteLine("Array de filmes" + competition.Movies[0].title);
         }
 
     } // GetMovie()

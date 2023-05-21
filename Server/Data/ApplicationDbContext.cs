@@ -11,6 +11,7 @@ namespace SkyVoteTime.Server.Data
         public ApplicationDbContext(
             DbContextOptions options,
             IOptions<OperationalStoreOptions> operationalStoreOptions) : base(options, operationalStoreOptions)
+
         {
         }
         public DbSet<Competition> Competitions { get; set; }
@@ -34,6 +35,14 @@ namespace SkyVoteTime.Server.Data
                 new Category { Id = 8, Name = "Science fiction" },
                 new Category { Id = 9, Name = "Romance" }
             );
+        }
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder
+                
+                .EnableSensitiveDataLogging(); // Enable sensitive data logging
+
+            // Other configuration options...
         }
     }
 }

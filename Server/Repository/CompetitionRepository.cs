@@ -19,7 +19,7 @@ namespace SkyVoteTime.Server.Repository
         }
         public async Task UpdateAsync(Competition _object)
         {
-            _dbContext.ChangeTracker.Clear();
+
             _dbContext.Competitions.Update(_object);
             await _dbContext.SaveChangesAsync();
         }
@@ -27,12 +27,16 @@ namespace SkyVoteTime.Server.Repository
         {
             return await _dbContext.Competitions
                 .Include(c => c.Movies)
+                    .ThenInclude(m => m.Votes)
+                .AsNoTracking()
                 .ToListAsync();
         }
         public async Task<Competition> GetByIdAsync(int id)
         {
             return await _dbContext.Competitions
                 .Include(c => c.Movies)
+                    .ThenInclude(m => m.Votes)
+                .AsNoTracking()
                 .FirstOrDefaultAsync(c => c.Id == id);
         }
 
