@@ -19,7 +19,7 @@ namespace SkyVoteTime.Server.Repository
         }
         public async Task UpdateAsync(Competition _object)
         {
-            
+
             _dbContext.Competitions.Update(_object);
             await _dbContext.SaveChangesAsync();
         }

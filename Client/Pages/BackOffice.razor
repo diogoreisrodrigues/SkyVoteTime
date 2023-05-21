@@ -61,9 +61,15 @@
                                 }
                             }
                     </td>
-                    <td style="vertical-align: middle">FALTA ISTO</td>
-                        <td><a class="btn btn-primary" href="/editcompetition/@compet.Id">Edit</a></td>
-                        <td><button class="btn btn-danger" @onclick="() => Delete(compet.Id)">Delete</button></td>
+                    @if(compet.isPublic){
+                        <td style="vertical-align: middle; color:green; font-weight:bold">Active</td>
+                    }
+                    else
+                    {
+                        <td style="vertical-align: middle; color:red; font-weight:bold">Private</td>
+                    }
+                    <td><a class="btn btn-primary" href="/editcompetition/@compet.Id">Edit</a></td>
+                    <td><button class="btn btn-danger" @onclick="() => Delete(compet.Id)">Delete</button></td>
                 </tr>
             }
           </tbody>
