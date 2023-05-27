@@ -9,5 +9,6 @@ namespace SkyVoteTime.Server.Service
         Task<bool> DeleteCompetition(int id);
         Task<List<Competition>> GetAllCompetitions();
         Task<Competition> GetCompetition(int id);
+        Task<List<Competition>> GetCompetitionsWithoutUserVote(string email);
     }
 }

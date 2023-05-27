@@ -1,13 +1,20 @@
 @page "/competitions"
 @using SkyVoteTime.Shared
 @using System.Text.Json;
+@using System.Reflection.Metadata
+@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
 @inject HttpClient _httpClient
+@using Microsoft.AspNetCore.Components.Authorization;
+
+
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
 
 <h1 class="titleCompetitions">Competitions</h1>
 
 <div class="container">
-
+   
      @if (competitionList != null)
     {
         @foreach (Competition competition in competitionList)
@@ -42,6 +49,7 @@
         }
 
      }
+     
 
 </div>
 
@@ -49,11 +57,25 @@
 
 @code {
     List<Competition> competitionList = new List<Competition>();
-    protected override async Task OnInitializedAsync()
+
+	[CascadingParameter]
+	private Task<AuthenticationState>? authenticationState { get; set; }
+
+    string? email;
+
+
+
+	protected override async Task OnInitializedAsync()
     {
-        var response = await _httpClient.GetAsync("api/competition");
+		var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+		var user = authState.User;
+		email = user.FindFirst(c => c.Type == "name")?.Value;
+
+        var response = await _httpClient.GetAsync("api/competition/GetAll/"+ email);
         response.EnsureSuccessStatusCode();
         competitionList = await response.Content.ReadFromJsonAsync<List<Competition>>();
+
+		
     }
 }
 

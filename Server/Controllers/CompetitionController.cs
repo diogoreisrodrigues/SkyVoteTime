@@ -24,6 +24,11 @@ namespace SkyVoteTime.Server.Controllers
         {
             return await _competitionService.GetCompetition(id);
         }
+        [HttpGet("GetAll/{email}")]
+        public async Task<List<Competition>> GetAll(string email)
+        {
+            return await _competitionService.GetCompetitionsWithoutUserVote(email);
+        }
         [HttpPost]
         public async Task<Competition> AddCompetition([FromBody] Competition competition)
         {

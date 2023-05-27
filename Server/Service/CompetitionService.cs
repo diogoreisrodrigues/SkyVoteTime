@@ -3,7 +3,7 @@ using SkyVoteTime.Server.Repository;
 
 namespace SkyVoteTime.Server.Service
 {
-    public class CompetitionService: ICompetitionService
+    public class CompetitionService : ICompetitionService
     {
         private readonly IRepository<Competition> _competition;
         public CompetitionService(IRepository<Competition> competition)
@@ -24,7 +24,7 @@ namespace SkyVoteTime.Server.Service
                 data.Description = competition.Description;
                 data.CategoriesJson = competition.CategoriesJson;
 
-                data.isPublic = competition.isPublic;
+                data.State = competition.State;
 
                 data.Movies = competition.Movies;
                 await _competition.UpdateAsync(data);
@@ -41,6 +41,10 @@ namespace SkyVoteTime.Server.Service
         public async Task<List<Competition>> GetAllCompetitions()
         {
             return await _competition.GetAllAsync();
+        }
+        public async Task<List<Competition>> GetCompetitionsWithoutUserVote(string email)
+        {
+            return await _competition.GetAllCompWithoutVoteAsync(email);
         }
         public async Task<Competition> GetCompetition(int id)
         {

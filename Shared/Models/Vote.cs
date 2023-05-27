@@ -11,5 +11,7 @@ namespace SkyVoteTime.Shared.Models
     {
         public int Id { get; set; }
 
+        public string email { get; set; }
+
     }
 }

@@ -36,13 +36,6 @@ namespace SkyVoteTime.Server.Data
                 new Category { Id = 9, Name = "Romance" }
             );
         }
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder
-                
-                .EnableSensitiveDataLogging(); // Enable sensitive data logging
-
-            // Other configuration options...
-        }
+        
     }
 }
