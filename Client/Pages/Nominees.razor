@@ -5,6 +5,7 @@
 @using System.Text.Json;
 @using SkyVoteTime.Client.API;
 @inject TheMovieDBApi movieApi
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
 
 <style>
@@ -90,15 +91,22 @@
 
     public Competition? competition;
 
-    
+	[CascadingParameter]
+	private Task<AuthenticationState>? authenticationState { get; set; }
 
-    protected override async Task OnInitializedAsync()
+	string? email;
+
+	protected override async Task OnInitializedAsync()
     {
         Console.WriteLine(Id);
 
         competition = await Http.GetFromJsonAsync<Competition>("api/competition/" + Id);
 
 	    Console.WriteLine(competition.ToString());
+
+		var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+		var user = authState.User;
+		email = user.FindFirst(c => c.Type == "name")?.Value;
 
     }
 
@@ -107,7 +115,8 @@
 
         var vote = new Vote
             {
-                Id = 0
+                Id = 0,
+				email = email
             };
 
         movie.Votes ??= new List<Vote>();

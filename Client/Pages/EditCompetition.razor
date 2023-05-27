@@ -352,9 +352,13 @@
     </div>
 
 
-    <div class="form-check form-switch switch">
-        <input class="form-check-input" checked="@competition.isPublic" @onchange="OnPublicChecked" type="checkbox" role="switch" id="flexSwitchCheckDefault">
-        <label style="color:black" class="cat2" for="flexSwitchCheckDefault">Public</label>
+    <div class="form-group">
+	    <label for="competitionState">Competition State</label>
+	    <select class="form-control" @bind="@competition.State">
+		    <option value=@CompetitionState.Private  >Private</option>
+		    <option value=@CompetitionState.Public   >Public</option>
+		    <option value=@CompetitionState.Finished >Finished</option>
+	    </select>
     </div>
 
     <div class="row">
@@ -372,7 +376,8 @@
 @code{
 
     [Parameter]
-    public int Id { get; set; }
+    public string Id { get; set; }
+
     Competition competition = new Competition();
 
     private String selectedType;
@@ -380,6 +385,7 @@
     private String compType;
 
     private string search { get; set; }
+
     private MovieList movieList;
 
     private List<string> selectedCategories = new List<string>();
@@ -507,9 +513,6 @@
 
     } // GetMovie()
 
-    private void OnPublicChecked(ChangeEventArgs e)
-    {
-        competition.isPublic = (bool)e.Value;
-    }
+    
 }
 }

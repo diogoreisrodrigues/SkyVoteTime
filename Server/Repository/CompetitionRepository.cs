@@ -40,6 +40,15 @@ namespace SkyVoteTime.Server.Repository
                 .FirstOrDefaultAsync(c => c.Id == id);
         }
 
+        public async Task<List<Competition>> GetAllCompWithoutVoteAsync(string userEmail)
+        {
+            var competitionsWithoutVote = _dbContext.Competitions
+                .Include(c => c.Movies) // Include Movies to access Votes
+                .Where(c => !c.Movies.Any(m => m.Votes.Any(v => v.email == userEmail)))
+                .ToList();
+
+            return competitionsWithoutVote;
+        }
         public async Task DeleteAsync(int id)
         {
             var data = _dbContext.Competitions.FirstOrDefault(x => x.Id == id);
