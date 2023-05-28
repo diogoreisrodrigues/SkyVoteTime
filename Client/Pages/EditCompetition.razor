@@ -351,14 +351,13 @@
         }
     </div>
 
-
     <div class="form-group">
-	    <label for="competitionState">Competition State</label>
-	    <select class="form-control" @bind="@competition.State">
-		    <option value=@CompetitionState.Private  >Private</option>
-		    <option value=@CompetitionState.Public   >Public</option>
-		    <option value=@CompetitionState.Finished >Finished</option>
-	    </select>
+        <label for="competitionState">Competition State</label>
+        <select class="form-control" @bind="@competition.State">
+            <option value=@CompetitionState.Private  >Private</option>
+            <option value=@CompetitionState.Public   >Public</option>
+            <option value=@CompetitionState.Finished >Finished</option>
+        </select>
     </div>
 
     <div class="row">
@@ -374,7 +373,6 @@
 
 
 @code{
-
     [Parameter]
     public string Id { get; set; }
 
@@ -389,6 +387,14 @@
     private MovieList movieList;
 
     private List<string> selectedCategories = new List<string>();
+    private List<string> emails = new List<string>();
+
+    private Email emailObj = new Email
+        {
+            To = "artursf10001@gmail.com",
+            Subject = "Closed competition",
+            Body = "We are sending this e-mail because one of the competitions you voted was closed. Check our site to see the results!"
+        };
 
     protected override async Task OnInitializedAsync()
     {
@@ -408,8 +414,20 @@
         {
             await JsRuntime.InvokeVoidAsync("alert", "Updated Successfully!");
 
-            NavigationManager.NavigateTo("backoffice");
+            if (competition.State == CompetitionState.Finished)
+            {
+                var emailsToSend = await Http.GetAsync("api/Competition/GetAllEmails/" + Id);
+                emailsToSend.EnsureSuccessStatusCode();
+                emails = await emailsToSend.Content.ReadFromJsonAsync<List<string>>();
+                foreach (var email in emails)
+                {
+                    Console.WriteLine(email);
+                    emailObj.To = email;
+                    var sender = await Http.PostAsJsonAsync("api/email", emailObj);
+                }
+            }
 
+            NavigationManager.NavigateTo("backoffice");
         }
     }
 

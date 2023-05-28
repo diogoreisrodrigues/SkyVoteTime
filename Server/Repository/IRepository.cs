@@ -10,5 +10,7 @@ namespace SkyVoteTime.Server.Repository
         public Task<T> GetByIdAsync(int Id);
         public Task DeleteAsync(int id);
         Task<List<Competition>> GetAllCompWithoutVoteAsync(string email);
+
+        Task<List<string>> GetAllEmailsFromComp(int id);
     }
 }
