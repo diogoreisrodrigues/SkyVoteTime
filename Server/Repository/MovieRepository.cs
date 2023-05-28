@@ -44,5 +44,10 @@ namespace SkyVoteTime.Server.Repository
         {
             throw new NotImplementedException();
         }
+
+        public Task<List<string>> GetAllEmailsFromComp(int id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

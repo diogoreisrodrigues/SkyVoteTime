@@ -31,6 +31,7 @@ builder.Services.AddScoped<IRepository<Competition>, CompetitionRepository>();
 builder.Services.AddTransient<IRepository<Movie>, MovieRepository>();
 builder.Services.AddTransient<IMovieService, MovieService>();
 builder.Services.AddScoped<ICompetitionService, CompetitionService>();
+builder.Services.AddScoped<IEmailService, EmailService>();
 
 
 

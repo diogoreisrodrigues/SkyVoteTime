@@ -49,11 +49,28 @@ namespace SkyVoteTime.Server.Repository
 
             return competitionsWithoutVote;
         }
+
+        public async Task<List<string>> GetAllEmailsFromComp(int id)
+        {
+            var emailsFromComp = _dbContext.Competitions
+                .Where(c => c.Id == id)
+                .SelectMany(c => c.Movies.SelectMany(m => m.Votes.Select(v => v.email)))
+                .Distinct()
+                .ToList();
+
+            return emailsFromComp;
+        }
+
         public async Task DeleteAsync(int id)
         {
             var data = _dbContext.Competitions.FirstOrDefault(x => x.Id == id);
             _dbContext.Remove(data);
             await _dbContext.SaveChangesAsync();
+        }
+
+        public Task<List<Vote>> GetAllEmailsFromComp()
+        {
+            throw new NotImplementedException();
         }
     }
 }
