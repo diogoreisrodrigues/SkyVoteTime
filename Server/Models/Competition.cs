@@ -18,9 +18,11 @@ namespace SkyVoteTime.Server.Models
 
         public CompetitionState State { get; set; }
 
-        public string CategoriesJson { get; set; }
+        public string? CategoriesJson { get; set; }
 
-        public List<Movie> Movies { get; set; }
+        public List<Movie>? Movies { get; set; }
+
+        public List<Person>? Persons { get; set; }
 
         public string Type { get; set; }
 

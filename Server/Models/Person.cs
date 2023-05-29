@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SkyVoteTime.Shared.Models
+namespace SkyVoteTime.Server.Models
 {
     public class Person
     {
-
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public string name { get; set; }
 
@@ -21,3 +22,4 @@ namespace SkyVoteTime.Shared.Models
         public List<Vote>? Votes { get; set; }
     }
 }
+

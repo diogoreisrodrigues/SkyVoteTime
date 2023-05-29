@@ -16,11 +16,13 @@ namespace SkyVoteTime.Client.API
 
         public string PersonList { get; set; }
 
-        public PersonList personListResults;
+        public PersonList personList;
 
         private MovieList movieList;
 
         private Movie movie;
+
+       
 
         /*
         public async Task<List<Movie>> GetPopularMoviesAsync()
@@ -95,21 +97,23 @@ namespace SkyVoteTime.Client.API
             }
         }//grab 
 
-        public async Task<PersonList> PersonListDetails(string Query)
+        
+
+        public async Task<List<Person>> searchPersonDetails(string Query)
         {
             clearYourHead(); // 
             // grab upcoming movie details
-            HttpResponseMessage personList = await client.GetAsync(
+            HttpResponseMessage personListHttp = await client.GetAsync(
                 "https://api.themoviedb.org/3/search/person?api_key=8ec9575a406e1b25a8d68e65b07e7319&language=en-US&query="+ Query );
-            if (personList.IsSuccessStatusCode)
+            if (personListHttp.IsSuccessStatusCode)
             {
-                PersonList = await personList.Content.ReadAsStringAsync();
-                personListResults = JsonConvert.DeserializeObject<PersonList>(PersonList);
-                return personListResults;
+                PersonList = await personListHttp.Content.ReadAsStringAsync();
+                personList = JsonConvert.DeserializeObject<PersonList>(PersonList);
+                return personList.results;
             }
             else
             {
-                personListResults = null;
+                personList = null;
                 return null;
             }
         }//grab 

@@ -5,7 +5,6 @@ namespace SkyVoteTime.Shared.Models
 {
     
     
-    
     public class Competition
     {
         public int Id { get; set; }
@@ -18,9 +17,10 @@ namespace SkyVoteTime.Shared.Models
 
         public CompetitionState State { get; set; }
 
-        public string CategoriesJson { get; set; }
+        public string? CategoriesJson { get; set; }
 
-        public List<Movie> Movies { get; set; }
+        public List<Movie>? Movies { get; set; }
+        public List<Person>? Persons { get; set; }
 
         public string Type { get; set; }
 
