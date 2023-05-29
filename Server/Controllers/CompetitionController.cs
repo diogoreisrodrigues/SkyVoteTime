@@ -48,7 +48,7 @@ namespace SkyVoteTime.Server.Controllers
             await _competitionService.DeleteCompetition(id);
             return true;
         }
-        [HttpPut("{id}")]
+        [HttpPut("Put/{id}")]
         public async Task<bool> UpdateCompetition(int id, [FromBody] Competition Object)
         {
             await _competitionService.UpdateCompetition(id, Object);

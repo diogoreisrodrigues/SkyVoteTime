@@ -27,7 +27,7 @@
     <br />
 
 
-    @if (competition.Movies != null)
+    @if (competition.Movies != null && (competition.Type == "Movies" || competition.Type == "filme"))
     {
 
         @foreach (Movie movie in competition.Movies)
@@ -78,7 +78,58 @@
         }
 
     }
-    
+    else if (competition.Persons != null && competition.Type == "Acting")
+	{
+
+        @foreach (var person in competition.Persons)
+        {
+            <div class="container" style="background: rgba(0,0,0,0.7); border-radius: 20px;">
+                <div class="row">
+                    <div class="col-sm-3">
+                        <img style="display: flex; align-items: center; padding: 15px; perspective: 100px;" src="https://image.tmdb.org/t/p/w342/@person.profile_path" alt="" />
+                    </div>
+                    <div class="col-sm-9" style="color:white">
+                        <div style="height: 285px;">
+                            
+                            <h1 class="font-weight-bold">@person.name</h1>
+                            <div class="my-2">
+                                <div style="font-size: 120%" class="my-3">
+                                    <b>Directors:</b> Daniel KwanDaniel and Daniel Scheinert
+                                </div>
+
+                                <div style="font-size: 120%" class="my-3">
+                                    <b>Actors:</b> Michelle Yeoh, Stephanie Hsu and Jamie Lee Curtis
+                                </div>
+
+                                <div style="font-size: 120%; max-height: 100px;overflow: overlay; " class="my-4">
+                                    <b>Synopsis:</b> story of my life
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row ">
+                            <div class="col-9" style="display: flex; align-items: center;">
+
+                                <span class="badge badge-pill badge-dark" style="margin-right: 15px; font-size: 20px;background: rgba(255, 255, 255, 0.2); border: 1px solid #FFFFFF; box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25); border-radius: 20px; padding: 10px;">Ação</span>
+
+                            </div>
+                            <div class="col-3" style=" text-align: right;">
+
+                                <button @onclick="() => UpdatePerson(person)" type="button" class="btn btn-secondary btn-lg" style="color: #fff; font-weight:bold; background-color: #D4BE74">Vote here!</button>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <br />
+            <br />
+        }
+
+    }
+
     
 
 
@@ -132,6 +183,46 @@
             try
             {
                 var response = await Http.PutAsJsonAsync("api/Movie/" + movie.Id, movie);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    await JsRuntime.InvokeVoidAsync("alert", "Vote Submited!");
+                    NavigationManager.NavigateTo("competitions");
+                }
+                else
+                {
+                    // Handle HTTP request error
+                    Console.WriteLine("HTTP request error: " + response.StatusCode);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+    }
+
+
+
+    private async Task UpdatePerson(Person person)
+    {
+
+        var vote = new Vote
+            {
+                Id = 0,
+                email = email
+            };
+
+        person.Votes ??= new List<Vote>();
+
+        person.Votes.Add(vote);
+
+        bool confirmed = await JsRuntime.InvokeAsync<bool>("confirm", "Are you sure you want to Vote for this nominee?");
+        if (confirmed)
+        {
+            try
+            {
+                var response = await Http.PutAsJsonAsync("api/Person/" + person.Id, person);
 
                 if (response.IsSuccessStatusCode)
                 {

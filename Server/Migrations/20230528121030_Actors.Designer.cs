@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SkyVoteTime.Server.Data;
 
@@ -11,9 +12,11 @@ using SkyVoteTime.Server.Data;
 namespace SkyVoteTime.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230528121030_Actors")]
+    partial class Actors
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -438,6 +441,7 @@ namespace SkyVoteTime.Server.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("CategoriesJson")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
@@ -520,7 +524,7 @@ namespace SkyVoteTime.Server.Migrations
 
                     b.HasIndex("CompetitionId");
 
-                    b.ToTable("Persons");
+                    b.ToTable("Person");
                 });
 
             modelBuilder.Entity("SkyVoteTime.Server.Models.Vote", b =>
@@ -534,9 +538,6 @@ namespace SkyVoteTime.Server.Migrations
                     b.Property<int?>("MovieId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("PersonId")
-                        .HasColumnType("int");
-
                     b.Property<string>("email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -544,8 +545,6 @@ namespace SkyVoteTime.Server.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("MovieId");
-
-                    b.HasIndex("PersonId");
 
                     b.ToTable("Votes");
                 });
@@ -620,10 +619,6 @@ namespace SkyVoteTime.Server.Migrations
                     b.HasOne("SkyVoteTime.Server.Models.Movie", null)
                         .WithMany("Votes")
                         .HasForeignKey("MovieId");
-
-                    b.HasOne("SkyVoteTime.Server.Models.Person", null)
-                        .WithMany("Votes")
-                        .HasForeignKey("PersonId");
                 });
 
             modelBuilder.Entity("SkyVoteTime.Server.Models.Competition", b =>
@@ -634,11 +629,6 @@ namespace SkyVoteTime.Server.Migrations
                 });
 
             modelBuilder.Entity("SkyVoteTime.Server.Models.Movie", b =>
-                {
-                    b.Navigation("Votes");
-                });
-
-            modelBuilder.Entity("SkyVoteTime.Server.Models.Person", b =>
                 {
                     b.Navigation("Votes");
                 });

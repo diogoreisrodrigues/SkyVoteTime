@@ -15,6 +15,11 @@
       font-weight: 400;
     }
 
+    .page {
+        background-color: #FFF;
+        background-image: url("../Assets/BackofficeBackground.png");
+    }
+
     a {
       text-decoration: none;
       color: inherit;
@@ -173,11 +178,10 @@
 }
 </style>
 
-<h1 class="title" style="text-align:center; margin-top:100px">Create Competition</h1>
 
+<div class="container-lg rounded-3 fundo justify-content-center" style=" margin-top:70px; padding: 50px;">
 
-
-<div class="container rounded-3 fundo justify-content-center" style=" margin-top:70px;">
+    <h1 class="title" style="text-align:center; margin-top:100px">Create Competition</h1>
 
     <div class="container justify-content-center" style="width:80%">
 
@@ -195,35 +199,41 @@
         </form>
 
         <br>
-        <br>
 
-        <div class="dropdown">
-            <button class="btn btn-secondary btn-lg dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Competition Type
-            </button>
-            <div class="dropdown-menu col-xs-12" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" @onclick="(e) => ChoseType(1)">Filme</a>
-                
-            </div>
-        </div>
+		<div class="texto">
+		    <label for="competitionState">Competition State</label>
+		    <select class="form-control" style="height: auto;" @bind="@competition.State">
+			    <option value=@CompetitionState.Private  >Private</option>
+			    <option value=@CompetitionState.Public   >Public</option>
+			    <option value=@CompetitionState.Finished >Finished</option>
+		    </select>
+	    </div>
+    
+		<br/>
+
+		<div class="texto">
+		    <label>Competition Type</label>
+		    <select class="form-control" style="height: auto;" @bind="@competition.Type">
+                <option value="Movies" class="optionDropDown">Movies</option>
+                <option value="Acting" class="optionDropDown">Actors</option>
+                <option value="Writing" class="optionDropDown">Directors</option>
+		    </select>
+	    </div>
 
 
 
-        <br />
-        <br />
+		<br />
         <br />
         
-        @if(compType == "filme"){
+        
+        @if(competition.Type == "Movies"){
 
         <p class="texto">Category</p>
         <br />
 
-        <div class=" container check justify-content-center">
+        <div class="check row" style="margin-left: 5px;">
 
-            
-
-            <div class="col-sm-1"></div>
-            <div class="col-sm-2">
+            <div class="col-sm-3">
                 <div class="form-check">
                     <label class="form-check-label">
                         <input type="checkbox" @onchange="@(e => OnCategoryChecked("Action", e))" class="form-check-input" value="">
@@ -248,7 +258,7 @@
                 <br />
                 <br />
             </div>
-            <div class="col-sm-2">
+            <div class="col-sm-3">
                 <div class="form-check">
                     <label class="form-check-label">
                         <input type="checkbox" @onchange="@(e => OnCategoryChecked("Documentary", e))" class="form-check-input" value="">
@@ -298,94 +308,148 @@
                 <br />
                 <br />
             </div>
-            
+	        <div class="col-sm-3">
+		        <div class="form-check">
+			        <label class="form-check-label">
+                            <input type="checkbox" @onchange="@(e => OnCategoryChecked("Thriller", e))" class="form-check-input" value="">
+                            <label for="cat" class="cat"> Thriller</label>
+			        </label>
+		        </div>
+		        <br />
+		        <div class="form-check" >
+			        <label class="form-check-label">
+                            <input type="checkbox" @onchange="@(e => OnCategoryChecked("Mystery", e))" class="form-check-input" value="">
+                            <label for="cat" class="cat"> Mystery</label>
+			        </label>
+		        </div>
+		        <br />
+		        <div class="form-check">
+			        <label class="form-check-label">
+                            <input type="checkbox" @onchange="@(e => OnCategoryChecked("Fantasy", e))" class="form-check-input" value="">
+                            <label for="cat" class="cat"> Fantasy</label>
+			        </label>
+		        </div>
+		        <br />
+		        <br />
+		        <br />
+	        </div>
+
         </div>
         }
 
-
-
-	    <div class="form-group">
-		    <label for="competitionState">Competition State</label>
-		    <select class="form-control" @bind="@competition.State">
-			    <option value=@CompetitionState.Private  >Private</option>
-			    <option value=@CompetitionState.Public   >Public</option>
-			    <option value=@CompetitionState.Finished >Finished</option>
-		    </select>
-	    </div>
         <br>
-        <br />
-        <br />
-
-        <!--Search Movie-->
-        <div class="form-group row">
-            <div class="col-xl-10">
-                @if (compType == "filme")
-                {
-                        <input class="form-control" type="text" @bind-value="@search" @bind-value:event="oninput" @onkeyup="KeyHandlerfime" placeholder="Search the Competitor" />
-                }
-                
-            </div>
-            <div class="col-xs-2">
-                @if (compType == "filme")
-                {
-                        <input class="form-control" id="searchButton" type="submit" @onclick="GetPosters" value="Go" />
-                }
-                
-            </div>
-            <div>
-            </div>
-        </div>
-
-        <div class="containerMovie">
-
-             @if (movieList != null)
-             {
-                    @foreach (Movie movie in @movieList.results)
-                    {
-                    movie.Id = 0;
-
-                        <div class="movie-card">
-                            <div class="movie-header">
-                                        <img src="https://image.tmdb.org/t/p/w342/@movie.poster_path" class="movie-header"/>
-                            </div><!--movie-header-->
-
-                            <div class="movie-content">
-                                <div class="movie-content-header">
-                                    <a href="#">
-                                                <h3 class="movie-title">@movie.title</h3>
-                                    </a>
-                                </div>
-                                <div class="movie-info">
-                
-                                    <label>Overview:</label> <br>
-                                            <span style="font-size: 11px" >@movie.overview</span> <br>
-                                    <div class="checkbox-wrapper-24" >
-                                                        <input type="checkbox" id="check-24" name="check" @bind-value="@movie.Id" @onclick="@(e => GetMovie(@movie))" />
-                                        <label for="check-24">
-                                            <span><!-- This span is needed to create the "checkbox" element --></span>Add as Nominee!
-                                        </label>
-                                    </div>
-                                    
-
-                                </div>
-                            </div><!--movie-content-->
-                        </div><!--movie-card-->
-                    }
-             }
+        
+        
     
+	    @if (competition.Type != "")
+	    {
+		    <!--Search Movie-->
+		    <div class="form-group row">
+			    <div class="col-xl-10">
+				    <input class="form-control" type="text" @bind-value="@search" @bind-value:event="oninput" @onkeyup="KeyHandlerNominee" placeholder="Search the Competitor"/>
+			    </div>
+			    <div class="col-xs-2">
+				    <input class="form-control" id="searchButton" type="submit" @onclick="GetPosters" value="Go"/>
+			    </div>
+		    </div>
 
-</div><!--container-->
+
+		    <div class="containerMovie">
+
+			    @if (movieList != null)
+			    {
+				    @foreach (Movie movie in movieList.results)
+				    {
+					    movie.Id = 0;
+
+					    <div class="movie-card">
+						    <div class="movie-header">
+							    <img src="https://image.tmdb.org/t/p/w342/@movie.poster_path" class="movie-header"/>
+						    </div><!--movie-header-->
+
+						    <div class="movie-content">
+							    <div class="movie-content-header">
+								    <a href="#">
+									    <h3 class="movie-title">@movie.title</h3>
+								    </a>
+							    </div>
+							    <div class="movie-info">
+
+								    <label>Overview:</label> <br>
+                                    <div style="max-height: 50px;overflow: overlay;font-size: 11px ">
+									    <b>Synopsis:</b> @movie.overview
+								    </div>
+								    
+								    <div class="checkbox-wrapper-24">
+									    <input type="checkbox" id="check-24" name="check" @bind-value="@movie.Id" @onclick="@(e => GetMovie(@movie))"/>
+									    <label for="check-24">
+										    <span><!-- This span is needed to create the "checkbox" element --></span>Add as Nominee!
+									    </label>
+								    </div>
 
 
+							    </div>
+						    </div><!--movie-content-->
+					    </div>
+					    <!--movie-card-->
+				    }
+			    }
+                else if (personList != null)
+                {
+	                @foreach (var person in personList)
+	                {
+		                if (person.known_for_department == competition.Type && person.profile_path != null)
+		                {
+			                person.Id = 0;
 
-        <div class="col-sm-3"></div>
-        <div class="col-sm-2">
-            <button type="button" @onclick="@Cancel" value="Cancel" class="btn btn-light btn-lg">Cancel</button>
-        </div>
-        <div class="col-sm-2"></div>
-        <div class="col-sm-1">
-            <button type="button" @onclick="@Save" value="Submit" class="btn btn-warning btn-lg">Submit</button>
-        </div>
+			                <div class="movie-card">
+				                <div class="movie-header">
+					                <img src="https://image.tmdb.org/t/p/w342/@person.profile_path" class="movie-header"/>
+				                </div><!--movie-header-->
+
+				                <div class="movie-content">
+					                <div class="movie-content-header">
+						                <a href="#">
+							                <h3 class="movie-title">@person.name</h3>
+						                </a>
+					                </div>
+					                <div class="movie-info">
+
+						                <div class="checkbox-wrapper-24">
+							                <input type="checkbox" id="check-24" name="check" @bind-value="@person.Id" @onclick="@(e => GetPerson(@person))"/>
+							                <label for="check-24">
+								                <span><!-- This span is needed to create the "checkbox" element --></span>Add as Nominee!
+							                </label>
+						                </div>
+
+
+					                </div>
+				                </div>
+			                </div>
+		                }
+	                }
+                }
+
+
+		    </div>
+		    <!--container-->
+
+	    }
+	    <br />
+	    <br />
+	    
+	    <div class="row">
+		    <div class="col-6">
+			    <button type="button" @onclick="@Cancel" value="Cancel" class="btn btn-light btn-lg">Cancel</button>
+
+		    </div>
+		    <div class="col-6" style="text-align: right;">
+			    <button type="button" @onclick="@Save" value="Submit" class="btn btn-lg text-light" style="background-color: #D4BE74">Submit</button>
+		    </div>
+
+	    </div>
+
+    
         <br>
         <br />
         <br />
@@ -407,7 +471,8 @@
         CategoriesJson = "",
         Name = "",
         Id = 0,
-        Type = ""
+        Type = "",
+        Persons = new List<Person>()
     };
 
     private String selectedType;
@@ -420,13 +485,26 @@
     private List<string> selectedMovies = new List<string>();
 
     private string search { get; set; }
-    private MovieList movieList;
+    private MovieList? movieList;
+
+    private List<Person>? personList = new List<Person>();
+
+
 
     //== Movie Search ==//
     private async Task GetPosters()
     {
+        if (competition.Type == "Movies")
+        {
+            movieList = await movieApi.searchMovieDetails(search);
+            personList = null;
+        }
+        else
+        {
+            personList = await movieApi.searchPersonDetails(search);
+            movieList = null;
+        }
 
-        movieList = await movieApi.searchMovieDetails(search);
     } // MovieSearch()
 
 
@@ -440,6 +518,8 @@
         }
 
     } // GetMovie()
+
+    public void GetPerson(Person person) => competition.Persons.Add(person); // GetMovie()
 
     private void OnCategoryChecked(string categoryName, ChangeEventArgs e)
     {   
@@ -457,7 +537,7 @@
 
     
 
-    private async Task KeyHandlerfime(KeyboardEventArgs e)
+    private async Task KeyHandlerNominee(KeyboardEventArgs e)
     {
         if (e.Key == "Enter")
         {
@@ -481,24 +561,7 @@
     }
     }*/
 
-    private void ChoseType(int tipo)
-    {
-        if (tipo == 1)
-        {
-            compType = "filme";
-            competition.Type = compType;
-        }
-        else if (tipo == 2)
-        {
-            compType = "ator";
-            competition.Type = compType;
-        }
-        else if (tipo == 3)
-        {
-            compType = "diretor";
-            competition.Type = compType;
-        }
-    }
+    
 
     protected override async Task OnInitializedAsync()
     {
@@ -508,9 +571,7 @@
         competition.CategoriesJson = JsonSerializer.Serialize(selectedCategories);
         Console.WriteLine(competition.CategoriesJson);
 
-        
-
-        var competitionconsole = JsonSerializer.Serialize(competition.Movies);
+	    var competitionconsole = JsonSerializer.Serialize(competition.Movies);
         Console.WriteLine(competitionconsole);
 
         var response = await Http.PostAsJsonAsync("api/Competition", competition);
@@ -540,7 +601,7 @@
 
     void Cancel()
     {
-        NavigationManager.NavigateTo("");
+        NavigationManager.NavigateTo("backoffice");
     }
 
 

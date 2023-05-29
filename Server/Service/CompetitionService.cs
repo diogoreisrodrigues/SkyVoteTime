@@ -25,7 +25,7 @@ namespace SkyVoteTime.Server.Service
                 data.CategoriesJson = competition.CategoriesJson;
 
                 data.State = competition.State;
-
+                data.Persons = competition.Persons;
                 data.Movies = competition.Movies;
                 await _competition.UpdateAsync(data);
                 return true;
