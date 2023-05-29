@@ -304,10 +304,14 @@
 
 
 
-        <div class="form-check form-switch switch">
-            <input class="form-check-input" type="checkbox" @onchange="@(e => OnPublicChecked(e))" role="switch" id="flexSwitchCheckDefault">
-            <label class="cat2" for="flexSwitchCheckDefault">Public</label>
-        </div>
+	    <div class="form-group">
+		    <label for="competitionState">Competition State</label>
+		    <select class="form-control" @bind="@competition.State">
+			    <option value=@CompetitionState.Private  >Private</option>
+			    <option value=@CompetitionState.Public   >Public</option>
+			    <option value=@CompetitionState.Finished >Finished</option>
+		    </select>
+	    </div>
         <br>
         <br />
         <br />
@@ -451,22 +455,7 @@
         }
     }
 
-    private void OnPublicChecked(ChangeEventArgs e)
-    {
-
-        var isChecked = (bool)e.Value;
-
-        if (isChecked)
-        {
-            competition.isPublic = true;
-        }
-        else
-        {
-            competition.isPublic = false;
-        }
-
-        Console.WriteLine(competition.isPublic);
-    }
+    
 
     private async Task KeyHandlerfime(KeyboardEventArgs e)
     {
@@ -519,7 +508,7 @@
         competition.CategoriesJson = JsonSerializer.Serialize(selectedCategories);
         Console.WriteLine(competition.CategoriesJson);
 
-        //competition.isPublic = JsonSerializer.Serialize(estaPub);
+        
 
         var competitionconsole = JsonSerializer.Serialize(competition.Movies);
         Console.WriteLine(competitionconsole);

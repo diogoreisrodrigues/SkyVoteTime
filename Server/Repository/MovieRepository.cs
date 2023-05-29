@@ -33,9 +33,21 @@ namespace SkyVoteTime.Server.Repository
 
         public async Task DeleteAsync(int id)
         {
-            var data = _dbContext.Movies.FirstOrDefault(x => x.Id == id);
+            var data = _dbContext.Movies
+                .Include(m => m.Votes)
+                .FirstOrDefault(x => x.Id == id);
             _dbContext.Remove(data);
             await _dbContext.SaveChangesAsync();
+        }
+
+        public Task<List<Competition>> GetAllCompWithoutVoteAsync(string email)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<string>> GetAllEmailsFromComp(int id)
+        {
+            throw new NotImplementedException();
         }
     }
 }

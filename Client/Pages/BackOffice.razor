@@ -61,9 +61,20 @@
                                 }
                             }
                     </td>
-                    <td style="vertical-align: middle">FALTA ISTO</td>
-                        <td><a class="btn btn-primary" href="/editcompetition/@compet.Id">Edit</a></td>
-                        <td><button class="btn btn-danger" @onclick="() => Delete(compet.Id)">Delete</button></td>
+                    @if(compet.State == CompetitionState.Public)
+                    {
+	                    <td style="vertical-align: middle; color:green; font-weight:bold">@CompetitionState.Public</td>
+                    }
+                    else if (compet.State == CompetitionState.Finished)
+                    {
+	                    <td style="vertical-align: middle; color:blue; font-weight:bold">@CompetitionState.Finished</td>
+                    }
+                    else
+                    {
+	                    <td style="vertical-align: middle; color:red; font-weight:bold">@CompetitionState.Private</td>
+                    }
+                    <td style="vertical-align: middle"><a class="btn btn-primary" href="/editcompetition/@compet.Id">Edit</a></td>
+	                <td style="vertical-align: middle"><button class="btn btn-danger" @onclick="() => Delete(compet.Id)">Delete</button></td>
                 </tr>
             }
           </tbody>

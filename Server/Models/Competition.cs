@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
+
 namespace SkyVoteTime.Server.Models
 {
     [Table("Competition", Schema = "dbo")]
@@ -15,7 +16,7 @@ namespace SkyVoteTime.Server.Models
 
         public string Description { get; set; }
 
-        public bool isPublic { get; set; }
+        public CompetitionState State { get; set; }
 
         public string CategoriesJson { get; set; }
 
@@ -23,6 +24,11 @@ namespace SkyVoteTime.Server.Models
 
         public string Type { get; set; }
 
-        //public ICollection<Movie> Movies { get; set; }
+    }
+    public enum CompetitionState
+    {
+        Private,
+        Public,
+        Finished
     }
 }

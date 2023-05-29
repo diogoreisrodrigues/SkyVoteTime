@@ -3,6 +3,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SkyVoteTime.Shared.Models
 {
+    
+    
+    
     public class Competition
     {
         public int Id { get; set; }
@@ -13,7 +16,7 @@ namespace SkyVoteTime.Shared.Models
 
         public string Description { get; set; }
 
-        public bool isPublic { get; set; }
+        public CompetitionState State { get; set; }
 
         public string CategoriesJson { get; set; }
 
@@ -21,9 +24,12 @@ namespace SkyVoteTime.Shared.Models
 
         public string Type { get; set; }
 
-        //public ICollection<Movie> Movies { get; set; }
-
-        
-
     }
+    public enum CompetitionState
+    {
+        Private,
+        Public,
+        Finished
+    }
+
 }

@@ -19,6 +19,7 @@ namespace SkyVoteTime.Server.Repository
         }
         public async Task UpdateAsync(Competition _object)
         {
+
             _dbContext.Competitions.Update(_object);
             await _dbContext.SaveChangesAsync();
         }
@@ -26,13 +27,38 @@ namespace SkyVoteTime.Server.Repository
         {
             return await _dbContext.Competitions
                 .Include(c => c.Movies)
+                    .ThenInclude(m => m.Votes)
+                .AsNoTracking()
                 .ToListAsync();
         }
         public async Task<Competition> GetByIdAsync(int id)
         {
             return await _dbContext.Competitions
                 .Include(c => c.Movies)
+                    .ThenInclude(m => m.Votes)
+                .AsNoTracking()
                 .FirstOrDefaultAsync(c => c.Id == id);
+        }
+
+        public async Task<List<Competition>> GetAllCompWithoutVoteAsync(string userEmail)
+        {
+            var competitionsWithoutVote = _dbContext.Competitions
+                .Include(c => c.Movies) // Include Movies to access Votes
+                .Where(c => !c.Movies.Any(m => m.Votes.Any(v => v.email == userEmail)))
+                .ToList();
+
+            return competitionsWithoutVote;
+        }
+
+        public async Task<List<string>> GetAllEmailsFromComp(int id)
+        {
+            var emailsFromComp = _dbContext.Competitions
+                .Where(c => c.Id == id)
+                .SelectMany(c => c.Movies.SelectMany(m => m.Votes.Select(v => v.email)))
+                .Distinct()
+                .ToList();
+
+            return emailsFromComp;
         }
 
         public async Task DeleteAsync(int id)
@@ -40,6 +66,11 @@ namespace SkyVoteTime.Server.Repository
             var data = _dbContext.Competitions.FirstOrDefault(x => x.Id == id);
             _dbContext.Remove(data);
             await _dbContext.SaveChangesAsync();
+        }
+
+        public Task<List<Vote>> GetAllEmailsFromComp()
+        {
+            throw new NotImplementedException();
         }
     }
 }

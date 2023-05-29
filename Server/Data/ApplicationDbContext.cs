@@ -11,11 +11,13 @@ namespace SkyVoteTime.Server.Data
         public ApplicationDbContext(
             DbContextOptions options,
             IOptions<OperationalStoreOptions> operationalStoreOptions) : base(options, operationalStoreOptions)
+
         {
         }
         public DbSet<Competition> Competitions { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Movie> Movies { get; set; }
+        public DbSet<Vote> Votes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -34,5 +36,6 @@ namespace SkyVoteTime.Server.Data
                 new Category { Id = 9, Name = "Romance" }
             );
         }
+        
     }
 }

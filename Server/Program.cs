@@ -28,10 +28,13 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
 // For DI registration
-builder.Services.AddTransient<IRepository<Competition>, CompetitionRepository>();
+builder.Services.AddScoped<IRepository<Competition>, CompetitionRepository>();
 builder.Services.AddTransient<IRepository<Movie>, MovieRepository>();
 builder.Services.AddTransient<IMovieService, MovieService>();
-builder.Services.AddTransient<ICompetitionService, CompetitionService>();
+builder.Services.AddScoped<ICompetitionService, CompetitionService>();
+builder.Services.AddScoped<IEmailService, EmailService>();
+
+
 
 var app = builder.Build();
 

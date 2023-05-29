@@ -1,4 +1,6 @@
-﻿namespace SkyVoteTime.Server.Repository
+﻿using SkyVoteTime.Server.Models;
+
+namespace SkyVoteTime.Server.Repository
 {
     public interface IRepository<T>
     {
@@ -7,5 +9,8 @@
         public Task<List<T>> GetAllAsync();
         public Task<T> GetByIdAsync(int Id);
         public Task DeleteAsync(int id);
+        Task<List<Competition>> GetAllCompWithoutVoteAsync(string email);
+
+        Task<List<string>> GetAllEmailsFromComp(int id);
     }
 }

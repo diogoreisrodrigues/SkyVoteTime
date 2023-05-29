@@ -351,10 +351,13 @@
         }
     </div>
 
-
-    <div class="form-check form-switch switch">
-        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
-        <label style="color:black" class="cat2" for="flexSwitchCheckDefault">Public</label>
+    <div class="form-group">
+        <label for="competitionState">Competition State</label>
+        <select class="form-control" @bind="@competition.State">
+            <option value=@CompetitionState.Private  >Private</option>
+            <option value=@CompetitionState.Public   >Public</option>
+            <option value=@CompetitionState.Finished >Finished</option>
+        </select>
     </div>
 
     <div class="row">
@@ -370,9 +373,9 @@
 
 
 @code{
-
     [Parameter]
     public string Id { get; set; }
+
     Competition competition = new Competition();
 
     private String selectedType;
@@ -380,9 +383,18 @@
     private String compType;
 
     private string search { get; set; }
+
     private MovieList movieList;
 
     private List<string> selectedCategories = new List<string>();
+    private List<string> emails = new List<string>();
+
+    private Email emailObj = new Email
+        {
+            To = "artursf10001@gmail.com",
+            Subject = "Closed competition",
+            Body = "We are sending this e-mail because one of the competitions you voted was closed. Check our site to see the results!"
+        };
 
     protected override async Task OnInitializedAsync()
     {
@@ -401,7 +413,21 @@
         if (competitionResponse)
         {
             await JsRuntime.InvokeVoidAsync("alert", "Updated Successfully!");
-            NavigationManager.NavigateTo("");
+
+            if (competition.State == CompetitionState.Finished)
+            {
+                var emailsToSend = await Http.GetAsync("api/Competition/GetAllEmails/" + Id);
+                emailsToSend.EnsureSuccessStatusCode();
+                emails = await emailsToSend.Content.ReadFromJsonAsync<List<string>>();
+                foreach (var email in emails)
+                {
+                    Console.WriteLine(email);
+                    emailObj.To = email;
+                    var sender = await Http.PostAsJsonAsync("api/email", emailObj);
+                }
+            }
+
+            NavigationManager.NavigateTo("backoffice");
         }
     }
 
@@ -421,7 +447,7 @@
                 if (response.IsSuccessStatusCode)
                 {
                     await JsRuntime.InvokeVoidAsync("alert", "Deleted Successfully!");
-                    NavigationManager.NavigateTo("");
+
                 }
                 else
                 {
@@ -500,8 +526,11 @@
         if (!competition.Movies.Contains(movie))
         {
             competition.Movies.Add(movie);
+            Console.WriteLine("Array de filmes" + competition.Movies[0].title);
         }
 
     } // GetMovie()
+
+    
 }
 }

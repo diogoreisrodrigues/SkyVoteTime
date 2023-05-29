@@ -23,6 +23,8 @@ namespace SkyVoteTime.Server.Service
                 data.Id = movie.Id;
                 data.poster_path = movie.poster_path;
                 data.overview = movie.overview;
+                data.Votes = movie.Votes;
+                await _movie.UpdateAsync(data);
                 return true;
             }
             else
