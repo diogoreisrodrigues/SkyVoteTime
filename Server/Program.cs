@@ -5,6 +5,7 @@ using SkyVoteTime.Server.Data;
 using SkyVoteTime.Server.Models;
 using SkyVoteTime.Server.Repository;
 using SkyVoteTime.Server.Service;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
