@@ -5,6 +5,7 @@ using SkyVoteTime.Server.Data;
 using SkyVoteTime.Server.Models;
 using SkyVoteTime.Server.Repository;
 using SkyVoteTime.Server.Service;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,6 +34,8 @@ builder.Services.AddTransient<IMovieService, MovieService>();
 builder.Services.AddScoped<ICompetitionService, CompetitionService>();
 builder.Services.AddTransient<IRepository<Person>, PersonRepository>();
 builder.Services.AddTransient<IPersonService, PersonService>();
+builder.Services.AddScoped<IEmailService, EmailService>();
+
 
 
 var app = builder.Build();
