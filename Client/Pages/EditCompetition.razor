@@ -215,7 +215,7 @@
             <br />
 
 
-        @if (competition.Type == "Movies" || competition.Type == "filme")
+        @if (competition.Type == "Movies" || competition.Type == "TVShow")
             {
 
                 <p class="texto">Category</p>
@@ -331,7 +331,7 @@
 
             <label class="texto">Current Nominees:</label>
 
-            @if (competition.Type == "Movies" || competition.Type == "filme")
+            @if (competition.Type == "Movies" || competition.Type == "TVShow")
             {
 
                 <div class="row">
@@ -439,6 +439,45 @@
                             <!--movie-card-->
                         }
                     }
+                    else if (tvList != null)
+                    {
+                        @foreach (Movie tvshow in tvList.results)
+                        {
+                            tvshow.Id = 0;
+                            tvshow.title = tvshow.name;
+
+                            <div class="movie-card">
+                                <div class="movie-header">
+                                    <img src="https://image.tmdb.org/t/p/w342/@tvshow.poster_path" class="movie-header" />
+                                </div><!--movie-header-->
+
+                                <div class="movie-content">
+                                    <div class="movie-content-header">
+                                        <a href="#">
+                                            <h3 class="movie-title">@tvshow.name</h3>
+                                        </a>
+                                    </div>
+                                    <div class="movie-info">
+
+                                        <label>Overview:</label> <br>
+                                        <div style="max-height: 50px;overflow: overlay;font-size: 11px ">
+                                            <b>Synopsis:</b> @tvshow.overview
+                                        </div>
+
+                                        <div class="checkbox-wrapper-24">
+                                            <input type="checkbox" id="check-24" name="check" @bind-value="@tvshow.Id" @onclick="@(e => GetMovie(@tvshow))" />
+                                            <label for="check-24">
+                                                <span><!-- This span is needed to create the "checkbox" element --></span>Add as Nominee!
+                                            </label>
+                                        </div>
+
+
+                                    </div>
+                                </div><!--movie-content-->
+                            </div>
+                            <!--movie-card-->
+                        }
+                    }
                     else if (personList != null)
                     {
                         @foreach (var person in personList)
@@ -520,7 +559,10 @@
     private MovieList movieList;
 
     private List<string> selectedCategories = new List<string>();
+
     private List<string> emails = new List<string>();
+
+    private MovieList tvList;
 
     private Email emailObj = new Email
         {
@@ -644,24 +686,6 @@
     }
     }
 
-    private void ChoseType(int tipo)
-    {
-        if (tipo == 1)
-        {
-            compType = "filme";
-            competition.Type = compType;
-        }
-        else if (tipo == 2)
-        {
-            compType = "ator";
-            competition.Type = compType;
-        }
-        else if (tipo == 3)
-        {
-            compType = "diretor";
-            competition.Type = compType;
-        }
-    }
 
     private async Task KeyHandlerNominee(KeyboardEventArgs e)
     {
@@ -676,20 +700,25 @@
         NavigationManager.NavigateTo("backoffice");
     }
 
-	private async Task GetPosters()
-	{
-		if (competition.Type == "Movies")
-		{
-			movieList = await movieApi.searchMovieDetails(search);
-			personList = null;
-		}
-		else
-		{
-			personList = await movieApi.searchPersonDetails(search);
-			movieList = null;
-		}
-        
-	} // MovieSearch()
+    private async Task GetPosters()
+    {
+        if (competition.Type == "Movies")
+        {
+            movieList = await movieApi.searchMovieDetails(search);
+            personList = null;
+        }
+        else if (competition.Type == "TVShow")
+        {
+            tvList = await movieApi.searchTVDetails(search);
+            personList = null;
+        }
+        else
+        {
+            personList = await movieApi.searchPersonDetails(search);
+            movieList = null;
+        }
+
+    } // MovieSearch()
 
 
 	public void GetMovie(Movie movie)

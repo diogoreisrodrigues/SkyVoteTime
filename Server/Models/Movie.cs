@@ -9,7 +9,7 @@ namespace SkyVoteTime.Server.Models
         public int Id { get; set; }
 
         [Required]
-        public string title { get; set; }
+        public string? title { get; set; }
         //[Required]
         //public int Year { get; set; }
         //public string Rated { get; set; }
@@ -22,6 +22,8 @@ namespace SkyVoteTime.Server.Models
         public string poster_path { get; set; }
 
         public List<Vote>? Votes { get; set; }
+
+        public string? name { get; set; }
 
     }
 }

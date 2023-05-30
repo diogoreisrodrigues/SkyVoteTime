@@ -118,6 +118,25 @@ namespace SkyVoteTime.Client.API
             }
         }//grab 
 
+        public async Task<MovieList> searchTVDetails(string Query)
+        {
+            clearYourHead(); // 
+            // grab upcoming movie details
+            HttpResponseMessage upcomingMovie = await client.GetAsync(
+                "https://api.themoviedb.org/3/search/tv?api_key=8ec9575a406e1b25a8d68e65b07e7319&language=en-US&query=" + Query);
+            if (upcomingMovie.IsSuccessStatusCode)
+            {
+                UpcomingMovie = await upcomingMovie.Content.ReadAsStringAsync();
+                movieList = JsonConvert.DeserializeObject<MovieList>(UpcomingMovie);
+                return movieList;
+            }
+            else
+            {
+                UpcomingMovie = null;
+                return null;
+            }
+        }//grab  
+
         public void clearYourHead()
         {
             client.DefaultRequestHeaders.Accept.Clear();

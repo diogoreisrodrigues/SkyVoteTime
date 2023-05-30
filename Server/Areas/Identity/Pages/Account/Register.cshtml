@@ -4,10 +4,11 @@
     ViewData["Title"] = "Register";
 }
 
-<h1 style="color:white; margin-top: 134px;">@ViewData["Title"]</h1>
+<div class="margem" style="margin-top: 50px;padding: 50px;background: rgba(0,0,0,0.6);">
+<h1 style="color:white;">@ViewData["Title"]</h1>
 
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-6">
         <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
             <h2 style="color:white;">Create a new account.</h2>
             <hr />
@@ -27,13 +28,13 @@
                 <label asp-for="Input.ConfirmPassword">Confirm Password</label>
                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
             </div>
-            <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-secondary">Register</button>
+            <button id="registerSubmit" type="submit" class="w-100 btn btn-lg" style="background: #D4BE74">Register</button>
         </form>
     </div>
     <div class="col-md-6 col-md-offset-2" style="color: white;">
         <section>
             <h3>
-                Create film competitions.
+                Lights, Camera, Vote! Your Voice, Your Choice.
             </h3>
             <hr />
             @{
@@ -41,7 +42,7 @@
                 {
                     <div>
                         <p>
-                            Bring your stories to life, delight audiences and discover the power of cinematic art by creating your own film competitions on our platform. Register now and be part of a community passionate about cinema!
+                                With our exciting film and TV show competitions, you have the power to vote for your favorite actors, actresses, and cinematic masterpieces. Express your opinions, champion your favorites, and become a part of the ultimate film and TV show experience. With our exciting film and TV show competitions, you have the power to vote for your favorite actors, actresses, and cinematic masterpieces. Express your opinions, champion your favorites, and become a part of the ultimate film and TV show experience.
                         </p>
                     </div>
                 }
@@ -63,6 +64,7 @@
     </div>
 </div>
 
+</div>
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }

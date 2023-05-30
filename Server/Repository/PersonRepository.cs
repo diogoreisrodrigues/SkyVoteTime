@@ -36,6 +36,11 @@ namespace SkyVoteTime.Server.Repository
             throw new NotImplementedException();
         }
 
+        public Task<List<string>> GetAllEmailsFromComp(int id)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<Person> GetByIdAsync(int Id)
         {
             return await _dbContext.Persons.FirstOrDefaultAsync(c => c.Id == Id);
