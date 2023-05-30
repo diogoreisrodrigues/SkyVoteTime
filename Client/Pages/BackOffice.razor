@@ -28,8 +28,8 @@
     </div>
     
 
-    <div style=" box-shadow: 8px 7px 20px 0px">
-        <table class="table" style="background-color: #e6e6e6;">
+    <div>
+        <table class="table" style="background-color: honeydew;">
            <thead class="text-light" style="background-color: #D4BE74;">
             <tr>
               <th scope="col">ID</th>
@@ -139,7 +139,6 @@
                 await JsRuntime.InvokeVoidAsync("alert", "Deleted Successfully!");
                 
             }
-            NavigationManager.NavigateTo("backoffice");
         }
     }
 
@@ -147,4 +146,5 @@
     {
         NavigationManager.NavigateTo("personlist");
     }
+
 }
