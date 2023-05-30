@@ -27,9 +27,7 @@ namespace SkyVoteTime.Server.Repository
         {
             return await _dbContext.Competitions
                 .Include(c => c.Movies)
-                    .ThenInclude(m => m.Votes)
                 .Include(c => c.Persons)
-                    .ThenInclude(p => p.Votes)
                 .AsNoTracking()
                 .ToListAsync();
         }
@@ -37,7 +35,9 @@ namespace SkyVoteTime.Server.Repository
         {
             return await _dbContext.Competitions
                 .Include(c => c.Movies)
+                    
                 .Include(c => c.Persons)
+                    
                 .AsNoTracking()
                 .FirstOrDefaultAsync(c => c.Id == id);
         }
@@ -67,7 +67,9 @@ namespace SkyVoteTime.Server.Repository
         {
             var data = _dbContext.Competitions
                 .Include(c => c.Movies)
+                    
                 .Include(c => c.Persons)
+                    
                 .FirstOrDefault(x => x.Id == id);
             _dbContext.Remove(data);
             await _dbContext.SaveChangesAsync();

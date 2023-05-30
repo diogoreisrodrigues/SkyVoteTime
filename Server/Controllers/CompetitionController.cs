@@ -39,7 +39,7 @@ namespace SkyVoteTime.Server.Controllers
         [HttpPost]
         public async Task<Competition> AddCompetition([FromBody] Competition competition)
         {
-            Console.WriteLine("Competition: " + competition.Movies.ToString());
+           
             return await _competitionService.AddCompetition(competition);
         }
         [HttpDelete("{id}")]
