@@ -16,7 +16,7 @@ namespace SkyVoteTime.Server.Service
         }
         public async Task<bool> UpdateCompetition(int id, Competition competition)
         {
-            var data = await _competition.GetByIdAsync(id);
+            var data = await _competition.GetByIdAsyncCompetition(id);
             if (data != null)
             {
                 data.Name = competition.Name;
@@ -35,12 +35,12 @@ namespace SkyVoteTime.Server.Service
         }
         public async Task<bool> DeleteCompetition(int id)
         {
-            await _competition.DeleteAsync(id);
+            await _competition.DeleteAsyncCompetition(id);
             return true;
         }
         public async Task<List<Competition>> GetAllCompetitions()
         {
-            return await _competition.GetAllAsync();
+            return await _competition.GetAllAsyncCompetition();
         }
         public async Task<List<Competition>> GetCompetitionsWithoutUserVote(string email)
         {
@@ -54,7 +54,7 @@ namespace SkyVoteTime.Server.Service
 
         public async Task<Competition> GetCompetition(int id)
         {
-            return await _competition.GetByIdAsync(id);
+            return await _competition.GetByIdAsyncCompetition(id);
         }
     }
 }
