@@ -16,7 +16,7 @@ namespace SkyVoteTime.Server.Service
         }
         public async Task<bool> UpdateMovie(int id, Movie movie)
         {
-            var data = await _movie.GetByIdAsyncMovie(id);
+            var data = await _movie.GetByIdAsync(id);
             if (data != null)
             {
                 data.title = movie.title;
@@ -32,16 +32,16 @@ namespace SkyVoteTime.Server.Service
         }
         public async Task<bool> DeleteMovie(int id)
         {
-            await _movie.DeleteAsyncMovies(id);
+            await _movie.DeleteAsync(id);
             return true;
         }
         public async Task<List<Movie>> GetAllMovies()
         {
-            return await _movie.GetAllAsyncMovie();
+            return await _movie.GetAllAsync();
         }
         public async Task<Movie> GetMovie(int id)
         {
-            return await _movie.GetByIdAsyncMovie(id);
+            return await _movie.GetByIdAsync(id);
         }
     }
 }

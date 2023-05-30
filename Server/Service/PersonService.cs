@@ -14,13 +14,13 @@ namespace SkyVoteTime.Server.Service
         }
         public async Task<bool> DeletePerson(int id)
         {
-            await _person.DeleteAsyncPersons(id);
+            await _person.DeleteAsync(id);
             return true;
         }
 
         public async Task<bool> UpdatePerson(int id, Person person)
         {
-            var data = await _person.GetByIdAsyncPerson(id);
+            var data = await _person.GetByIdAsync(id);
             if (data != null)
             {
                 data.name = person.name;
