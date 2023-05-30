@@ -13,39 +13,78 @@
 
 <h1 class="titleCompetitions">Competitions</h1>
 
+
+
 <div class="container">
    
+    <div class="texto">
+        <label for="competitionState">Competition State:</label>
+        <select class="form-control" style="height: auto;width: 16%;" @bind=currentState>
+            <option value=@CompetitionState.Public>Public</option>
+            <option value=@CompetitionState.Finished>Finished</option>
+        </select>
+    </div>
+
      @if (competitionList != null)
     {
         @foreach (Competition competition in competitionList)
         {
+            if (competition.State == currentState && currentState == CompetitionState.Public)
+            {
+                List<String> categories = JsonSerializer.Deserialize<List<String>>(competition.CategoriesJson);
 
-        List<String> categories = JsonSerializer.Deserialize<List<String>>(competition.CategoriesJson);
+                <div>
+                    <div class="cardComp">
+                        <div style="height: 189px">
+                            <h1>@competition.Name</h1>
+                            <p>@competition.Description</p>
+                        </div>
 
-        <div>
-            <div class="cardComp">
-              <div style="height: 189px">
-                <h1>@competition.Name</h1>
-                <p>@competition.Description</p>
-              </div>
-             
-                <div class="row">
-                       <div class="col-9" style="display: flex; align-items: center;">
-                            @foreach (var category in categories)
-                            {
-                                                <span class="badge badge-pill badge-dark" style="margin-right: 15px; font-size: 20px; background-color: #000; padding: 10px;">@category</span>
-                            }
-                       </div>
-                               <div class="col-3" style="    text-align: right;">
-                           <button class="button-50" role="button">
+                        <div class="row">
+                            <div class="col-9" style="display: flex; align-items: center;">
+                                @foreach (var category in categories)
+                                {
+                                    <span class="badge badge-pill badge-dark" style="margin-right: 15px; font-size: 20px; background-color: #000; padding: 10px;">@category</span>
+                                }
+                            </div>
+                            <div class="col-3" style="    text-align: right;">
+                                <button class="button-50" role="button">
                                     <a href="/nom/@competition.Id" style="color: #fff"> View Nominees! </a>
-                           </button>
-                       </div>
-               
-
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
+            }
+
+            if (competition.State == currentState && currentState == CompetitionState.Finished)
+            {
+                List<String> categories = JsonSerializer.Deserialize<List<String>>(competition.CategoriesJson);
+
+                <div>
+                    <div class="cardComp">
+                        <div style="height: 189px">
+                            <h1>@competition.Name</h1>
+                            <p>@competition.Description</p>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-9" style="display: flex; align-items: center;">
+                                @foreach (var category in categories)
+                                {
+                                    <span class="badge badge-pill badge-dark" style="margin-right: 15px; font-size: 20px; background-color: #000; padding: 10px;">@category</span>
+                                }
+                            </div>
+                            <div class="col-3" style="text-align: right;">
+                                <button class="button-50" style="background-color:darkgreen" role="button">
+                                    <a href="/winner/@competition.Id" style="color: #fff"> View Results! </a>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+            
         }
 
      }
@@ -56,16 +95,46 @@
 
 
 @code {
+    private CompetitionState currentState = CompetitionState.Public;
+
+    public Competition competition = new Competition
+        {
+            Movies = new List<Movie>(),
+            Description = "",
+            CategoriesJson = "",
+            Name = "",
+            Id = 0,
+            Type = "",
+            Persons = new List<Person>()
+        };
+
     List<Competition> competitionList = new List<Competition>();
 
-	[CascadingParameter]
-	private Task<AuthenticationState>? authenticationState { get; set; }
+    [CascadingParameter]
+    private Task<AuthenticationState>? authenticationState { get; set; }
 
     string? email;
 
 
+    private void ChangeState(ChangeEventArgs e)
+    {
+        var state = e.Value.ToString();
 
-	protected override async Task OnInitializedAsync()
+        if (state == CompetitionState.Public.ToString())
+        {
+            competition.State = CompetitionState.Public;
+        }
+        else if (state == CompetitionState.Private.ToString())
+        {
+            competition.State = CompetitionState.Private;
+        }
+        else if (state == CompetitionState.Finished.ToString())
+        {
+            competition.State = CompetitionState.Finished;
+        }
+    }
+
+    protected override async Task OnInitializedAsync()
     {
 		var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
 		var user = authState.User;
