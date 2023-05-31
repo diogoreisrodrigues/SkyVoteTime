@@ -102,6 +102,7 @@ namespace SkyVoteTime.Server.Repository
             var emailsFromComp = _dbContext.Competitions
                 .Where(c => c.Id == id)
                 .SelectMany(c => c.Movies.SelectMany(m => m.Votes.Select(v => v.email)))
+                .Union(_dbContext.Persons.SelectMany(p => p.Votes.Select(v => v.email)))
                 .Distinct()
                 .ToList();
 

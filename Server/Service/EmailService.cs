@@ -16,13 +16,18 @@ namespace SkyVoteTime.Server.Service
         public void SendEmail(Email request)
         {
             var email = new MimeMessage();
-            email.Body = new TextPart(TextFormat.Html) { Text = request.Body };
+
+            var bodyBuilder = new BodyBuilder();
+            bodyBuilder.HtmlBody = request.Body;
+
+            email.Body = bodyBuilder.ToMessageBody();
 
             var mailMessage = new System.Net.Mail.MailMessage();
             mailMessage.From = new MailAddress(_config.GetSection("EmailUsername").Value);
             mailMessage.To.Add(new MailAddress(request.To));
             mailMessage.Subject = request.Subject;
             mailMessage.Body = email.Body.ToString();
+            mailMessage.IsBodyHtml = true; 
 
             using var smtp = new System.Net.Mail.SmtpClient(_config.GetSection("EmailHost").Value, 587)
             {
