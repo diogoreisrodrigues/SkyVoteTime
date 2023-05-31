@@ -39,7 +39,8 @@
                             <div class="cardComp">
                                 <div style="height: 189px">
                                     <h1>@competition.Name</h1>
-                                    <p>@competition.Description</p>
+                                    <p>Competition Type: @competition.Type</p>
+                                    <p>Description: @competition.Description</p>
                                 </div>
 
                                 <div class="row">
@@ -59,7 +60,7 @@
                                     </div>
                                     <div class="col-3" style="    text-align: right;">
                                         <button class="button-50" role="button">
-                                            <a href="/nom/@competition.Id" style="color: #fff"> View Nominees! </a>
+                                            <a href="/nom/@competition.Id" style="color: #fff"> <b>View Nominees!</b> </a>
                                         </button>
                                     </div>
                                 </div>
@@ -75,19 +76,27 @@
                             <div class="cardComp">
                                 <div style="height: 189px">
                                     <h1>@competition.Name</h1>
-                                    <p>@competition.Description</p>
+                                    <p>Competition Type: @competition.Type</p>
+                                    <p>Description: @competition.Description</p>
                                 </div>
 
                                 <div class="row">
                                     <div class="col-9" style="display: flex; align-items: center;">
-                                        @foreach (var category in categories)
+                                        @if (categories.Count == 0)
                                         {
-                                            <span class="badge badge-pill badge-dark" style="margin-right: 15px; font-size: 20px; background-color: #000; padding: 10px;">@category</span>
+                                            <span class="badge badge-pill badge-dark" style="margin-right: 15px; font-size: 20px; background-color: #000; padding: 10px;">None</span>
+                                        }
+                                        else
+                                        {
+                                            @foreach (var category in categories)
+                                            {
+                                                <span class="badge badge-pill badge-dark" style="margin-right: 15px; font-size: 20px; background-color: #000; padding: 10px;">@category</span>
+                                            }
                                         }
                                     </div>
                                     <div class="col-3" style="text-align: right;">
                                         <button class="button-50" style="background-color:darkgreen" role="button">
-                                            <a href="/winner/@competition.Id" style="color: #fff"> View Results! </a>
+                                            <a href="/winner/@competition.Id" style="color: #fff"> <b>View Results!</b> </a>
                                         </button>
                                     </div>
                                 </div>

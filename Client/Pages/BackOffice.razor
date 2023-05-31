@@ -138,7 +138,7 @@
             if (deleteResponse)
             {
                 await JsRuntime.InvokeVoidAsync("alert", "Deleted Successfully!");
-                
+                NavigationManager.NavigateTo("backoffice");
             }
         }
     }
