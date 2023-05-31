@@ -6,93 +6,106 @@
 @inject IAuthorizationService AuthorizationService
 @inject HttpClient _httpClient
 @using Microsoft.AspNetCore.Components.Authorization;
-
-
 @inject AuthenticationStateProvider AuthenticationStateProvider
+
+
 
 
 <h1 class="titleCompetitions">Competitions</h1>
 
+<AuthorizeView>
+    <Authorized>
 
-
-<div class="container">
+        <div class="container">
    
-    <div class="texto">
-        <label for="competitionState">Competition State:</label>
-        <select class="form-control" style="height: auto;width: 16%;" @bind=currentState>
-            <option value=@CompetitionState.Public>Public</option>
-            <option value=@CompetitionState.Finished>Finished</option>
-        </select>
-    </div>
+            <div class="texto">
+                <label for="competitionState">Competition State:</label>
+                <select class="form-control" style="height: auto;width: 16%;" @bind=currentState>
+                    <option value=@CompetitionState.Public>Public</option>
+                    <option value=@CompetitionState.Finished>Finished</option>
+                </select>
+            </div>
 
-     @if (competitionList != null)
-    {
-        @foreach (Competition competition in competitionList)
-        {
-            if (competition.State == currentState && currentState == CompetitionState.Public)
+             @if (competitionList != null)
             {
-                List<String> categories = JsonSerializer.Deserialize<List<String>>(competition.CategoriesJson);
+                @foreach (Competition competition in competitionList)
+                {
+                    if (competition.State == currentState && currentState == CompetitionState.Public)
+                    {
+                        List<String> categories = JsonSerializer.Deserialize<List<String>>(competition.CategoriesJson);
 
-                <div>
-                    <div class="cardComp">
-                        <div style="height: 189px">
-                            <h1>@competition.Name</h1>
-                            <p>@competition.Description</p>
-                        </div>
+                        <div>
+                            <div class="cardComp">
+                                <div style="height: 189px">
+                                    <h1>@competition.Name</h1>
+                                    <p>@competition.Description</p>
+                                </div>
 
-                        <div class="row">
-                            <div class="col-9" style="display: flex; align-items: center;">
-                                @foreach (var category in categories)
-                                {
-                                    <span class="badge badge-pill badge-dark" style="margin-right: 15px; font-size: 20px; background-color: #000; padding: 10px;">@category</span>
-                                }
-                            </div>
-                            <div class="col-3" style="    text-align: right;">
-                                <button class="button-50" role="button">
-                                    <a href="/nom/@competition.Id" style="color: #fff"> View Nominees! </a>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            }
-
-            if (competition.State == currentState && currentState == CompetitionState.Finished)
-            {
-                List<String> categories = JsonSerializer.Deserialize<List<String>>(competition.CategoriesJson);
-
-                <div>
-                    <div class="cardComp">
-                        <div style="height: 189px">
-                            <h1>@competition.Name</h1>
-                            <p>@competition.Description</p>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-9" style="display: flex; align-items: center;">
-                                @foreach (var category in categories)
-                                {
-                                    <span class="badge badge-pill badge-dark" style="margin-right: 15px; font-size: 20px; background-color: #000; padding: 10px;">@category</span>
-                                }
-                            </div>
-                            <div class="col-3" style="text-align: right;">
-                                <button class="button-50" style="background-color:darkgreen" role="button">
-                                    <a href="/winner/@competition.Id" style="color: #fff"> View Results! </a>
-                                </button>
+                                <div class="row">
+                                    <div class="col-9" style="display: flex; align-items: center;">
+                                        @if (categories.Count == 0)
+                                        {
+                                            <span class="badge badge-pill badge-dark" style="margin-right: 15px; font-size: 20px; background-color: #000; padding: 10px;">None</span>
+                                        }
+                                        else
+                                        {
+                                            @foreach (var category in categories)
+                                            {
+                                                <span class="badge badge-pill badge-dark" style="margin-right: 15px; font-size: 20px; background-color: #000; padding: 10px;">@category</span>
+                                            }
+                                        }
+                                    </div>
+                                    <div class="col-3" style="    text-align: right;">
+                                        <button class="button-50" role="button">
+                                            <a href="/nom/@competition.Id" style="color: #fff"> View Nominees! </a>
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-            }
+                    }
+
+                    if (competition.State == currentState && currentState == CompetitionState.Finished)
+                    {
+                        List<String> categories = JsonSerializer.Deserialize<List<String>>(competition.CategoriesJson);
+
+                        <div>
+                            <div class="cardComp">
+                                <div style="height: 189px">
+                                    <h1>@competition.Name</h1>
+                                    <p>@competition.Description</p>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-9" style="display: flex; align-items: center;">
+                                        @foreach (var category in categories)
+                                        {
+                                            <span class="badge badge-pill badge-dark" style="margin-right: 15px; font-size: 20px; background-color: #000; padding: 10px;">@category</span>
+                                        }
+                                    </div>
+                                    <div class="col-3" style="text-align: right;">
+                                        <button class="button-50" style="background-color:darkgreen" role="button">
+                                            <a href="/winner/@competition.Id" style="color: #fff"> View Results! </a>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
             
-        }
+                }
 
-     }
+             }
      
-
-</div>
-
-
+        </div>
+    </Authorized>
+    <NotAuthorized>
+        <div style="height: 50vh; text-align:center; padding-top:5vh" class="m-5">
+            <h1 class="text-light mt-5 pt-5">To view all the Competitions, please Log in or Register first.</h1>
+        </div>
+		
+    </NotAuthorized>
+</AuthorizeView>
 
 @code {
     private CompetitionState currentState = CompetitionState.Public;

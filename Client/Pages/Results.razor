@@ -4,10 +4,156 @@
 @inject IJSRuntime JsRuntime
 
 <style>
+
     ::-webkit-scrollbar {
         width: 0px;
         /* make scrollbar transparent */
     }
+
+    .containerMovie {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+        max-width: 100%;
+        margin-bottom: 10vh;
+        margin-left: auto;
+        margin-right: auto;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        justify-content: center;
+    }
+
+    .movie-card {
+        background: #ffffff;
+        box-shadow: 0px 6px 18px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 30%;
+        margin: 2em;
+        border-radius: 10px;
+        display: inline-block;
+    }
+
+    .movie-header {
+        padding: 0;
+        margin: 0;
+        height: 367px;
+        width: 100%;
+        display: block;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        background-size: cover;
+        background-position: 100% 100%;
+    }
+
+
+    .header-icon-container {
+        position: relative;
+    }
+
+    .header-icon {
+        width: 100%;
+        height: 367px;
+        line-height: 367px;
+        text-align: center;
+        vertical-align: middle;
+        margin: 0 auto;
+        color: #ffffff;
+        font-size: 54px;
+        text-shadow: 0px 0px 20px #6abcea, 0px 5px 20px #6ABCEA;
+        opacity: .85;
+    }
+
+        .header-icon:hover {
+            background: rgba(0, 0, 0, 0.15);
+            font-size: 74px;
+            text-shadow: 0px 0px 20px #6abcea, 0px 5px 30px #6ABCEA;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            opacity: 1;
+        }
+
+    .movie-card:hover {
+        -webkit-transform: scale(1.03);
+        transform: scale(1.03);
+        box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.08);
+    }
+
+    .movie-content {
+        padding-top: 18px;
+        margin: 0;
+    }
+
+    .movie-content-header, .movie-info {
+        display: table;
+        width: 100%;
+    }
+
+    .movie-title {
+        font-size: 24px;
+        margin: 0;
+        display: table-cell;
+    }
+
+    .imax-logo {
+        width: 50px;
+        height: 15px;
+        background: url("https://6a25bbd04bd33b8a843e-9626a8b6c7858057941524bfdad5f5b0.ssl.cf5.rackcdn.com/media_kit/3e27ede823afbf139c57f1c78a03c870.jpg") no-repeat;
+        background-size: contain;
+        display: table-cell;
+        float: right;
+        position: relative;
+        margin-top: 5px;
+    }
+
+    .movie-info {
+        margin-top: 1em;
+    }
+
+    .info-section {
+        display: table-cell;
+        text-transform: uppercase;
+        text-align: center;
+    }
+
+        .info-section:first-of-type {
+            text-align: left;
+        }
+
+        .info-section:last-of-type {
+            text-align: right;
+        }
+
+        .info-section label {
+            display: block;
+            color: rgba(0, 0, 0, 0.5);
+            margin-bottom: .5em;
+            font-size: 9px;
+        }
+
+        .info-section span {
+            font-weight: 700;
+            font-size: 11px;
+        }
+
+
+    .movie-card {
+        width: 95%;
+        max-width: 30%;
+        margin: 1em;
+        display: block;
+    }
+
+    .container {
+        padding: 0;
+    }
+
+    .checkbox-wrapper-24 {
+        margin-top: 10px;
+        text-align: center;
+    }
+
 </style>
 
 <PageTitle>Competition Results</PageTitle>
@@ -16,94 +162,42 @@
 
 <div class="Nominees">
     <div class="px-5 mx-5 my-5">
-        <h1 class="TitleNominees">And the Winner of @competition.Name  is...</h1>
+        <h1 class="TitleNominees">And the Winner of @competition.Name is...</h1>
     </div>
 
     <br />
-    
-    <div class="container" style="background: rgba(212, 190, 116, 0.7); border-radius: 20px;">
-        <div class="row">
-            <div class="col-sm-3">
-                <img style="display: flex; align-items: center; padding: 15px; perspective: 100px; height: 367.5px;" src="https://image.tmdb.org/t/p/w342/@winner.poster_path" alt="" />
-            </div>
-            <div class="col-sm-9" style="color:white">
-                <div style="height: 285px;">
-                    <h1 class="font-weight-bold">@winner.title</h1>
-                    <div class="my-2">
-                        <div style="font-size: 120%" class="my-3">
-                            <b>Directors:</b> Daniel KwanDaniel and Daniel Scheinert
-                        </div>
 
-                        <div style="font-size: 120%" class="my-3">
-                            <b>Actors:</b> Michelle Yeoh, Stephanie Hsu and Jamie Lee Curtis
-                        </div>
-
-                        <div style="font-size: 120%; max-height: 100px;overflow: overlay; " class="my-4">
-                            <b>Synopsis:</b> @winner.overview
-                        </div>
-                    </div>
-
-                </div>
-                <div class="row ">
-                    <div class="col-9" style="display: flex; align-items: center;">
-
-                    </div>
-	                <div class="col-3 text-white" style="text-align: right; font-size: 25px;">
-                        <p style="color:#fff"><b>Our Winner!</b> <i class="fa-solid fa-crown"></i> </p>
-	                </div>
-
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <br />
-    <br />
-
-
-    @if (competition.Movies != null)
+    @if(competition.Type == "Movies"  || competition.Type == "TVShow")
     {
-
-        @foreach (Movie movie in competition.Movies)
+        @if (movieWinner != null)
         {
-            if (movie == winner)
-			{
-				continue;
-			}
-            <div class="container" style="background: rgba(0,0,0,0.7); border-radius: 20px;">
+        
+            <div class="container" style="background: rgba(212, 190, 116, 0.7); border-radius: 20px; -webkit-transform: scale(1.03); transform: scale(1.03); box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.08);">
                 <div class="row">
                     <div class="col-sm-3">
-                        <img style="display: flex; align-items: center; padding: 15px; perspective: 100px;" src="https://image.tmdb.org/t/p/w342/@movie.poster_path" alt="" />
+                        <img style="display: flex; align-items: center; padding: 15px; perspective: 100px;" src="https://image.tmdb.org/t/p/w342/@movieWinner.poster_path" alt="" />
                     </div>
                     <div class="col-sm-9" style="color:white">
                         <div style="height: 285px;">
                             <!--<div class="nomTitle">@movie.title</div>-->
-                            <h1 class="font-weight-bold">@movie.title</h1>
-                            <div class="my-2">
-                                <div style="font-size: 120%" class="my-3">
-                                    <b>Directors:</b> Daniel KwanDaniel and Daniel Scheinert
-                                </div>
+                            <h1 class="font-weight-bold">@movieWinner.title</h1>
+                            <div class="mr-5">
 
-                                <div style="font-size: 120%" class="my-3">
-                                    <b>Actors:</b> Michelle Yeoh, Stephanie Hsu and Jamie Lee Curtis
-                                </div>
 
-                                <div style="font-size: 120%; max-height: 100px;overflow: overlay; " class="my-4">
-                                    <b>Synopsis:</b> @movie.overview
+                                <div style="font-size: 120%; max-height: 130px;overflow: overlay; " class="my-5">
+                                    <b>Synopsis:</b> @movieWinner.overview
                                 </div>
                             </div>
 
                         </div>
-                        <div class="row ">
-                            <div class="col-9" style="display: flex; align-items: center;">
+                        <div class="row">
+                            <div class="col-8" style="display: flex; align-items: center;">
 
-                               
+   
                             </div>
-                            <div class="col-3" style=" text-align: right;">
-
+                            <div class="col-3 text-white ml-5" style="text-align: right; font-size: 25px;">
+                                <p style="color:#fff"><b>Our Winner!</b> <i class="fa-solid fa-crown"></i> </p>
                             </div>
-
-
                         </div>
                     </div>
                 </div>
@@ -111,9 +205,97 @@
 
             <br />
             <br />
+
         }
 
+        @if (competition.Movies != null)
+        {
+
+            @foreach (Movie movie in competition.Movies)
+            {
+                if (movie == movieWinner)
+                {
+                    continue;
+                }
+                <div class="container" style="background: rgba(0,0,0,0.7); border-radius: 20px; -webkit-transform: scale(1.03); transform: scale(1.03); box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.08);">
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <img style="display: flex; align-items: center; padding: 15px; perspective: 100px;" src="https://image.tmdb.org/t/p/w342/@movie.poster_path" alt="" />
+                        </div>
+                        <div class="col-sm-9" style="color:white">
+                            <div style="height: 285px;">
+                                <!--<div class="nomTitle">@movie.title</div>-->
+                                <h1 class="font-weight-bold">@movie.title</h1>
+                                <div class="mr-5">
+
+
+                                    <div style="font-size: 120%; max-height: 130px;overflow: overlay; " class="my-5">
+                                        <b>Synopsis:</b> @movie.overview
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row ">
+                                <div class="col-9" style="display: flex; align-items: center;">
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <br />
+                <br />
+            }
+
+        }
     }
+    else{
+    
+        @if (personWinner != null)
+        {
+
+            <div style="text-align: -webkit-center;">
+                <img src="Assets/crown.png" class="movie-header" style="width: 321px; height: 200px " />
+                <div class="movie-card" style="padding: 15px; background: rgba(212, 190, 116, 0.7); border-radius: 20px;  width:321px">
+                    <div class="movie-header">
+                        <img src="https://image.tmdb.org/t/p/w342/@personWinner.profile_path" class="movie-header" />
+                    </div><!--movie-header-->
+                    <div class="movie-content">
+                        <div class="movie-content-header" style="text-align:center">
+                            <h3 class="movie-title text-light">@personWinner.name</h3>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        }
+    <div class="containerMovie container">
+        @foreach (var person in competition.Persons)
+        {
+            if (person == personWinner)
+            {
+                continue;
+            }
+
+            <div class="movie-card" style="padding: 15px; background: rgba(0,0,0,0.7); border-radius: 20px;">
+                <div class="movie-header">
+                    <img src="https://image.tmdb.org/t/p/w342/@person.profile_path" class="movie-header" />
+                </div><!--movie-header-->
+
+                <div class="movie-content">
+                    <div class="movie-content-header" style="text-align:center">
+                        <h3 class="movie-title text-light">@person.name</h3>
+                    </div>
+
+                </div>
+            </div>
+        }
+    </div>
+    }
+
+
 
 
 
@@ -123,46 +305,74 @@
 
 @code {
 
-	[Parameter]
-	public string Id { get; set; }
+    [Parameter]
+    public string Id { get; set; }
 
-	public Competition? competition;
+    public Competition? competition;
 
-    public Movie? winner;
+    public Movie? movieWinner;
 
-	protected override async Task OnInitializedAsync()
-	{
-		Console.WriteLine(Id);
+    public Person? personWinner;
 
-		competition = await Http.GetFromJsonAsync<Competition>("api/competition/" + Id);
+    protected override async Task OnInitializedAsync()
+    {
+        Console.WriteLine(Id);
 
-		Console.WriteLine(competition.ToString());
+        competition = await Http.GetFromJsonAsync<Competition>("api/competition/" + Id);
 
-        winner = SelectObjectWithLongestList<Movie>(competition);
+        Console.WriteLine(competition.ToString());
 
-		Console.WriteLine(winner.ToString());
+        if (competition.Type == "Movies" || competition.Type == "TVShow")
+        {
+            movieWinner = SelectMovieWithMostVotes<Movie>(competition);
+        }
+        else
+        {
+            personWinner = SelectPersonWithMostVotes<Person>(competition);
+        }
 
-	}
+    }
 
-	public Movie SelectObjectWithLongestList<T>(Competition competition)
-	{
+    public Movie SelectMovieWithMostVotes<T>(Competition competition)
+    {
         Movie selectedObject = new Movie();
-		
-        int currentLength = 0;
-		int maxLength = 0;
 
-		foreach (var movie in competition.Movies)
-		{
+        int currentLength = 0;
+        int maxLength = 0;
+
+        foreach (var movie in competition.Movies)
+        {
             currentLength = movie.Votes?.Count() ?? 0;
 
-			if (currentLength > maxLength)
-			{
-				maxLength = currentLength;
-				selectedObject = movie;
-			}
-		}
+            if (currentLength > maxLength)
+            {
+                maxLength = currentLength;
+                selectedObject = movie;
+            }
+        }
 
-		return selectedObject;
-	}
+        return selectedObject;
+    }
+
+    public Person SelectPersonWithMostVotes<T>(Competition competition)
+    {
+        Person selectedObject = new Person();
+
+        int currentLength = 0;
+        int maxLength = 0;
+
+        foreach (var person in competition.Persons)
+        {
+            currentLength = person.Votes?.Count() ?? 0;
+
+            if (currentLength > maxLength)
+            {
+                maxLength = currentLength;
+                selectedObject = person;
+            }
+        }
+
+        return selectedObject;
+    }
 
 }
