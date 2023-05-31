@@ -31,9 +31,17 @@
              
                 <div class="row">
                        <div class="col-9" style="display: flex; align-items: center;">
-                            @foreach (var category in categories)
+                            
+                            @if (categories.Count == 0)
                             {
-                                                <span class="badge badge-pill badge-dark" style="margin-right: 15px; font-size: 20px; background-color: #000; padding: 10px;">@category</span>
+                                <span class="badge badge-pill badge-dark" style="margin-right: 15px; font-size: 20px; background-color: #000; padding: 10px;">None</span>
+                            }
+                            else
+                            {
+                                @foreach (var category in categories)
+                                {
+                                    <span class="badge badge-pill badge-dark" style="margin-right: 15px; font-size: 20px; background-color: #000; padding: 10px;">@category</span>
+                                }
                             }
                        </div>
                                <div class="col-3" style="    text-align: right;">
