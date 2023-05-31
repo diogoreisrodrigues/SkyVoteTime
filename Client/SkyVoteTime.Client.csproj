@@ -9,6 +9,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Observer\**" />
+    <Content Remove="Observer\**" />
+    <EmbeddedResource Remove="Observer\**" />
+    <None Remove="Observer\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Remove="wwwroot\css\app.css" />
   </ItemGroup>
 
