@@ -85,12 +85,14 @@ namespace SkyVoteTime.Server.Repository
         }
         public async Task<List<Competition>> GetAllCompWithoutVoteAsync(string userEmail)
         {
-            var competitionsWithoutVote = _dbContext.Competitions
-                .Include(c => c.Movies) // Include Movies to access Votes
-                .Include(c => c.Persons) // Include Persons to access Votes
-                .Where(c => !c.Movies.Any(m => m.Votes.Any(v => v.email == userEmail)) &&
-                            !c.Persons.Any(p => p.Votes.Any(v => v.email == userEmail)))
-                .ToList();
+            var competitionsWithoutVote = await _dbContext.Competitions
+            .Include(c => c.Movies)
+            .Include(c => c.Persons)
+            .Where(c => (c.State == CompetitionState.Public &&
+                         !c.Movies.Any(m => m.Votes.Any(v => v.email == userEmail)) &&
+                         !c.Persons.Any(p => p.Votes.Any(v => v.email == userEmail))) ||
+                        c.State == CompetitionState.Finished)
+            .ToListAsync();
 
             return competitionsWithoutVote;
         }
@@ -100,6 +102,7 @@ namespace SkyVoteTime.Server.Repository
             var emailsFromComp = _dbContext.Competitions
                 .Where(c => c.Id == id)
                 .SelectMany(c => c.Movies.SelectMany(m => m.Votes.Select(v => v.email)))
+                .Union(_dbContext.Persons.SelectMany(p => p.Votes.Select(v => v.email)))
                 .Distinct()
                 .ToList();
 

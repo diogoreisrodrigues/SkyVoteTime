@@ -567,11 +567,11 @@
         {
             To = "artursf10001@gmail.com",
             Subject = "Closed competition",
-            Body = "We are sending this e-mail because one of the competitions you voted was closed. Check our site to see the results!"
+            Body = "<p>Hello!</p><p>We are sending this e-mail because the following competition has been closed: Test.</p><p>Check our website to see the results.</p><p>Best regards,<br>SkyVoteTime</p>",
         };
 
-	private List<Person>? personList = new List<Person>();
-     
+    private List<Person>? personList = new List<Person>();
+
 
     protected override async Task OnInitializedAsync()
     {
@@ -600,6 +600,7 @@
                 {
                     Console.WriteLine(email);
                     emailObj.To = email;
+                    emailObj.Body = "<p>Hello!</p><p>We are sending this e-mail because the following competition has been closed: " + competition.Name + ".</p><p>Check our website to see the results.</p><p>Best regards,<br>SkyVoteTime</p>";
                     var sender = await Http.PostAsJsonAsync("api/email", emailObj);
                 }
             }
