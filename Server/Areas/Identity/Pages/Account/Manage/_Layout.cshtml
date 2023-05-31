@@ -9,25 +9,23 @@
     }
 }
 <br>
-<h1 style="color: white">Manage your account</h1>
+<div class="margem" style=" margin-top: 50px;padding: 50px;background: rgba(0,0,0,0.6);width: 800px;margin-left: 50px;">
+    <h1 style="color: white">Manage your account</h1>
 
-<div>
-    <h2 style="color: white">Change your account settings</h2>
-    <hr />
-    <div class="row">
-        <div class="col-md-3">
-            <partial name="_ManageNav" />
-        </div>
-        <div class="col-md-9">
-            @RenderBody()
+    <div>
+        <h2 style="color: white">Change your account settings</h2>
+        <hr />
+        <div class="row">
+            <div class="col-md-4">
+                <partial name="_ManageNav" />
+            </div>
+            <div class="col-md-8">
+                @RenderBody()
+            </div>
         </div>
     </div>
+
 </div>
-<br>
-<br>
-<br>
-<br>
-<br>
 
 @section Scripts {
     @RenderSection("Scripts", required: false)

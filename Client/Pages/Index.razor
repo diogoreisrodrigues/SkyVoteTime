@@ -18,73 +18,13 @@
       <div class="slider">
         <div class="slide_track">
 
-          <div class="slide">
-            <img src="Assets/alien.jpg" alt="" />
-          </div>
-
-          <div class="slide">
-            <img src="Assets/batman.jpg" alt="" />
-          </div>
-          <div class="slide">
-            <img src="Assets/breaking.jpg" alt="" />
-          </div>
-          <div class="slide">
-            <img src="Assets/interstellar.jpg" alt="" />
-          </div>
-          <div class="slide">
-            <img src="Assets/got.jpg" alt="" />
-          </div>
-          <div class="slide">
-            <img src="Assets/infinity.jpg" alt="" />
-          </div>
-          <div class="slide">
-            <img src="Assets/jaws.jpg" alt="" />
-          </div>
-          <div class="slide">
-            <img src="Assets/onepiece.jpg" alt="" />
-          </div>
-          <div class="slide">
-            <img src="Assets/pulpfiction.jpg" alt="" />
-          </div>
-          <div class="slide">
-            <img src="Assets/jujutsu.jpg" alt="" />
-          </div>
-
-
-          <div class="slide">
-            <img src="Assets/alien.jpg" alt="" />
-          </div>
-
-          <div class="slide">
-            <img src="Assets/batman.jpg" alt="" />
-          </div>
-          <div class="slide">
-            <img src="Assets/breaking.jpg" alt="" />
-          </div>
-          <div class="slide">
-            <img src="Assets/interstellar.jpg" alt="" />
-          </div>
-          <div class="slide">
-            <img src="Assets/got.jpg" alt="" />
-          </div>
-          <div class="slide">
-            <img src="Assets/infinity.jpg" alt="" />
-          </div>
-          <div class="slide">
-            <img src="Assets/jaws.jpg" alt="" />
-          </div>
-          <div class="slide">
-            <img src="Assets/onepiece.jpg" alt="" />
-          </div>
-          <div class="slide">
-            <img src="Assets/pulpfiction.jpg" alt="" />
-          </div>
-          <div class="slide">
-            <img src="Assets/jujutsu.jpg" alt="" />
-          </div>
-
-
-
+            @foreach(var movie in movieList.results)
+            {
+                <div class="slide">
+                    <img src="https://image.tmdb.org/t/p/w342/@movie.poster_path" alt="" />
+                </div>
+            }
+            
 
         </div>
 
@@ -128,8 +68,8 @@ margin-top: 50px; margin-bottom: 0px;
                   </div>
 
                 </div>
-                <div class="flim">
-                      <b>@movieList.results[i].title</b><br>IMDb - 8.8
+                        <div class="flim" style="padding: 10px;">
+                      <b>@movieList.results[i].title</b><br>
                 </div>
               </div>
             </div>
@@ -215,7 +155,7 @@ margin-top: 50px; margin-bottom: 0px;
 
                 </div>
                 <div class="flim">
-                  <b>Jhonny Depp</b><br>Age - xx
+                  <b>Jhonny Depp</b><br>Age - 52
                 </div>
               </div>
             </div>

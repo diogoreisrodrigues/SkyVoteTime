@@ -26,7 +26,9 @@ namespace SkyVoteTime.Server.Models
 
         public string Type { get; set; }
 
+
     }
+
     public enum CompetitionState
     {
         Private,
