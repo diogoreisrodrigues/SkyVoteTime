@@ -366,7 +366,7 @@
 							    <img src="https://image.tmdb.org/t/p/w342/@movie.poster_path" class="movie-header"/>
 						    </div><!--movie-header-->
 
-						    <div class="movie-content">
+						    <div class="movie-content" style="height:200px">
 							    <div class="movie-content-header">
 								    <a href="#">
 									    <h3 class="movie-title">@movie.title</h3>
@@ -376,19 +376,22 @@
 
 								    <label>Overview:</label> <br>
                                     <div style="max-height: 50px;overflow: overlay;font-size: 11px ">
-									    <b>Synopsis:</b> @movie.overview
+									    <b></b> @movie.overview
 								    </div>
-								    
-								    <div class="checkbox-wrapper-24">
-									    <input type="checkbox" id="check-24" name="check" @bind-value="@movie.Id" @onclick="@(e => GetMovie(@movie))"/>
-									    <label for="check-24">
-										    <span><!-- This span is needed to create the "checkbox" element --></span>Add as Nominee!
-									    </label>
-								    </div>
+
+                                    
 
 
 							    </div>
 						    </div><!--movie-content-->
+                            <div style="padding-bottom:10px">
+                                <button style="border-radius:10px; margin-left: 80px;" class="checkbox-wrapper-24" @onclick="@(e => GetMovie(movie))">
+
+                                    <label for="check-24">
+                                        <span><!-- This span is needed to create the "checkbox" element --></span>Add as Nominee!
+                                    </label>
+                                </button>
+                            </div>
 					    </div>
 					    <!--movie-card-->
 				    }
@@ -405,7 +408,7 @@
                                 <img src="https://image.tmdb.org/t/p/w342/@tvshow.poster_path" class="movie-header" />
                             </div><!--movie-header-->
 
-                            <div class="movie-content">
+                            <div class="movie-content" style="height:200px">
                                 <div class="movie-content-header">
                                     <a href="#">
                                         <h3 class="movie-title">@tvshow.name</h3>
@@ -415,19 +418,18 @@
 
                                     <label>Overview:</label> <br>
                                     <div style="max-height: 50px;overflow: overlay;font-size: 11px ">
-                                        <b>Synopsis:</b> @tvshow.overview
+                                        <b></b> @tvshow.overview
                                     </div>
-
-                                    <div class="checkbox-wrapper-24">
-                                        <input type="checkbox" id="check-24" name="check" @bind-value="@tvshow.Id" @onclick="@(e => GetMovie(@tvshow))" />
-                                        <label for="check-24">
-                                            <span><!-- This span is needed to create the "checkbox" element --></span>Add as Nominee!
-                                        </label>
-                                    </div>
-
-
                                 </div>
                             </div><!--movie-content-->
+                            <div style="padding-bottom:10px">
+                                <button style="border-radius:10px; margin-left: 80px;" class="checkbox-wrapper-24" @onclick="@(e => GetMovie(@tvshow))">
+
+                                    <label for="check-24">
+                                        <span><!-- This span is needed to create the "checkbox" element --></span>Add as Nominee!
+                                    </label>
+                                </button>
+                            </div>
                         </div>
                         <!--movie-card-->
                     }
@@ -450,19 +452,16 @@
 						                <a href="#">
 							                <h3 class="movie-title">@person.name</h3>
 						                </a>
-					                </div>
-					                <div class="movie-info">
-
-						                <div class="checkbox-wrapper-24">
-							                <input type="checkbox" id="check-24" name="check" @bind-value="@person.Id" @onclick="@(e => GetPerson(@person))"/>
-							                <label for="check-24">
-								                <span><!-- This span is needed to create the "checkbox" element --></span>Add as Nominee!
-							                </label>
-						                </div>
-
-
-					                </div>
+					                </div
 				                </div>
+                                <div style="padding-bottom:10px">
+                                    <button style="border-radius:10px; margin-left: 80px;" class="checkbox-wrapper-24"  @onclick="@(e => GetPerson(@person))">
+
+                                        <label for="check-24">
+                                            <span><!-- This span is needed to create the "checkbox" element --></span>Add as Nominee!
+                                        </label>
+                                    </button>
+                                </div>
 			                </div>
 		                }
 	                }
@@ -542,8 +541,8 @@
         else if(competition.Type == "TVShow")
         {
             tvList = await movieApi.searchTVDetails(search);
-			personList = null;
-		}
+            personList = null;
+        }
         else
         {
             personList = await movieApi.searchPersonDetails(search);
@@ -555,16 +554,44 @@
 
 
 
-    public void GetMovie(Movie movie)
+    private async Task GetMovie(Movie movie)
     {
-        if (!competition.Movies.Contains(movie))
+        bool confirmed = await JsRuntime.InvokeAsync<bool>("confirm", "Are you sure you want to delete this nominee?");
+        if (confirmed)
         {
-            competition.Movies.Add(movie);
+            try
+            {
+                if (!competition.Movies.Contains(movie))
+                {
+                    competition.Movies.Add(movie);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message); 
+            }
         }
+
+
 
     } // GetMovie()
 
-    public void GetPerson(Person person) => competition.Persons.Add(person); // GetMovie()
+    private async Task GetPerson(Person person)
+    {
+        bool confirmed = await JsRuntime.InvokeAsync<bool>("confirm", "Are you sure you want to delete this nominee?");
+        if (confirmed)
+        {
+            try
+            {
+                competition.Persons.Add(person); // GetMovie()
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message); 
+            }
+        }
+        
+    } 
 
     private void OnCategoryChecked(string categoryName, ChangeEventArgs e)
     {   

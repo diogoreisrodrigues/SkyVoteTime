@@ -411,7 +411,7 @@
                                     <img src="https://image.tmdb.org/t/p/w342/@movie.poster_path" class="movie-header" />
                                 </div><!--movie-header-->
 
-                                <div class="movie-content">
+                            <div class="movie-content" style="height:200px">
                                     <div class="movie-content-header">
                                         <a href="#">
                                             <h3 class="movie-title">@movie.title</h3>
@@ -421,19 +421,18 @@
 
                                         <label>Overview:</label> <br>
                                         <div style="max-height: 50px;overflow: overlay;font-size: 11px ">
-                                            <b>Synopsis:</b> @movie.overview
+                                            <b></b> @movie.overview
                                         </div>
-
-                                        <div class="checkbox-wrapper-24">
-                                            <input type="checkbox" id="check-24" name="check" @bind-value="@movie.Id" @onclick="@(e => GetMovie(@movie))" />
-                                            <label for="check-24">
-                                                <span><!-- This span is needed to create the "checkbox" element --></span>Add as Nominee!
-                                            </label>
-                                        </div>
-
-
                                     </div>
                                 </div><!--movie-content-->
+                            <div style="padding-bottom:10px">
+                                <button style="border-radius:10px; margin-left: 80px;" class="checkbox-wrapper-24" @onclick="@(e => GetMovie(movie))">
+
+                                    <label for="check-24">
+                                        <span><!-- This span is needed to create the "checkbox" element --></span>Add as Nominee!
+                                    </label>
+                                </button>
+                            </div>
                             </div>
                             <!--movie-card-->
                         }
@@ -450,7 +449,7 @@
                                     <img src="https://image.tmdb.org/t/p/w342/@tvshow.poster_path" class="movie-header" />
                                 </div><!--movie-header-->
 
-                                <div class="movie-content">
+                            <div class="movie-content" style="height:200px">
                                     <div class="movie-content-header">
                                         <a href="#">
                                             <h3 class="movie-title">@tvshow.name</h3>
@@ -460,19 +459,18 @@
 
                                         <label>Overview:</label> <br>
                                         <div style="max-height: 50px;overflow: overlay;font-size: 11px ">
-                                            <b>Synopsis:</b> @tvshow.overview
+                                            <b></b> @tvshow.overview
                                         </div>
-
-                                        <div class="checkbox-wrapper-24">
-                                            <input type="checkbox" id="check-24" name="check" @bind-value="@tvshow.Id" @onclick="@(e => GetMovie(@tvshow))" />
-                                            <label for="check-24">
-                                                <span><!-- This span is needed to create the "checkbox" element --></span>Add as Nominee!
-                                            </label>
-                                        </div>
-
-
                                     </div>
                                 </div><!--movie-content-->
+                            <div style="padding-bottom:10px">
+                                <button style="border-radius:10px; margin-left: 80px;" class="checkbox-wrapper-24" @onclick="@(e => GetMovie(@tvshow))">
+
+                                    <label for="check-24">
+                                        <span><!-- This span is needed to create the "checkbox" element --></span>Add as Nominee!
+                                    </label>
+                                </button>
+                            </div>
                             </div>
                             <!--movie-card-->
                         }
@@ -498,12 +496,14 @@
                                         </div>
                                         <div class="movie-info">
 
-                                            <div class="checkbox-wrapper-24">
-                                                <input type="checkbox" id="check-24" name="check" @bind-value="@person.Id" @onclick="@(e => GetPerson(@person))" />
+                                        <div>
+                                            <button style="border-radius:10px; margin-left: 65px;" class="checkbox-wrapper-24" @onclick="@(e => GetPerson(@person))">
+
                                                 <label for="check-24">
                                                     <span><!-- This span is needed to create the "checkbox" element --></span>Add as Nominee!
                                                 </label>
-                                            </div>
+                                            </button>
+                                        </div>
                                         </div>
                                     </div>
                                 </div>
