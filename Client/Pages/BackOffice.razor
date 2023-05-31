@@ -3,7 +3,8 @@
 @inject HttpClient Http
 @inject NavigationManager NavigationManager
 @inject IJSRuntime JsRuntime
-
+@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
 
 <style>
     .page {
@@ -15,105 +16,130 @@
     }
 </style>
 
+<AuthorizeView>
 
-<div class="container-lg my-5" style="padding: 20px; border-radius: 20px;">
-    <div class="row">
-        <div class="col-10 text-light">
-            <h1 style="margin-bottom: 25px; text-transform: uppercase; font-family: Inter; font-style: normal; font-size: 38px;">BackOffice - Competitions</h1>
-        </div>
-        <div class="col-2">
-            <button type="button" class="btn btn-lg text-light" style="margin: 0; position: absolute; top: 50%; -ms-transform: translateY(-50%); transform: translateY(-50%);background-color: #D4BE74"><a class="text-light" href="/createcomp">Create Competition</a></button>
-        </div>
-
-    </div>
+    <Authorized>
 
 
-    <div style=" box-shadow: 8px 7px 20px 0px">
-        <table class="table" style="background-color: #e6e6e6;">
-            <thead class="text-light" style="background-color: #D4BE74;">
-                <tr>
-                    <th scope="col">ID</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Description</th>
-                    <th scope="col">Categories</th>
-                    <th scope="col">Nominees</th>
-                    <th scope="col">Status</th>
-                    <th scope="col"></th>
-                    <th scope="col"></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var compet in competitionList)
-                {
-                    <tr>
-                        <th style="vertical-align: middle" scope="row">@compet.Id</th>
-                        <td style="vertical-align: middle">@compet.Name</td>
-                        <td style="vertical-align: middle">@compet.Description</td>
-                        @{
-                            List<String> categories = JsonSerializer.Deserialize<List<String>>(compet.CategoriesJson);
-                        }
-                        @if (categories.Count == 0)
+        <div class="container-lg my-5" style="padding: 20px; border-radius: 20px;">
+            <div class="row">
+                <div class="col-10 text-light">
+                    <h1 style="margin-bottom: 25px; text-transform: uppercase; font-family: Inter; font-style: normal; font-size: 38px;">BackOffice - Competitions</h1>
+                </div>
+                <div class="col-2">
+                    <button type="button" class="btn btn-lg text-light" style="margin: 0; position: absolute; top: 50%; -ms-transform: translateY(-50%); transform: translateY(-50%);background-color: #D4BE74"><a class="text-light" href="/createcomp">Create Competition</a></button>
+                </div>
+
+            </div>
+
+
+            <div style=" box-shadow: 8px 7px 20px 0px">
+                <table class="table" style="background-color: #e6e6e6;">
+                    <thead class="text-light" style="background-color: #D4BE74;">
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Description</th>
+                            <th scope="col">Type</th>
+                            <th scope="col">Categories</th>
+                            <th scope="col">Nominees</th>
+                            <th scope="col">Status</th>
+                            <th scope="col"></th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if(competitionList.Count != 0)
                         {
-                            <td style="vertical-align: middle">None</td>
+                            @foreach (var compet in competitionList)
+                            {
+                                <tr>
+                                    <th style="vertical-align: middle" scope="row">@compet.Id</th>
+                                    <td style="vertical-align: middle">@compet.Name</td>
+                                    <td style="vertical-align: middle">@compet.Description</td>
+                                    <td style="vertical-align: middle">@compet.Type</td>
+                                    @{
+                                        List<String> categories = JsonSerializer.Deserialize<List<String>>(compet.CategoriesJson);
+                                    }
+                                    @if (categories.Count == 0)
+                                    {
+                                        <td style="vertical-align: middle">None</td>
+                                    }
+                                    else
+                                    {
+                                        <td style="vertical-align: middle">
+                                            @foreach (var c in categories)
+                                            {
+                                                <span>@c</span>
+                                                @if (c != categories.Last())
+                                                {
+                                                    <span>, </span>
+                                                }
+                                            }
+                                        </td>
+                                    }
+
+                                    <td style="vertical-align: middle">
+                                        @if (compet.Type == "Movies" || compet.Type == "TVShow")
+                                        {
+                                            @foreach (Movie movie in compet.Movies)
+                                            {
+                                                <span>@movie.title</span>
+                                                @if (movie != compet.Movies.Last())
+                                                {
+                                                    <span> | </span>
+                                                }
+                                            }
+                                        }
+                                        else
+                                        {
+                                            @foreach (Person person in compet.Persons)
+                                            {
+                                                <span>@person.name</span>
+                                                @if (person != compet.Persons.Last())
+                                                {
+                                                    <span> | </span>
+                                                }
+                                            }
+                                        }
+                                    </td>
+                                    @if (compet.State == CompetitionState.Public)
+                                    {
+                                        <td style="vertical-align: middle; color:green; font-weight:bold">@CompetitionState.Public</td>
+                                    }
+                                    else if (compet.State == CompetitionState.Finished)
+                                    {
+                                        <td style="vertical-align: middle; color:#D4BE74; font-weight:bold">@CompetitionState.Finished</td>
+                                    }
+                                    else
+                                    {
+                                        <td style="vertical-align: middle; color:red; font-weight:bold">@CompetitionState.Private</td>
+                                    }
+                                    <td style="vertical-align: middle"><a class="btn btn-primary" href="/editcompetition/@compet.Id">Edit</a></td>
+                                    <td style="vertical-align: middle"><button class="btn btn-danger" @onclick="() => Delete(compet.Id)">Delete</button></td>
+                                </tr>
+                            }
                         }
                         else
                         {
-                            <td style="vertical-align: middle">
-                                @foreach (var c in categories)
-                                {
-                                    <span>@c</span>
-                                    @if (c != categories.Last())
-                                    {
-                                        <span>, </span>
-                                    }
-                                }
-                            </td>
+                            <tr>
+						        <td colspan="9" style="text-align: center; vertical-align: middle">No competitions found. Try and Create a new One!</td>
+					        </tr>
                         }
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
-                        <td style="vertical-align: middle">
-                            @if (compet.Type == "Movies" || compet.Type == "TVShow")
-                            {
-                                @foreach (Movie movie in compet.Movies)
-                                {
-                                    <span>@movie.title</span>
-                                    @if (movie != compet.Movies.Last())
-                                    {
-                                        <span> | </span>
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                @foreach (Person person in compet.Persons)
-                                {
-                                    <span>@person.name</span>
-                                    @if (person != compet.Persons.Last())
-                                    {
-                                        <span> | </span>
-                                    }
-                                }
-                            }
-                        </td>
-                        @if (compet.State == CompetitionState.Public)
-                        {
-                            <td style="vertical-align: middle; color:green; font-weight:bold">@CompetitionState.Public</td>
-                        }
-                        else if (compet.State == CompetitionState.Finished)
-                        {
-                            <td style="vertical-align: middle; color:blue; font-weight:bold">@CompetitionState.Finished</td>
-                        }
-                        else
-                        {
-                            <td style="vertical-align: middle; color:red; font-weight:bold">@CompetitionState.Private</td>
-                        }
-                        <td style="vertical-align: middle"><a class="btn btn-primary" href="/editcompetition/@compet.Id">Edit</a></td>
-                        <td style="vertical-align: middle"><button class="btn btn-danger" @onclick="() => Delete(compet.Id)">Delete</button></td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-</div>
+    </Authorized>
+    <NotAuthorized>
+        <div style="height: 50vh; text-align:center; padding-top:15vh" class="m-5">
+            <h1 class="text-dark mt-5 pt-5">To Use the Backffice App, please Log in or Register first.</h1>
+        </div>
+
+    </NotAuthorized>
+
+</AuthorizeView>
 
 @code {
     public int Id;
@@ -126,6 +152,7 @@
         var response = await Http.GetAsync("api/competition");
         response.EnsureSuccessStatusCode();
         competitionList = await response.Content.ReadFromJsonAsync<List<Competition>>();
+        Console.WriteLine(competitionList);
     }
 
     protected async Task Delete(int Id)

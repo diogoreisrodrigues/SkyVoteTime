@@ -27,8 +27,8 @@
                 </select>
             </div>
 
-             @if (competitionList != null)
-            {
+             @if (competitionList.Count != 0)
+             {
                 @foreach (Competition competition in competitionList)
                 {
                     if (competition.State == currentState && currentState == CompetitionState.Public)
@@ -106,8 +106,15 @@
             
                 }
 
-             }
-     
+            }
+            else
+            {
+                <div style="height: 50vh; text-align:center; padding-top:5vh" class="m-5">
+                    <h2 class="text-light mt-5 pt-5">No Competitions to show, wait for one to Start!</h2>
+                </div>
+                
+            }
+
         </div>
     </Authorized>
     <NotAuthorized>
