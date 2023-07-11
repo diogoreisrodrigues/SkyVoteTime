@@ -24,6 +24,8 @@ namespace SkyVoteTime.Shared.Models
 
         public string Type { get; set; }
 
+        public string ? ImageUrl { get; set; }
+
     }
     public enum CompetitionState
     {

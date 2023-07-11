@@ -4,10 +4,174 @@
     flex-direction: column;
     margin:0;
     padding:0;
+    font-family:sans-serif;
 }
 /********************** DIOGO **********************/
 
 @import url("https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&subset=devanagari,latin-ext");
+
+@import url("https://fonts.googleapis.com/css?family=Lato:400,400i,700");
+@import url("https://fonts.googleapis.com/css?family=Raleway:400,400i,700");
+@import url(https://fonts.googleapis.com/css?family=Kaushan+Script);
+
+
+nav.primary-navigation {
+    margin: 0 auto;
+    display: block;
+    font-size: 20px;
+}
+
+    nav.primary-navigation ul li {
+        list-style: none;
+        margin: 0 auto;
+        display: inline-block;
+        padding: 0 15px;
+        position: relative;
+        text-decoration: none;
+        text-align: center;
+        font-family: arvo;
+    }
+
+    nav.primary-navigation li a {
+        color: black;
+        text-decoration: none;
+    }
+
+        nav.primary-navigation li a:hover {
+            color: #D4BE74;
+        }
+
+    nav.primary-navigation li:hover {
+        cursor: pointer;
+    }
+
+    nav.primary-navigation ul li ul {
+        visibility: hidden;
+        opacity: 0;
+        position: absolute;
+        padding-left: 0;
+        left: 0;
+        display: none;
+        background: white;
+    }
+
+        nav.primary-navigation ul li:hover > ul, nav.primary-navigation ul li ul:hover {
+            visibility: visible;
+            opacity: 1;
+            display: block;
+            min-width: 250px;
+            text-align: left;
+            padding-top: 20px;
+            box-shadow: 0px 3px 5px -1px #ccc;
+        }
+
+        nav.primary-navigation ul li ul li {
+            clear: both;
+            width: 100%;
+            text-align: left;
+            margin-bottom: 20px;
+            border-style: none;
+        }
+
+            nav.primary-navigation ul li ul li a:hover {
+                padding-left: 10px;
+                border-left: 2px solid #D4BE74;
+                transition: all 0.3s ease;
+                text-decoration: none;
+            }
+
+a {
+    text-decoration: none;
+}
+
+    a:hover {
+        color: #D4BE74;
+        text-decoration: none;
+    }
+
+ul li ul li a {
+    transition: all 0.5s ease;
+}
+
+
+.blog-card {
+    display: block;
+    position: relative;
+    width: 340px;
+    height: 340px;
+    margin: 1vw;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.85);
+    transition: all 450ms ease-out 0s;
+    overflow: hidden;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+    .blog-card .blog-img {
+        position: absolute;
+        min-width: 100%;
+        min-height: 100%;
+        height: 100%;
+        top: -9999px;
+        left: -9999px;
+        right: -9999px;
+        bottom: -9999px;
+        margin: auto;
+        overflow: hidden;
+    }
+
+    .blog-card:hover {
+        box-shadow: 0 2px 35px rgba(0, 0, 0, 0.85);
+    }
+
+        .blog-card:hover .text-overlay {
+            background: rgba(0, 0, 0, 0.8);
+            height: 60%;
+            top: 40%;
+            transition: all 450ms ease-in-out 0s;
+        }
+
+        .blog-card:hover p {
+            height: 60px;
+            transition: all 350ms ease-in-out 0s;
+        }
+
+            .blog-card:hover p a {
+                visibility: visible;
+            }
+
+.text-overlay {
+    position: relative;
+    background: rgba(0, 0, 0, 0.6);
+    width: 100%;
+    height: 26%;
+    top: 74%;
+    box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.3);
+    padding: 10px 12px;
+    overflow: hidden;
+    transition: all 450ms ease-in-out 0s;
+}
+
+    .text-overlay h3 {
+        color: #fff;
+        letter-spacing: 0.0225em;
+        width: auto;
+        margin: 0;
+    }
+
+    .text-overlay p {
+        color: #fff;
+        
+        height: 38px;
+        margin: 8px 0;
+        line-height: 1.25;
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+
+
+
+
 
 .optionDropDown:hover {
     background-color: #D4BE74;
@@ -83,25 +247,8 @@
     background-image: none;
     border: 1px solid #000;
     border-radius: 4px;
-    box-shadow: #fff 4px 4px 0 0,#000 4px 4px 0 1px;
-    box-sizing: border-box;
-    color: #fff;
-    cursor: pointer;
-    display: inline-block;
-    font-family: "Poppins", sans-serif;
-    font-size: 14px;
-    font-weight: 400;
-    line-height: 20px;
-    margin: 0 5px 10px 0;
-    overflow: visible;
-    padding: 12px 40px;
-    text-align: center;
-    text-transform: none;
-    touch-action: manipulation;
-    user-select: none;
-    -webkit-user-select: none;
-    vertical-align: middle;
-    white-space: nowrap;
+    margin: 12px 0;
+    background: rgb(212, 190, 116);
 }
 
     .button-50:focus {
