@@ -8,10 +8,14 @@
 @using Microsoft.AspNetCore.Components.Authorization;
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
+<style>
+    p::-webkit-scrollbar {
+        display: none;
+    }
+</style>
 
 
-
-        <h1 class="titleCompetitions">Competitions</h1>
+        <h1 class="titleCompetitions mb-5">Competitions</h1>
 
 <AuthorizeView>
     <Authorized>
@@ -19,92 +23,123 @@
 
         <div class="container">
    
-            <div class="texto">
-                <label for="competitionState">Competition State:</label>
-                <select class="form-control" style="height: auto;width: 16%;" @bind=currentState>
-                    <option value=@CompetitionState.Public>Public</option>
-                    <option value=@CompetitionState.Finished>Finished</option>
-                </select>
+            <div class="row my-5 py-3">
+                <div class="col-1">
+                    <p class="" style="font-size: 20px; color:white">Filter :</p>
+                </div>
+                <div class="col-10">
+                    <nav role="navigation" class="primary-navigation">
+                        <ul style="padding:0">
+                            <li>
+                                <a href="#" style="color: white;">Comepetition State &dtrif;</a>
+                                <ul class="dropdown" style="z-index: 2;">
+                                    <li><a @onclick="() => SetCurrentState(CompetitionState.Public)">Public</a></li>
+                                    <li><a @onclick="() => SetCurrentState(CompetitionState.Finished)">Finished</a></li>
+                                    
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="#" style="color: white;">Competition Type &dtrif;</a>
+                                <ul class="dropdown" style="z-index: 2;">
+                                    <li><a @onclick="() => SetCompetitionType(typeAll)">All</a></li>
+                                    <li><a @onclick="() => SetCompetitionType(typeMovies)">Movies</a></li>
+                                    <li><a @onclick="() => SetCompetitionType(typeTVShows)">TVShows</a></li>
+                                    <li><a @onclick="() => SetCompetitionType(typeActors)">Actors</a></li>
+                                    
+                                </ul>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
             </div>
 
              @if (competitionList.Count != 0)
              {
+                <div class="row mb-5">
                 @foreach (Competition competition in competitionList)
                 {
-                    if (competition.State == currentState && currentState == CompetitionState.Public)
+                        if (competition.State == currentState && currentState == CompetitionState.Public && IsCompetitionTypeMatch(competition.Type))
                     {
                         List<String> categories = JsonSerializer.Deserialize<List<String>>(competition.CategoriesJson);
 
-                        <div>
-                            <div class="cardComp">
-                                <div style="height: 189px">
-                                    <h1>@competition.Name</h1>
-                                    <p>Competition Type: @competition.Type</p>
-                                    <p>Description: @competition.Description</p>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-9" style="display: flex; align-items: center;">
-
-                                        @if (categories.Count == 0)
-                                        {
-                                            <span class="badge badge-pill badge-dark" style="margin-right: 15px; font-size: 20px; background-color: #000; padding: 10px;">None</span>
-                                        }
-                                        else
-                                        {
-                                            @foreach (var category in categories)
+                            
+                            <div class="blog-card">
+                                <img class="blog-img" src=@competition.ImageUrl />
+                                <div class="text-overlay">
+                                    <div class="row">
+                                        <div class="col-12 my-3" style="display: flex; align-items: center">
+                                            @if (categories.Count == 0)
                                             {
-                                                <span class="badge badge-pill badge-dark" style="margin-right: 15px; font-size: 20px; background-color: #000; padding: 10px;">@category</span>
+                                                <span class="badge badge-pill badge-dark" style="margin-right: 15px; background-color: #D4BE74;padding: 6px;  font-size:12px">None</span>
                                             }
-                                        }
+                                            else
+                                            {
+                                                @foreach (var category in categories)
+                                                {
+                                                    <span class="badge badge-pill badge-dark" style="margin-right: 15px; background-color: #D4BE74; padding: 6px;  font-size:12px">@category</span>
+                                                }
+                                            }
+                                        </div>
+
                                     </div>
-                                    <div class="col-3" style="    text-align: right;">
-                                        <button class="button-50" role="button">
-                                            <a href="/nom/@competition.Id" style="color: #fff"> <b>View Nominees!</b> </a>
-                                        </button>
+                                    <h3>@competition.Name</h3>
+                                    <p style="max-height: 50px;overflow: overlay;">@competition.Description</p>
+                                    
+                                    <div style="text-align: center;">
+                                       
+                                        <a href="/nom/@competition.Id" style="color: #fff">
+
+                                            <button class="button-50" role="button"><b>View Results!</b></button>
+                                            
+                                        </a>
                                     </div>
+
                                 </div>
                             </div>
-                        </div>
                     }
 
-                    if (competition.State == currentState && currentState == CompetitionState.Finished)
+                        if (competition.State == currentState && currentState == CompetitionState.Finished && IsCompetitionTypeMatch(competition.Type))
                     {
                         List<String> categories = JsonSerializer.Deserialize<List<String>>(competition.CategoriesJson);
 
-                        <div>
-                            <div class="cardComp">
-                                <div style="height: 189px">
-                                    <h1>@competition.Name</h1>
-                                    <p>Competition Type: @competition.Type</p>
-                                    <p>Description: @competition.Description</p>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-9" style="display: flex; align-items: center;">
-                                        @if (categories.Count == 0)
-                                        {
-                                            <span class="badge badge-pill badge-dark" style="margin-right: 15px; font-size: 20px; background-color: #000; padding: 10px;">None</span>
-                                        }
-                                        else
-                                        {
-                                            @foreach (var category in categories)
+                            <div class="blog-card">
+                                <img class="blog-img" src=@competition.ImageUrl />
+                                <div class="text-overlay">
+                                    <div class="row">
+                                        <div class="col-12 my-3" style="display: flex; align-items: center">
+                                            @if (categories.Count == 0)
                                             {
-                                                <span class="badge badge-pill badge-dark" style="margin-right: 15px; font-size: 20px; background-color: #000; padding: 10px;">@category</span>
+                                                <span class="badge badge-pill badge-dark" style="margin-right: 15px; background-color: #D4BE74;padding: 6px;  font-size:12px">None</span>
                                             }
-                                        }
+                                            else
+                                            {
+                                                @foreach (var category in categories)
+                                                {
+                                                    <span class="badge badge-pill badge-dark" style="margin-right: 15px; background-color: #D4BE74; padding: 6px;  font-size:12px">@category</span>
+                                                }
+                                            }
+                                        </div>
+
                                     </div>
-                                    <div class="col-3" style="text-align: right;">
-                                        <button class="button-50" style="background-color:darkgreen" role="button">
-                                            <a href="/winner/@competition.Id" style="color: #fff"> <b>View Results!</b> </a>
-                                        </button>
+                                    <h3>@competition.Name</h3>
+                                    <p>@competition.Description</p>
+                                    
+                                    <div style="text-align: center;">
+                                        
+                                        <a href="/winner/@competition.Id" style="color: #fff">
+
+                                            <button class="button-50" style="background-color:darkgreen" role="button"><b>View Results!</b></button>
+                                            
+                                        </a>
+                                        
                                     </div>
+
                                 </div>
                             </div>
-                        </div>
                     }
             
                 }
+                </div>
 
             }
             else
@@ -128,6 +163,12 @@
 
 @code {
     private CompetitionState currentState = CompetitionState.Public;
+    private String currentType = "Any";
+    private String typeAll = "Any";
+    private String typeMovies = "Movies";
+    private String typeTVShows = "TVShow";
+    private String typeActors = "Acting";
+
 
     public Competition competition = new Competition
         {
@@ -146,6 +187,27 @@
     private Task<AuthenticationState>? authenticationState { get; set; }
 
     string? email;
+
+    private void SetCompetitionType(String type)
+    {
+        currentType = type;
+    }
+
+    private bool IsCompetitionTypeMatch(String type)
+    {
+        if (currentType == "Any")
+        {
+            return true;
+        }
+
+        return type == currentType;
+    }
+
+
+    private void SetCurrentState(CompetitionState state)
+    {
+        currentState = state;
+    }
 
 
     private void ChangeState(ChangeEventArgs e)

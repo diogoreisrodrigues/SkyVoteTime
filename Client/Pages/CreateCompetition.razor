@@ -590,7 +590,7 @@
                 Console.WriteLine(ex.Message); 
             }
         }
-        
+
     } 
 
     private void OnCategoryChecked(string categoryName, ChangeEventArgs e)
@@ -607,7 +607,7 @@
         }
     }
 
-    
+
 
     private async Task KeyHandlerNominee(KeyboardEventArgs e)
     {
@@ -619,8 +619,8 @@
 
     /*private async Task KeyHandlerAtor(KeyboardEventArgs e)
         {
-            if (e.Key == "Enter")
-        {
+    if (e.Key == "Enter")
+    {
     await GetPostersAtor();
     }
     }*/
@@ -633,13 +633,39 @@
     }
     }*/
 
-    
+    private void DecideOnImageUrl()
+	{
+		if (competition.Type == "Movies" || competition.Type == "TVShow")
+		{
+            if(selectedCategories[0] == "Action") competition.ImageUrl = "Assets/action.png";
+            else if(selectedCategories[0] == "Adventure") competition.ImageUrl = "Assets/adventure.png";
+			else if(selectedCategories[0] == "Comedy") competition.ImageUrl = "Assets/comedy.png";
+			else if(selectedCategories[0] == "Documentary") competition.ImageUrl = "Assets/documentary.png";
+			else if(selectedCategories[0] == "Drama") competition.ImageUrl = "Assets/drama.png";
+			else if(selectedCategories[0] == "Fantasy") competition.ImageUrl = "Assets/fantasy.png";
+			else if(selectedCategories[0] == "Horror") competition.ImageUrl = "Assets/horror.png";
+			else if(selectedCategories[0] == "Mystery") competition.ImageUrl = "Assets/mystery.png";
+			else if(selectedCategories[0] == "Romance") competition.ImageUrl = "Assets/romance.png";
+			else if(selectedCategories[0] == "Science Fiction") competition.ImageUrl = "Assets/scienceFiction.png";
+			else if(selectedCategories[0] == "Thriller") competition.ImageUrl = "Assets/thriller.png";
+			else competition.ImageUrl = "Assets/other.png";
+			
+		}
+        else
+		{
+			competition.ImageUrl = "Assets/bestActor.png";
+		}
+	}
+
+
 
     protected override async Task OnInitializedAsync()
     {
     }
     protected async Task Save()
     {
+
+        DecideOnImageUrl();
         competition.CategoriesJson = JsonSerializer.Serialize(selectedCategories);
         Console.WriteLine(competition.CategoriesJson);
 

@@ -26,6 +26,8 @@ namespace SkyVoteTime.Server.Models
 
         public string Type { get; set; }
 
+        public string ? ImageUrl { get; set; }
+
 
     }
 
