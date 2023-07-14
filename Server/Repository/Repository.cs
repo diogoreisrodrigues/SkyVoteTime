@@ -83,6 +83,14 @@ namespace SkyVoteTime.Server.Repository
             _dbContext.Remove(data);
             await _dbContext.SaveChangesAsync();
         }
+
+        public async Task DeleteAsyncVote(int id)
+        {
+            var data = _dbContext.Votes
+                .FirstOrDefault(x => x.Id == id);
+            _dbContext.Remove(data);
+            await _dbContext.SaveChangesAsync();
+        }
         public async Task<List<Competition>> GetAllCompWithoutVoteAsync(string userEmail)
         {
             var competitionsWithoutVote = await _dbContext.Competitions

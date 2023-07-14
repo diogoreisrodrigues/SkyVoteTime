@@ -23,7 +23,6 @@ namespace SkyVoteTime.Server.Service
                 //data.StartDate = competition.StartDate;
                 data.Description = competition.Description;
                 data.CategoriesJson = competition.CategoriesJson;
-
                 data.State = competition.State;
                 data.Persons = competition.Persons;
                 data.Movies = competition.Movies;

@@ -178,7 +178,7 @@
 
         @foreach (Movie movie in competition.Movies)
         {
-            <div class="container" style="background: rgba(0,0,0,0.7); border-radius: 20px; -webkit-transform: scale(1.03); transform: scale(1.03); box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.08);">
+            <div class="container" style="background: rgba(0,0,0,0.7); border-radius: 20px; -webkit-transform: scale(1.03); transform: scale(1.03); box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.08); backdrop-filter: blur(2px);">
                 <div class="row">
                     <div class="col-sm-3">
                         <img style="display: flex; align-items: center; padding: 15px; perspective: 100px;" src="https://image.tmdb.org/t/p/w342/@movie.poster_path" alt="" />
@@ -219,7 +219,7 @@
         <div class="containerMovie container">
             @foreach (var person in competition.Persons)
             {
-                <div class="movie-card" style="padding: 15px; background: rgba(0,0,0,0.7); border-radius: 20px;">
+                <div class="movie-card" style="padding: 15px; background: rgba(0,0,0,0.7); border-radius: 20px; backdrop-filter: blur(2px);">
                     <div class="movie-header">
                         <img src="https://image.tmdb.org/t/p/w342/@person.profile_path" class="movie-header" />
                     </div><!--movie-header-->
@@ -284,9 +284,6 @@
 
         movie.Votes ??= new List<Vote>();
 
-
-
-
         movie.Votes.Add(vote);
 
         bool confirmed = await JsRuntime.InvokeAsync<bool>("confirm", "Are you sure you want to Vote for this nominee?");
@@ -298,8 +295,8 @@
 
                 if (response.IsSuccessStatusCode)
                 {
-                    await JsRuntime.InvokeVoidAsync("alert", "Vote Submited!");
-                    NavigationManager.NavigateTo("competitions");
+
+                    await UpdateCompetitionState(competition);
                 }
                 else
                 {
@@ -312,6 +309,32 @@
                 Console.WriteLine(ex.Message);
             }
         }
+    }
+
+    private async Task UpdateCompetitionState(Competition competition)
+    {
+
+        competition.State = CompetitionState.Voted;
+        try
+        {
+            var response = await Http.PutAsJsonAsync("api/Competition/Put/" + competition.Id, competition);
+
+            if (response.IsSuccessStatusCode)
+            {
+                await JsRuntime.InvokeVoidAsync("alert", "Vote Submited!");
+                NavigationManager.NavigateTo("competitions");
+            }
+            else
+            {
+                    // Handle HTTP request error
+                Console.WriteLine("HTTP request error: " + response.StatusCode);
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+        
     }
 
 
@@ -338,8 +361,7 @@
 
                 if (response.IsSuccessStatusCode)
                 {
-                    await JsRuntime.InvokeVoidAsync("alert", "Vote Submited!");
-                    NavigationManager.NavigateTo("competitions");
+                    await UpdateCompetitionState(competition);
                 }
                 else
                 {

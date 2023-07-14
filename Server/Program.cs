@@ -34,7 +34,7 @@ builder.Services.AddScoped<ICompetitionService, CompetitionService>();
 
 builder.Services.AddTransient<IPersonService, PersonService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
-
+builder.Services.AddScoped<IVoteService, VoteService>();
 
 
 var app = builder.Build();

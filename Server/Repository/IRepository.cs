@@ -22,6 +22,8 @@ namespace SkyVoteTime.Server.Repository
         public Task DeleteAsyncPersons(int id);
         Task<List<Competition>> GetAllCompWithoutVoteAsync(string email);
         Task<List<string>> GetAllEmailsFromComp(int id);
+
+        public Task DeleteAsyncVote(int id);
     }
 
 }
