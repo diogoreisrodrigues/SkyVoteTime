@@ -2,65 +2,50 @@
 @model RegisterModel
 @{
     ViewData["Title"] = "Register";
+    
+    
+
 }
 
-<div class="margem" style="margin-top: 50px;padding: 50px;background: rgba(0,0,0,0.6);">
-<h1 style="color:white;">@ViewData["Title"]</h1>
+<div class="margem" style="margin-top: 50px;background: rgba(0,0,0,0.6); backdrop-filter:blur(10px)">
 
 <div class="row">
-    <div class="col-md-6">
+        <div class="col-md-6" style="padding: 50px; margin-top: 4vh;">
         <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
             <h2 style="color:white;">Create a new account.</h2>
             <hr />
             <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
-            <div class="form-floating mb-3">
+            <div class="form-floating mb-4">
                 <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
                 <label asp-for="Input.Email">Email</label>
                 <span asp-validation-for="Input.Email" class="text-danger"></span>
             </div>
-            <div class="form-floating mb-3">
+            <div class="form-floating mb-4">
                 <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
                 <label asp-for="Input.Password">Password</label>
                 <span asp-validation-for="Input.Password" class="text-danger"></span>
             </div>
-            <div class="form-floating mb-3">
+            <div class="form-floating mb-4">
                 <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
                 <label asp-for="Input.ConfirmPassword">Confirm Password</label>
                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
             </div>
-            <button id="registerSubmit" type="submit" class="w-100 btn btn-lg" style="background: #D4BE74">Register</button>
+            <button id="registerSubmit" type="submit" class="w-100 btn btn-lg text-light" style="background: #D4BE74">Register</button>
+                <div style="
+                     text-align: center;
+                     margin-top: 2vh;
+                     ">
+                    <p class="text-light">Already have an account? <a class="" style="color: #D4BE74; text-decoration: auto;" asp-area="Identity" asp-page="/Account/Login">Login now</a></p>
+            </div>
         </form>
     </div>
     <div class="col-md-6 col-md-offset-2" style="color: white;">
-        <section>
-            <h3>
-                Lights, Camera, Vote! Your Voice, Your Choice.
-            </h3>
-            <hr />
-            @{
-                if ((Model.ExternalLogins?.Count ?? 0) == 0)
-                {
-                    <div>
-                        <p>
-                                With our exciting film and TV show competitions, you have the power to vote for your favorite actors, actresses, and cinematic masterpieces. Express your opinions, champion your favorites, and become a part of the ultimate film and TV show experience. With our exciting film and TV show competitions, you have the power to vote for your favorite actors, actresses, and cinematic masterpieces. Express your opinions, champion your favorites, and become a part of the ultimate film and TV show experience.
-                        </p>
-                    </div>
-                }
-                else
-                {
-                    <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
-                        <div>
-                            <p>
-                                @foreach (var provider in Model.ExternalLogins!)
-                                {
-                                    <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
-                                }
-                            </p>
-                        </div>
-                    </form>
-                }
-            }
-        </section>
+            <img src="~/Assets/barbieOpen.jpeg" style="width: -webkit-fill-available;position: relative;">
+            <div style="position    : absolute; width: -webkit-fill-available; height: -webkit-fill-available; background-color: rgba(0,0,0,0.6); backdrop-filter: blur(2px); top: 0vh;">
+                <h3 style="position: absolute; top: 25vh; text-align:center; padding:40px">
+                    Lights, Camera, Vote! Your Voice, Your Choice.
+                </h3>
+        </div>
     </div>
 </div>
 

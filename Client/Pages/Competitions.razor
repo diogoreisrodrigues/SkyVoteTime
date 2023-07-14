@@ -31,7 +31,7 @@
                     <nav role="navigation" class="primary-navigation">
                         <ul style="padding:0">
                             <li>
-                                <a href="#" style="color: white;">Comepetition State &dtrif;</a>
+                                <a href="#" style="color: white; font-size: 24px">Comepetition State &dtrif;</a>
                                 <ul class="dropdown" style="z-index: 2;">
                                     <li><a @onclick="() => SetCurrentState(CompetitionState.Public)">Public</a></li>
                                     <li><a @onclick="() => SetCurrentState(CompetitionState.Finished)">Finished</a></li>
@@ -39,7 +39,7 @@
                                 </ul>
                             </li>
                             <li>
-                                <a href="#" style="color: white;">Competition Type &dtrif;</a>
+                                <a href="#" style="font-size: 24px;color: white;">Competition Type &dtrif;</a>
                                 <ul class="dropdown" style="z-index: 2;">
                                     <li><a @onclick="() => SetCompetitionType(typeAll)">All</a></li>
                                     <li><a @onclick="() => SetCompetitionType(typeMovies)">Movies</a></li>
@@ -48,6 +48,30 @@
                                     
                                 </ul>
                             </li>
+                            @if (IsCompetitionTypeMatch("TVShow") || IsCompetitionTypeMatch("Movies"))
+                            {
+                                <li>
+                                    <a href="#" style="font-size: 24px;color: white;">Competition Category &dtrif;</a>
+                                    <ul class="dropdown" style="z-index: 2;">
+                                        <li><a @onclick="() => SetCompetitionCategory(categoryAny) ">Any</a></li>
+                                        <li><a @onclick="() => SetCompetitionCategory(categoryNone)">None</a></li>
+                                        <li><a @onclick="() => SetCompetitionCategory(categoryDrama) ">Drama</a></li>
+                                        <li><a @onclick="() => SetCompetitionCategory(categoryAction)">Action</a></li>
+                                        <li><a @onclick="() => SetCompetitionCategory(categoryAdventure) ">Adventure</a></li>
+                                        <li><a @onclick="() => SetCompetitionCategory(categoryRomance) ">Romance</a></li>
+                                        <li><a @onclick="() => SetCompetitionCategory(categoryDocumentary)">Documentary</a></li>
+                                        <li><a @onclick="() => SetCompetitionCategory(categoryComedy) ">Comedy</a></li>
+                                        <li><a @onclick="() => SetCompetitionCategory(categoryFantasy)">Fantasy</a></li>
+                                        <li><a @onclick="() => SetCompetitionCategory(categoryHorror) ">Horror</a></li>
+                                        <li><a @onclick="() => SetCompetitionCategory(categoryMystery)">Mystery</a></li>
+                                        <li><a @onclick="() => SetCompetitionCategory(categoryScienceFiction) ">Science Fiction</a></li>
+                                        <li><a @onclick="() => SetCompetitionCategory(categorySuspense)">Suspense</a></li>
+                                        <li><a @onclick="() => SetCompetitionCategory(categoryThriller) ">Thriller</a></li>
+                                        
+                                        
+                                    </ul>
+                                </li>
+                            }
                         </ul>
                     </nav>
                 </div>
@@ -58,9 +82,10 @@
                 <div class="row mb-5">
                 @foreach (Competition competition in competitionList)
                 {
-                        if (competition.State == currentState && currentState == CompetitionState.Public && IsCompetitionTypeMatch(competition.Type))
+                    List<String> categories = JsonSerializer.Deserialize<List<String>>(competition.CategoriesJson);
+                    if (competition.State == currentState && currentState == CompetitionState.Public && IsCompetitionTypeMatch(competition.Type) && IsCompetitionCategoryMatch(categories))
                     {
-                        List<String> categories = JsonSerializer.Deserialize<List<String>>(competition.CategoriesJson);
+                        
 
                             
                             <div class="blog-card">
@@ -89,7 +114,7 @@
                                        
                                         <a href="/nom/@competition.Id" style="color: #fff">
 
-                                            <button class="button-50" role="button"><b>View Results!</b></button>
+                                            <button class="button-50" role="button"><b>View Nominees!</b></button>
                                             
                                         </a>
                                     </div>
@@ -98,9 +123,9 @@
                             </div>
                     }
 
-                        if (competition.State == currentState && currentState == CompetitionState.Finished && IsCompetitionTypeMatch(competition.Type))
+                    else if (competition.State == currentState && currentState == CompetitionState.Finished && IsCompetitionTypeMatch(competition.Type) && IsCompetitionCategoryMatch(categories))
                     {
-                        List<String> categories = JsonSerializer.Deserialize<List<String>>(competition.CategoriesJson);
+                        
 
                             <div class="blog-card">
                                 <img class="blog-img" src=@competition.ImageUrl />
@@ -139,6 +164,7 @@
                     }
             
                 }
+                
                 </div>
 
             }
@@ -169,6 +195,23 @@
     private String typeTVShows = "TVShow";
     private String typeActors = "Acting";
 
+    private String currentCategory = "Any";
+    private String categoryAny = "Any";
+    private String categoryNone = "None";
+    private String categoryDrama = "Drama";
+    private String categoryAction = "Action";
+    private String categoryRomance = "Romance";
+    private String categoryDocumentary = "Documentary";
+    private String categorySuspense = "Suspense";
+    private String categoryHorror = "Horror";
+    private String categoryScienceFiction = "ScienceFiction";
+    private String categoryComedy = "Comedy";
+    private String categoryAdventure = "Adventure";
+    private String categoryThriller = "Thriller";
+    private String categoryMystery = "Mystery";
+    private String categoryFantasy = "Fantasy";
+
+
 
     public Competition competition = new Competition
         {
@@ -193,6 +236,11 @@
         currentType = type;
     }
 
+    private void SetCompetitionCategory(String category)
+    {
+        currentCategory = category;
+    }
+
     private bool IsCompetitionTypeMatch(String type)
     {
         if (currentType == "Any")
@@ -203,6 +251,19 @@
         return type == currentType;
     }
 
+    private bool IsCompetitionCategoryMatch(List<String> categories)
+    {
+        if (currentCategory == "Any")
+        {
+            return true;
+        }
+        else if(categories.Count == 0 && currentCategory == "None")
+        {
+            return true;
+        }
+
+        return categories.Contains(currentCategory);
+    }
 
     private void SetCurrentState(CompetitionState state)
     {
