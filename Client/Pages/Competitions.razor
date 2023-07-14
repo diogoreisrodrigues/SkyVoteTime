@@ -34,7 +34,9 @@
                                 <a href="#" style="color: white; font-size: 24px">Comepetition State &dtrif;</a>
                                 <ul class="dropdown" style="z-index: 2;">
                                     <li><a @onclick="() => SetCurrentState(CompetitionState.Public)">Public</a></li>
+                                    <li><a @onclick="() => SetCurrentState(CompetitionState.Voted)">Already Voted</a></li>
                                     <li><a @onclick="() => SetCurrentState(CompetitionState.Finished)">Finished</a></li>
+                                    
                                     
                                 </ul>
                             </li>
@@ -161,8 +163,46 @@
 
                                 </div>
                             </div>
-                    }
-            
+                        }
+                        else if (competition.State == currentState && currentState == CompetitionState.Voted && IsCompetitionTypeMatch(competition.Type) && IsCompetitionCategoryMatch(categories))
+                        {
+                            <div class="blog-card">
+                                <img class="blog-img" src=@competition.ImageUrl />
+                                <div class="text-overlay">
+                                    <div class="row">
+                                        <div class="col-12 my-3" style="display: flex; align-items: center">
+                                            @if (categories.Count == 0)
+                                            {
+                                                <span class="badge badge-pill badge-dark" style="margin-right: 15px; background-color: #D4BE74;padding: 6px;  font-size:12px">None</span>
+                                            }
+                                            else
+                                            {
+                                                @foreach (var category in categories)
+                                                {
+                                                    <span class="badge badge-pill badge-dark" style="margin-right: 15px; background-color: #D4BE74; padding: 6px;  font-size:12px">@category</span>
+                                                }
+                                            }
+                                        </div>
+
+                                    </div>
+                                    <h3>@competition.Name</h3>
+                                    <p>@competition.Description</p>
+
+                                    <div style="text-align: center;">
+
+                                        <a href="/ChangeVote/@competition.Id" style="color: #fff">
+
+                                            <button class="button-50" style="background-color:magenta" role="button"><b>Change Vote!</b></button>
+
+                                        </a>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        }
+
+
                 }
                 
                 </div>
@@ -295,7 +335,7 @@
 		var user = authState.User;
 		email = user.FindFirst(c => c.Type == "name")?.Value;
 
-        var response = await _httpClient.GetAsync("api/competition/GetAll/"+ email);
+        var response = await _httpClient.GetAsync("api/competition");
         response.EnsureSuccessStatusCode();
         competitionList = await response.Content.ReadFromJsonAsync<List<Competition>>();
 

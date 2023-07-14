@@ -35,6 +35,7 @@ namespace SkyVoteTime.Server.Models
     {
         Private,
         Public,
-        Finished
+        Finished,
+        Voted
     }
 }
