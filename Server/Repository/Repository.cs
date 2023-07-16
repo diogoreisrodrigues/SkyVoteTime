@@ -109,7 +109,9 @@ namespace SkyVoteTime.Server.Repository
         {
             var competitionsWithVote = await _dbContext.Competitions
             .Include(c => c.Movies)
+                .ThenInclude(m => m.Votes)
             .Include(c => c.Persons)
+                .ThenInclude(p => p.Votes)
             .Where(c => c.Movies.Any(m => m.Votes.Any(v => v.email == userEmail)) ||
                         c.Persons.Any(p => p.Votes.Any(v => v.email == userEmail)))
             .ToListAsync();
