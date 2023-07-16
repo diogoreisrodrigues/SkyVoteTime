@@ -164,10 +164,16 @@
                                 </div>
                             </div>
                         }
-                        else if (competition.State == currentState && currentState == CompetitionState.Voted && IsCompetitionTypeMatch(competition.Type) && IsCompetitionCategoryMatch(categories))
+
+                }
+
+                    @foreach(Competition competitionVoted in competitionVotedList)
+                    {
+                        List<String> categories = JsonSerializer.Deserialize<List<String>>(competitionVoted.CategoriesJson);
+                        if (currentState == CompetitionState.Voted && !(competitionVoted.State == CompetitionState.Finished) && IsCompetitionTypeMatch(competition.Type) && IsCompetitionCategoryMatch(categories))
                         {
                             <div class="blog-card">
-                                <img class="blog-img" src=@competition.ImageUrl />
+                                <img class="blog-img" src=@competitionVoted.ImageUrl />
                                 <div class="text-overlay">
                                     <div class="row">
                                         <div class="col-12 my-3" style="display: flex; align-items: center">
@@ -185,14 +191,14 @@
                                         </div>
 
                                     </div>
-                                    <h3>@competition.Name</h3>
-                                    <p>@competition.Description</p>
+                                    <h3>@competitionVoted.Name</h3>
+                                    <p>@competitionVoted.Description</p>
 
                                     <div style="text-align: center;">
 
-                                        <a href="/ChangeVote/@competition.Id" style="color: #fff">
+                                        <a href="/ChangeVote/@competitionVoted.Id" style="color: #fff">
 
-                                            <button class="button-50" style="background-color:magenta" role="button"><b>Change Vote!</b></button>
+                                            <button class="button-50" style="background-color:#CCCCCC" role="button"><b>Change Vote!</b></button>
 
                                         </a>
 
@@ -201,10 +207,8 @@
                                 </div>
                             </div>
                         }
+                    }
 
-
-                }
-                
                 </div>
 
             }
@@ -265,6 +269,8 @@
         };
 
     List<Competition> competitionList = new List<Competition>();
+
+    List<Competition> competitionVotedList = new List<Competition>();
 
     [CascadingParameter]
     private Task<AuthenticationState>? authenticationState { get; set; }
@@ -331,15 +337,20 @@
 
     protected override async Task OnInitializedAsync()
     {
-		var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-		var user = authState.User;
-		email = user.FindFirst(c => c.Type == "name")?.Value;
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+        email = user.FindFirst(c => c.Type == "name")?.Value;
 
-        var response = await _httpClient.GetAsync("api/competition");
+        var response = await _httpClient.GetAsync("api/competition/GetAll/"+email);
         response.EnsureSuccessStatusCode();
         competitionList = await response.Content.ReadFromJsonAsync<List<Competition>>();
 
-		
+        var responseVoted = await _httpClient.GetAsync("api/competition/GetAllVoted/" + email);
+        responseVoted.EnsureSuccessStatusCode();
+        competitionVotedList = await responseVoted.Content.ReadFromJsonAsync<List<Competition>>();
+
+        Console.WriteLine(competitionVotedList);
+
     }
 }
 

@@ -105,6 +105,18 @@ namespace SkyVoteTime.Server.Repository
             return competitionsWithoutVote;
         }
 
+        public async Task<List<Competition>> GetAllCompWithVoteAsync(string userEmail)
+        {
+            var competitionsWithVote = await _dbContext.Competitions
+            .Include(c => c.Movies)
+            .Include(c => c.Persons)
+            .Where(c => c.Movies.Any(m => m.Votes.Any(v => v.email == userEmail)) ||
+                        c.Persons.Any(p => p.Votes.Any(v => v.email == userEmail)))
+            .ToListAsync();
+
+            return competitionsWithVote;
+        }
+
         public async Task<List<string>> GetAllEmailsFromComp(int id)
         {
             var emailsFromComp = _dbContext.Competitions
@@ -115,6 +127,28 @@ namespace SkyVoteTime.Server.Repository
                 .ToList();
 
             return emailsFromComp;
+        }
+
+        public async Task<List<Competition>> GetAllHotAsyncCompetition(string userEmail)
+        {
+            var competitions = await _dbContext.Competitions
+        .Include(c => c.Movies)
+            .ThenInclude(m => m.Votes)
+        .Include(c => c.Persons)
+            .ThenInclude(p => p.Votes)
+        .ToListAsync();
+
+            competitions = competitions.Where(c => !c.Movies.Any(m => m.Votes.Any(v => v.email == userEmail)) &&
+                                           !c.Persons.Any(p => p.Votes.Any(v => v.email == userEmail)))
+                               .ToList();
+
+            competitions.ForEach(c =>
+            {
+                c.TotalVotes = c.Movies.Sum(m => m.Votes.Count) +
+                               c.Persons.Sum(p => p.Votes.Count);
+            });
+
+            return competitions.OrderByDescending(c => c.TotalVotes).ToList();
         }
     }
 

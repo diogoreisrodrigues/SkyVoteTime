@@ -19,15 +19,27 @@ namespace SkyVoteTime.Server.Controllers
         {
             return await _competitionService.GetAllCompetitions();
         }
+        [HttpGet("hot/{email}")]
+        public async Task<List<Competition>> GetAllHot(string email)
+        {
+            return await _competitionService.GetAllHotCompetitions(email);
+        }
         [HttpGet("{id}")]
         public async Task<Competition> Get(int id)
         {
             return await _competitionService.GetCompetition(id);
         }
+
         [HttpGet("GetAll/{email}")]
         public async Task<List<Competition>> GetAll(string email)
         {
             return await _competitionService.GetCompetitionsWithoutUserVote(email);
+        }
+
+        [HttpGet("GetAllVoted/{email}")]
+        public async Task<List<Competition>> GetAllVoted(string email)
+        {
+            return await _competitionService.GetCompetitionsWithUserVote(email);
         }
 
         [HttpGet("GetAllEmails/{id}")]
