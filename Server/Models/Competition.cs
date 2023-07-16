@@ -28,7 +28,7 @@ namespace SkyVoteTime.Server.Models
 
         public string ? ImageUrl { get; set; }
 
-
+        public int? TotalVotes { get; set; }
     }
 
     public enum CompetitionState

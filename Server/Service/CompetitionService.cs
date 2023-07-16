@@ -41,9 +41,18 @@ namespace SkyVoteTime.Server.Service
         {
             return await _competition.GetAllAsyncCompetition();
         }
+        public async Task<List<Competition>> GetAllHotCompetitions(string email)
+        {
+            return await _competition.GetAllHotAsyncCompetition(email);
+        }
         public async Task<List<Competition>> GetCompetitionsWithoutUserVote(string email)
         {
             return await _competition.GetAllCompWithoutVoteAsync(email);
+        }
+
+        public async Task<List<Competition>> GetCompetitionsWithUserVote(string email)
+        {
+            return await _competition.GetAllCompWithVoteAsync(email);
         }
 
         public async Task<List<string>> GetAllEmailsFromComp(int id)

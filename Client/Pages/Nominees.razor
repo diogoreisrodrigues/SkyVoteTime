@@ -296,7 +296,7 @@
                 if (response.IsSuccessStatusCode)
                 {
 
-                    await UpdateCompetitionState(competition);
+                    NavigationManager.NavigateTo("competitions");
                 }
                 else
                 {

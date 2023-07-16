@@ -8,25 +8,41 @@
         Layout = "/Areas/Identity/Pages/_Layout.cshtml";
     }
 }
-<br>
-<div class="margem" style=" margin-top: 50px;padding: 50px;background: rgba(0,0,0,0.6);width: 800px;margin-left: 50px;">
-    <h1 style="color: white">Manage your account</h1>
 
-    <div>
-        <h2 style="color: white">Change your account settings</h2>
-        <hr />
-        <div class="row">
-            <div class="col-md-4">
-                <partial name="_ManageNav" />
-            </div>
-            <div class="col-md-8">
-                @RenderBody()
-            </div>
+@using System.Security.Claims
+
+<br>
+<div class="margem" style="margin-top: 50px; padding: 50px; background: rgba(0,0,0,0.6); width: 800px; margin-left: 50px; backdrop-filter: blur(2px)">
+    <div style="display:flex">
+        <img src="~/Assets/profilePic.png" style="width:14vh" />
+        <div>
+            <h2 style="color: white; padding-top: 2vh">@Context.User.Identity.Name</h2>
+            <p style="color:lightgray; padding-bottom: 2vh">Professional Voter</p>
         </div>
     </div>
+    
+    <div>
+        <hr />
+        
 
+        
+            
+            
+            <div class="">
+                <partial name="_ManageNav" />
+            </div>
+            <div class="tab-content mt-4">
+                @RenderBody()
+            </div>
+        
+    </div>
 </div>
+
 
 @section Scripts {
     @RenderSection("Scripts", required: false)
+
+    
 }
+
+            
