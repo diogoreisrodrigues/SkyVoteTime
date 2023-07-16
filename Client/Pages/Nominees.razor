@@ -361,7 +361,7 @@
 
                 if (response.IsSuccessStatusCode)
                 {
-                    await UpdateCompetitionState(competition);
+                    NavigationManager.NavigateTo("competitions");
                 }
                 else
                 {
@@ -370,7 +370,7 @@
                 }
             }
             catch (Exception ex)
-            {
+            { 
                 Console.WriteLine(ex.Message);
             }
         }
