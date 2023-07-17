@@ -5,13 +5,22 @@
 
 <AuthorizeView>
     <Authorized>
-
-        <a href="authentication/profile" class="text-light">
-            <button type="button" class="botao text-light ml-4" style="padding: 10px;background: rgba(212, 190, 116, 0.7)">@context.User.Identity?.Name</button>
-            
-        </a>
-
-        <button class="nav-link btn btn-link text-light" @onclick="BeginLogOut" >Log out</button>
+        
+            <a class="dropdown-toggle mx-5 text-light" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <img src="/Assets/Profile3.png" width="40" height="40" style="width:11vh; height:11vh" class="rounded-circle">
+            </a>
+        <div class="dropdown-menu" style="
+    right: 100vh;
+    left: 160vh;
+    top: 90%;
+    font-size:17px
+" aria-labelledby="navbarDropdownMenuLink">
+                <a class="dropdown-item" href="backoffice">Backoffice</a>
+            <a class="dropdown-item" href="authentication/profile">Edit Profile <i class="fa-solid fa-user mx-1"></i></a>
+            <a class="dropdown-item" href="" @onclick="BeginLogOut">Log Out <i class="fa-solid fa-right-from-bracket mx-1"></i></a>
+            </div>
+        
+        
         
     </Authorized>
     <NotAuthorized>
