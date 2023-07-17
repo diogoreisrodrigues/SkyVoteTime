@@ -9,9 +9,18 @@
 <PageTitle>SkyVoteTime</PageTitle>
 
 
-<div class="px-5 mx-5 my-5" >
-	<h1 class="title" style="margin-left:10vh">And the Award goes to...</h1>
-
+<div class=" mt-5" style="margin-left:20vh">
+	<h1 class="title" style=" font-weight:bold; margin-top:10vh">And the Award goes to...</h1>
+    <p class=" pt-5 text-light " style="font-size: large; width:110vh">Welcome to SkyVoteTime, the ultimate platform for voting, explore the latest competitions, cast your votes, and be a part of the decision-making process. Join us and let your voice be heard!</p>
+    <AuthorizeView>
+        <Authorized>
+			<button class="button-50  mb-5 p-3 text-light" style="font-size: large; font-weight:bold">Start Voting!</button>
+		</Authorized>
+		<NotAuthorized>
+			<button class="button-50  mb-5 p-3 text-light" style="font-size: large; font-weight:bold">Join Us to Vote!</button>
+		</NotAuthorized>
+    </AuthorizeView>
+    
 </div>
 
 <div class="buddy">
@@ -36,192 +45,261 @@
  
 <div class="" style=" background-color: #FFF">
 
-    <AuthorizeView>
+    
     
     <div class="container">
-
-
-        <div style="display:flex; margin-top:4vh; justify-content: space-between ">
-                <h1 class="px-5" style="color: #000; margin-top: 4vh; padding-left:0vh!important">Hottest Competitions!</h1>
-                <h4 style="margin-top: 6vh; text-decoration: none"><a href="competitions" class="text-dark">See more &rtrif;</a></h4>
-        </div>
+        <AuthorizeView>
+            <Authorized>
+                <div style="display:flex; margin-top:4vh; justify-content: space-between ">
+                        <h1 class="px-5" style="color: #000; margin-top: 4vh; padding-left:0vh!important">Hottest Competitions!</h1>
+                        <h4 style="margin-top: 6vh; text-decoration: none"><a href="competitions" class="text-dark">See more &rtrif;</a></h4>
+                </div>
         
 
-        <div class="row my-3">
+                <div class="row mt-3">
         
-                @foreach (Competition competition in competitionList)
-                {
-                    
-                    List<String> categories = JsonSerializer.Deserialize<List<String>>(competition.CategoriesJson);
-                    if (competition.State == CompetitionState.Public)
-                    {
-                        if (counter > 2)
+                        @foreach (Competition competition in competitionList)
                         {
-                            counter = 0;
-                            break;
+                    
+                            List<String> categories = JsonSerializer.Deserialize<List<String>>(competition.CategoriesJson);
+                            if (competition.State == CompetitionState.Public)
+                            {
+                                if (counter > 2)
+                                {
+                                    counter = 0;
+                                    break;
+                                }
+                                    <div class="blog-card">
+                                        <img class="blog-img" src=@competition.ImageUrl />
+                                        <div class="text-overlay">
+                                            <div class="row">
+                                                <div class="col-12 my-3" style="display: flex; align-items: center">
+                                                    @if (categories.Count == 0)
+                                                    {
+                                                        <span class="badge badge-pill badge-dark" style="margin-right: 15px; background-color: #D4BE74;padding: 6px;  font-size:12px">None</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        @foreach (var category in categories)
+                                                        {
+                                                            <span class="badge badge-pill badge-dark" style="margin-right: 15px; background-color: #D4BE74; padding: 6px;  font-size:12px">@category</span>
+                                                        }
+                                                    }
+                                                </div>
+
+                                            </div>
+                                            <h3>@competition.Name</h3>
+                                            <p style="max-height: 50px;overflow: overlay;">@competition.Description</p>
+                                    
+                                            <div style="text-align: center;">
+                                       
+                                                <a href="/nom/@competition.Id" style="color: #fff">
+
+                                                    <button class="button-50" role="button"><b>View Nominees!</b></button>
+                                            
+                                                </a>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                counter++;
+                            }
+                    
                         }
-                            <div class="blog-card">
-                                <img class="blog-img" src=@competition.ImageUrl />
-                                <div class="text-overlay">
-                                    <div class="row">
-                                        <div class="col-12 my-3" style="display: flex; align-items: center">
-                                            @if (categories.Count == 0)
-                                            {
-                                                <span class="badge badge-pill badge-dark" style="margin-right: 15px; background-color: #D4BE74;padding: 6px;  font-size:12px">None</span>
-                                            }
-                                            else
-                                            {
-                                                @foreach (var category in categories)
+
+                        @if(competitionList.Count == 0)
+                        {
+                            <div class="col-12" style="text-align:center">
+						        <h3 style="text-align: center">No public competitions yet!</h3>
+					        </div>
+				        }
+                
+                </div>
+
+                    <div style="display:flex; justify-content: space-between ">
+                        <h1 class="px-5" style="color: #000; margin-top: 4vh; padding-left:0vh!important">Recently Finished Competitions!</h1>
+                        <h4 style="margin-top: 6vh; text-decoration: none"><a href="competitions" class="text-dark">See more &rtrif;</a></h4>
+                    </div>
+
+
+                    <div class="row my-3">
+
+                        @foreach (Competition competition in finishedCompetitions)
+                        {
+
+                            List<String> categories = JsonSerializer.Deserialize<List<String>>(competition.CategoriesJson);
+                            if (competition.State == CompetitionState.Finished)
+                            {
+                                if (counter > 2)
+                                {
+                            
+                                    break;
+                                }
+                                <div class="blog-card">
+                                    <img class="blog-img" src=@competition.ImageUrl />
+                                    <div class="text-overlay">
+                                        <div class="row">
+                                            <div class="col-12 my-3" style="display: flex; align-items: center">
+                                                @if (categories.Count == 0)
                                                 {
-                                                    <span class="badge badge-pill badge-dark" style="margin-right: 15px; background-color: #D4BE74; padding: 6px;  font-size:12px">@category</span>
+                                                    <span class="badge badge-pill badge-dark" style="margin-right: 15px; background-color: #D4BE74;padding: 6px;  font-size:12px">None</span>
                                                 }
-                                            }
+                                                else
+                                                {
+                                                    @foreach (var category in categories)
+                                                    {
+                                                        <span class="badge badge-pill badge-dark" style="margin-right: 15px; background-color: #D4BE74; padding: 6px;  font-size:12px">@category</span>
+                                                    }
+                                                }
+                                            </div>
+
+                                        </div>
+                                        <h3>@competition.Name</h3>
+                                        <p style="max-height: 50px;overflow: overlay;">@competition.Description</p>
+
+                                        <div style="text-align: center;">
+
+                                            <a href="/winner/@competition.Id" style="color: #fff">
+
+                                                <button class="button-50" style="background-color:darkgreen" role="button"><b>View Results!</b></button>
+
+                                            </a>
                                         </div>
 
                                     </div>
-                                    <h3>@competition.Name</h3>
-                                    <p style="max-height: 50px;overflow: overlay;">@competition.Description</p>
-                                    
-                                    <div style="text-align: center;">
-                                       
-                                        <a href="/nom/@competition.Id" style="color: #fff">
-
-                                            <button class="button-50" role="button"><b>View Nominees!</b></button>
-                                            
-                                        </a>
-                                    </div>
-
                                 </div>
-                            </div>
-                        counter++;
-                    }
-                    
-                }
+                                counter++;
+                            }
 
-                @if(competitionList.Count == 0)
-                {
-                    <div class="col-12" style="text-align:center">
-						<h3 style="text-align: center">No public competitions yet!</h3>
-					</div>
-				}
-                
-        </div>
-
-            <div style="display:flex; margin-top:4vh; justify-content: space-between ">
-                <h1 class="px-5" style="color: #000; margin-top: 4vh; padding-left:0vh!important">Recently Finished Competitions!</h1>
-                <h4 style="margin-top: 6vh; text-decoration: none"><a href="competitions" class="text-dark">See more &rtrif;</a></h4>
-            </div>
-
-
-            <div class="row my-3">
-
-                @foreach (Competition competition in finishedCompetitions)
-                {
-
-                    List<String> categories = JsonSerializer.Deserialize<List<String>>(competition.CategoriesJson);
-                    if (competition.State == CompetitionState.Finished)
-                    {
-                        if (counter > 2)
-                        {
-                            
-                            break;
                         }
-                        <div class="blog-card">
-                            <img class="blog-img" src=@competition.ImageUrl />
-                            <div class="text-overlay">
-                                <div class="row">
-                                    <div class="col-12 my-3" style="display: flex; align-items: center">
-                                        @if (categories.Count == 0)
-                                        {
-                                            <span class="badge badge-pill badge-dark" style="margin-right: 15px; background-color: #D4BE74;padding: 6px;  font-size:12px">None</span>
-                                        }
-                                        else
-                                        {
-                                            @foreach (var category in categories)
-                                            {
-                                                <span class="badge badge-pill badge-dark" style="margin-right: 15px; background-color: #D4BE74; padding: 6px;  font-size:12px">@category</span>
-                                            }
-                                        }
+
+                        @if(counter == 0)
+				        {
+					        <div class="col-12" style="text-align:center">
+						        <h3 style="text-align: center">No finished competitions yet!</h3>
+					        </div>
+				        }
+
+                    </div>
+            </Authorized>
+
+            <NotAuthorized>
+                <div>
+                    <p style="/* Best movies */
+
+                        width: 389px;
+                        height: 60px;
+
+                        font-family: 'Amiri';
+                        font-style: normal;
+                        font-weight: 400;
+                        font-size: 35px;
+                        line-height: 150%;
+                        /* identical to box height, or 60px */
+
+                        color: #000;
+                        margin-top: 50px; margin-bottom: 0px;
+"> Trending Movies </p>
+                </div>
+                <div style="display: flex;justify-content: space-between">
+
+                    <hr>
+                    @for (var i = 0; i < 4; i++)
+                    {
+                        <div class="poster" style="margin-left:0vh">
+                            <div class="flip-card_i">
+                                <div class="flip-card-inner_i">
+                                    <div class="flip-card-front_i">
+                                        <img src="https://image.tmdb.org/t/p/w342/@movieList.results[i].poster_path" alt="Avatar" style="width:280px;height:360px;">
                                     </div>
 
                                 </div>
-                                <h3>@competition.Name</h3>
-                                <p style="max-height: 50px;overflow: overlay;">@competition.Description</p>
-
-                                <div style="text-align: center;">
-
-                                    <a href="/winner/@competition.Id" style="color: #fff">
-
-                                        <button class="button-50" style="background-color:darkgreen" role="button"><b>View Results!</b></button>
-
-                                    </a>
+                                <div class="flim" style="padding: 10px;">
+                                    <b>@movieList.results[i].title</b><br>
                                 </div>
-
                             </div>
                         </div>
-                        counter++;
                     }
 
-                }
 
-                @if(counter == 0)
-				{
-					<div class="col-12" style="text-align:center">
-						<h3 style="text-align: center">No finished competitions yet!</h3>
-					</div>
-				}
-
-            </div>
-    
+                </div>
+            </NotAuthorized>
+        </AuthorizeView>
     </div>
-    </AuthorizeView>
     
+    <div style="background-color: #D4BE74 ; margin-top:5vh ">
+        <div class="container">
+            <div class="row">
+                <div class="col-6" style="overflow:hidden">
+                    <img src="/Assets/awardpic.png" style="margin-top:8vh; width:85vh ">
+                </div>
+                <div class="col-6" style="padding:5vh">
+                    <h1 class="text-light">
+                        <b>Who We Are</b>
+                    </h1>
+                    <p class="text-light" style="font-size:large">
+                        At SkyVoteTime, we are passionate about movies, actors, and TV shows. We believe in the power of voting and the excitement of friendly competition. Our platform is designed to bring fans together, providing a space to express opinions and celebrate the best of the entertainment industry. 
+                        With a diverse range of competitions and a vibrant community, SkyVoteTime offers a unique experience for cinephiles and TV enthusiasts. Join us and be a part of the ultimate voting adventure!
+                    </p>
+                    <AuthorizeView>
+                        <Authorized>
+                            <button class="button-50  mb-5 p-3 " style="font-size: large; font-weight:bold; color: #D4BE74; background-color: white">Start Voting!</button>
+                        </Authorized>
+                        <NotAuthorized>
+                            <button class="button-50  mb-5 p-3" style="font-size: large; font-weight:bold; color: #D4BE74; background-color: white">Join Us to Vote!</button>
+                        </NotAuthorized>
+                    </AuthorizeView>
+                </div>
+            </div>
+        </div>
+    </div>
     
     <div class="container" style="">
-        <div>
-        <p style="/* Best movies */
+        <AuthorizeView>
+            <div>
+            <p style="/* Best movies */
 
-width: 389px;
-height: 60px;
+    width: 389px;
+    height: 60px;
 
-font-family: 'Amiri';
-font-style: normal;
-font-weight: 400;
-font-size: 35px;
-line-height: 150%;
-/* identical to box height, or 60px */
+    font-family: 'Amiri';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 35px;
+    line-height: 150%;
+    /* identical to box height, or 60px */
 
-color: #000;
-margin-top: 50px; margin-bottom: 0px;
-"> Trending Movies </p>
-        </div>
-        <div style="display: flex;justify-content: space-between">
-
-            <hr>
-            @for(var i = 0; i < 4; i++)
-            {
-             <div class="poster" style="margin-left:0vh">
-              <div class="flip-card_i">
-                <div class="flip-card-inner_i">
-                  <div class="flip-card-front_i">
-                          <img src="https://image.tmdb.org/t/p/w342/@movieList.results[i].poster_path" alt="Avatar" style="width:280px;height:360px;">
-                  </div>
-
-                </div>
-                        <div class="flim" style="padding: 10px;">
-                      <b>@movieList.results[i].title</b><br>
-                </div>
-              </div>
+    color: #000;
+    margin-top: 50px; margin-bottom: 0px;
+    "> Trending Movies </p>
             </div>
-            }
+            <div style="display: flex;justify-content: space-between">
+
+                <hr>
+                @for(var i = 0; i < 4; i++)
+                {
+                 <div class="poster" style="margin-left:0vh">
+                  <div class="flip-card_i">
+                    <div class="flip-card-inner_i">
+                      <div class="flip-card-front_i">
+                              <img src="https://image.tmdb.org/t/p/w342/@movieList.results[i].poster_path" alt="Avatar" style="width:280px;height:360px;">
+                      </div>
+
+                    </div>
+                            <div class="flim" style="padding: 10px;">
+                          <b>@movieList.results[i].title</b><br>
+                    </div>
+                  </div>
+                </div>
+                }
 
             
-        </div>
-
+            </div>
+        </AuthorizeView>
         <div>
         <p style="/* Best movies */
 
-width: 189px;
+width: 300px;
 height: 60px;
 
 font-family: 'Amiri';
@@ -233,7 +311,7 @@ line-height: 150%;
 
 color: #000;
 margin-top: 50px; margin-bottom: 0px;
-"> Best Actors </p>
+"> Trending Actors </p>
         </div>
         <div style="display: flex;">
 
@@ -242,7 +320,7 @@ margin-top: 50px; margin-bottom: 0px;
               <div class="flip-card_i">
                 <div class="flip-card-inner_i">
                   <div class="flip-card-front_i">
-                      <img src="Assets/bradpitt.jpg" alt="Avatar" style="width:250px;height:360px;">
+                      <img src="Assets/bradpitt.jpg" alt="Avatar" style="width:280px;height:360px;">
                   </div>
 
                 </div>
@@ -258,7 +336,7 @@ margin-top: 50px; margin-bottom: 0px;
               <div class="flip-card_i">
                 <div class="flip-card-inner_i">
                   <div class="flip-card-front_i">
-                      <img src="Assets/emmastone.jpg" alt="Avatar" style="width:250px;height:360px;">
+                      <img src="Assets/emmastone.jpg" alt="Avatar" style="width:280px;height:360px;">
                   </div>
 
                 </div>
@@ -274,7 +352,7 @@ margin-top: 50px; margin-bottom: 0px;
               <div class="flip-card_i">
                 <div class="flip-card-inner_i">
                   <div class="flip-card-front_i">
-                      <img src="Assets/BrendanFraser.jpg" alt="Avatar" style="width:250px;height:360px;">
+                      <img src="Assets/BrendanFraser.jpg" alt="Avatar" style="width:280px;height:360px;">
                   </div>
 
                 </div>
@@ -290,7 +368,7 @@ margin-top: 50px; margin-bottom: 0px;
               <div class="flip-card_i">
                 <div class="flip-card-inner_i">
                   <div class="flip-card-front_i">
-                      <img src="Assets/depp.jpg" alt="Avatar" style="width:250px;height:360px;">
+                      <img src="Assets/depp.jpg" alt="Avatar" style="width:280px;height:360px;">
                   </div>
 
                 </div>

@@ -2,9 +2,9 @@
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    margin:0;
-    padding:0;
-    font-family:sans-serif;
+    margin: 0;
+    padding: 0;
+    font-family: SharpSans, Helvetica, Arial, sans-serif!important;
 }
 /********************** DIOGO **********************/
 
@@ -340,7 +340,7 @@ ul li ul li a {
     font-size: 50px;
     /* And the Award goes to.. */
     height: 31.13px;
-    font-family: 'Gentium Basic';
+    /*font-family: 'Gentium Basic';*/
     font-style: normal;
     font-weight: 400;
     font-size: 64px;
@@ -389,8 +389,8 @@ ul li ul li a {
     place-items: center;
     margin-left: auto;
     margin-right: auto;
-    margin-top: 15vh;
-    margin-bottom: 20vh;
+    margin-top: 3vh;
+    margin-bottom: 15vh;
 }
 
 .slider {
