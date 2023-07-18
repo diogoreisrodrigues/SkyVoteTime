@@ -171,6 +171,9 @@
     </div>
 
     <br />
+    <div class="container" style="text-align:end">
+        <button class="button-50 mb-5" style=" color: #fff; padding:10px" role="button" @onclick="() => saveForLater(competition)"><b>Save for later </b> <i class="fas fa-user-clock"></i></button>
+    </div>
     
 
     @if (competition.Movies != null && (competition.Type == "Movies" || competition.Type == "TVShow"))
@@ -259,6 +262,8 @@
 
     string? email;
 
+    List<String>? savedEmails = new List<String>();
+
     protected override async Task OnInitializedAsync()
     {
         Console.WriteLine(Id);
@@ -270,6 +275,9 @@
         var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
         var user = authState.User;
         email = user.FindFirst(c => c.Type == "name")?.Value;
+
+        savedEmails = JsonSerializer.Deserialize<List<String>>(competition.savedEmailsJson);
+        Console.WriteLine(savedEmails);
 
     }
 
@@ -311,17 +319,25 @@
         }
     }
 
-    private async Task UpdateCompetitionState(Competition competition)
+    private async Task saveForLater(Competition competition)
     {
 
-        competition.State = CompetitionState.Voted;
+        if (savedEmails.Contains(email))
+        {
+            return;
+        }
+        else
+        {
+            savedEmails.Add(email);
+			competition.savedEmailsJson = JsonSerializer.Serialize(savedEmails);
+        }
         try
         {
             var response = await Http.PutAsJsonAsync("api/Competition/Put/" + competition.Id, competition);
 
             if (response.IsSuccessStatusCode)
             {
-                await JsRuntime.InvokeVoidAsync("alert", "Vote Submited!");
+                await JsRuntime.InvokeVoidAsync("alert", "Saved for Later!");
                 NavigationManager.NavigateTo("competitions");
             }
             else

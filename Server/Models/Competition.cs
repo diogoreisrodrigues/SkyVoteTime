@@ -29,6 +29,8 @@ namespace SkyVoteTime.Server.Models
         public string ? ImageUrl { get; set; }
 
         public int? TotalVotes { get; set; }
+
+        public string? savedEmailsJson { get; set; }
     }
 
     public enum CompetitionState
