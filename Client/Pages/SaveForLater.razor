@@ -1,0 +1,438 @@
+﻿@page "/saveForLate"
+@using SkyVoteTime.Shared
+@using System.Text.Json;
+@using System.Reflection.Metadata
+@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
+@inject HttpClient _httpClient
+@using Microsoft.AspNetCore.Components.Authorization;
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JsRuntime
+﻿@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+
+<style>
+    p::-webkit-scrollbar {
+        display: none;
+    }
+
+    .main_box {
+        width: 3em;
+        height: 3em;
+        position: relative;
+        margin-left: 18vh;
+    }
+
+    #share_button {
+        display: none;
+    }
+
+
+
+    .sharebtn {
+        position: absolute;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 50%;
+        width: 2em;
+        height: 2em;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-70%);
+        background-color: rgba(212, 190, 116, 0.9);
+        backdrop-filter: blur(2px);
+        color: #333;
+        font-size: 1.5em;
+        z-index: 1;
+        cursor: pointer;
+        /* border-radius: 30%; */
+    }
+
+    .sm_list {
+        width: 4em;
+        height: 4em;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-40%,-50%);
+    }
+
+        .sm_list a {
+            position: absolute;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            width: 2em;
+            height: 2em;
+            border-radius: 50%;
+            text-decoration: none;
+            color: #fff!important;
+            transition: all .3s;
+            font-size: 1.2em;
+
+        }
+
+    #share_button:checked ~ .sm_list a:nth-child(1) {
+        background-color: #3B5998;
+        transition-delay: 0.2s;
+        transform: translateX(-3em);
+    }
+
+
+
+    #share_button:checked ~ .sm_list a:nth-child(2) {
+        background-color: #000f94;
+        transition-delay: 0.3s;
+        transform: translateX(3.5em);
+    }
+
+    #share_button:checked ~ .sm_list a:nth-child(3) {
+        background-color: #1077ec;
+        transition-delay: 0.3s;
+        transform: translateX(-6em);
+    }
+
+    #share_button:checked ~ .sm_list a:nth-child(4) {
+        background-color: rgb(10, 63, 0);
+        transition-delay: 0.4s;
+        transform: translateX(6.5em);
+    }
+
+
+
+    /* Hovering Effects */
+    #share_button:checked ~ .sm_list a:nth-child(1):hover {
+        background-color: #ffffff;
+        color: #3B5998 !important;
+        /* transition-delay: 0.2s;
+        transform: translateX(-6em); */
+    }
+
+
+
+    #share_button:checked ~ .sm_list a:nth-child(2):hover {
+        color: #000f94 !important;
+        background-color: #fff;
+    }
+
+    #share_button:checked ~ .sm_list a:nth-child(3):hover {
+        color: #1077ec!important;
+        background-color: #fff;
+    }
+
+    #share_button:checked ~ .sm_list a:nth-child(4):hover {
+        color: rgb(10, 63, 0) !important;
+        background-color: #fff;
+    }
+
+
+
+    span:visited {
+        background-color: #000f94;
+    }
+</style>
+
+<div class="container">
+    
+    <div class="my-5" style="margin-top: 50px; padding: 50px; background: rgba(0,0,0,0.6); backdrop-filter: blur(2px)">
+        <div style="display:flex">
+            <img src="/Assets/Profile4.png" style="width:16vh" />
+            <div>
+                <h2 style="color: white; padding-top: 2vh">@email</h2>
+                <p style="color:lightgray; padding-bottom: 2vh">Professional Voter</p>
+            </div>
+        </div>
+
+        <div>
+            <hr />
+
+            <div class="">
+                <div style="text-align:center">
+                    <h1 class="text-light">Saved For Later</h1>
+                </div>
+                @if (competitionList.Count != 0)
+                {
+                    <div class="row mb-5">
+                        @foreach (Competition competition in competitionList)
+                        {
+
+                            List<String> categories = JsonSerializer.Deserialize<List<String>>(competition.CategoriesJson);
+                            List<String> emailsSaved = JsonSerializer.Deserialize<List<String>>(competition.savedEmailsJson);
+                            if (competition.State == currentState && currentState == CompetitionState.Public && emailsSaved.Contains(email))
+                            {
+
+
+
+                                <div class="blog-card">
+
+                                    <img class="blog-img" src=@competition.ImageUrl />
+                                    <div class="text-overlay">
+                                        <div class="row">
+                                            <div class="col-12 my-3" style="display: flex; align-items: center">
+                                                @if (categories.Count == 0)
+                                                {
+                                                    <span class="badge badge-pill badge-dark" style="margin-right: 15px; background-color: #D4BE74;padding: 6px;  font-size:12px">None</span>
+                                                }
+                                                else
+                                                {
+                                                    @foreach (var category in categories)
+                                                    {
+                                                        <span class="badge badge-pill badge-dark" style="margin-right: 15px; background-color: #D4BE74; padding: 6px;  font-size:12px">@category</span>
+                                                    }
+                                                }
+                                            </div>
+
+                                        </div>
+                                        <h3>@competition.Name</h3>
+                                        <p style="max-height: 50px;overflow: overlay;">@competition.Description</p>
+
+                                        
+                                        <div style="text-align: center; display:flex; justify-content: space-around;">
+
+                                            <a href="/nom/@competition.Id" style="color: #fff">
+
+                                                <button class="button-50" role="button"><b>View Nominees!</b></button>
+
+                                            </a>
+
+                                            <button class="button-50" style="background-color:red; color: #fff" role="button" @onclick="() => removeSaveForLater(competition, emailsSaved)"><b>Remove from Saved</b></button>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            }
+
+                        }
+
+                    
+                    </div>
+
+                }
+                else
+                {
+                    <div style="height: 50vh; text-align:center; padding-top:5vh" class="m-5">
+                        <h2 class="text-light mt-5 pt-5">No Competitions Saved yet.</h2>
+                    </div>
+
+                }
+            </div>
+
+        </div>
+    </div>
+</div>
+
+        
+
+
+
+@code {
+    private CompetitionState currentState = CompetitionState.Public;
+    private String currentType = "Any";
+    private String typeAll = "Any";
+    private String typeMovies = "Movies";
+    private String typeTVShows = "TVShow";
+    private String typeActors = "Acting";
+
+    private String currentCategory = "Any";
+    private String categoryAny = "Any";
+    private String categoryNone = "None";
+    private String categoryDrama = "Drama";
+    private String categoryAction = "Action";
+    private String categoryRomance = "Romance";
+    private String categoryDocumentary = "Documentary";
+    private String categorySuspense = "Suspense";
+    private String categoryHorror = "Horror";
+    private String categoryScienceFiction = "ScienceFiction";
+    private String categoryComedy = "Comedy";
+    private String categoryAdventure = "Adventure";
+    private String categoryThriller = "Thriller";
+    private String categoryMystery = "Mystery";
+    private String categoryFantasy = "Fantasy";
+
+
+
+    public Competition competition = new Competition
+        {
+            Movies = new List<Movie>(),
+            Description = "",
+            CategoriesJson = "",
+            Name = "",
+            Id = 0,
+            Type = "",
+            Persons = new List<Person>()
+        };
+
+    List<Competition> competitionList = new List<Competition>();
+
+    List<Competition> competitionVotedList = new List<Competition>();
+
+    [CascadingParameter]
+    private Task<AuthenticationState>? authenticationState { get; set; }
+
+    string? email;
+
+    private void SetCompetitionType(String type)
+    {
+        currentType = type;
+    }
+
+    private void SetCompetitionCategory(String category)
+    {
+        currentCategory = category;
+    }
+
+    private bool IsCompetitionTypeMatch(String type)
+    {
+        if (currentType == "Any")
+        {
+            return true;
+        }
+
+        return type == currentType;
+    }
+
+    private async Task removeSaveForLater(Competition competition, List<String> savedEmails)
+    {
+
+        if (savedEmails.Contains(email))
+        {
+            savedEmails.Remove(email);
+            competition.savedEmailsJson = JsonSerializer.Serialize(savedEmails);
+        }
+        else
+        {
+            
+        }
+        try
+        {
+            var response = await _httpClient.PutAsJsonAsync("api/Competition/Put/" + competition.Id, competition);
+
+            if (response.IsSuccessStatusCode)
+            {
+                
+                NavigationManager.NavigateTo("saveForLate");
+            }
+            else
+            {
+                // Handle HTTP request error
+                Console.WriteLine("HTTP request error: " + response.StatusCode);
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+
+    }
+
+    private bool IsCompetitionCategoryMatch(List<String> categories)
+    {
+        if (currentCategory == "Any")
+        {
+            return true;
+        }
+        else if (categories.Count == 0 && currentCategory == "None")
+        {
+            return true;
+        }
+
+        return categories.Contains(currentCategory);
+    }
+
+    private void SetCurrentState(CompetitionState state)
+    {
+        currentState = state;
+    }
+
+    private void deleteVote(Competition competition)
+    {
+        if (competition.Type == "Acting")
+        {
+            foreach (var person in competition.Persons)
+            {
+                foreach (var vote in person.Votes)
+                {
+                    if (vote.email == email)
+                    {
+                        deleteAsyncVote(vote);
+                    }
+                }
+            }
+        }
+        else
+        {
+            foreach (var movie in competition.Movies)
+            {
+                foreach (var vote in movie.Votes)
+                {
+                    if (vote.email == email)
+                    {
+                        deleteAsyncVote(vote);
+                    }
+                }
+            }
+        }
+    }
+
+    private async Task deleteAsyncVote(Vote vote)
+    {
+
+        try
+        {
+            var response = await _httpClient.DeleteAsync("api/Vote/" + vote.Id);
+
+            if (response.IsSuccessStatusCode)
+            {
+                await JsRuntime.InvokeVoidAsync("alert", "Deleted Successfully!");
+                NavigationManager.NavigateTo("competitions");
+            }
+            else
+            {
+                // Handle HTTP request error
+                Console.WriteLine("HTTP request error: " + response.StatusCode);
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+    }
+
+    private void ChangeState(ChangeEventArgs e)
+    {
+        var state = e.Value.ToString();
+
+        if (state == CompetitionState.Public.ToString())
+        {
+            competition.State = CompetitionState.Public;
+        }
+        else if (state == CompetitionState.Private.ToString())
+        {
+            competition.State = CompetitionState.Private;
+        }
+        else if (state == CompetitionState.Finished.ToString())
+        {
+            competition.State = CompetitionState.Finished;
+        }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+        email = user.FindFirst(c => c.Type == "name")?.Value;
+
+        var response = await _httpClient.GetAsync("api/competition/GetAll/" + email);
+        response.EnsureSuccessStatusCode();
+        competitionList = await response.Content.ReadFromJsonAsync<List<Competition>>();
+
+        
+
+        Console.WriteLine(competitionVotedList);
+
+    }
+}

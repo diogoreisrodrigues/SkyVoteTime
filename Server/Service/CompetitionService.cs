@@ -26,6 +26,7 @@ namespace SkyVoteTime.Server.Service
                 data.State = competition.State;
                 data.Persons = competition.Persons;
                 data.Movies = competition.Movies;
+                data.savedEmailsJson = competition.savedEmailsJson;
                 await _competition.UpdateAsync(data);
                 return true;
             }

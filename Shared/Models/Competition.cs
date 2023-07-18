@@ -20,11 +20,13 @@ namespace SkyVoteTime.Shared.Models
         public string? CategoriesJson { get; set; }
 
         public List<Movie>? Movies { get; set; }
+
         public List<Person>? Persons { get; set; }
 
         public string Type { get; set; }
 
         public string ? ImageUrl { get; set; }
+        public string? savedEmailsJson { get; set; }
 
     }
     public enum CompetitionState
