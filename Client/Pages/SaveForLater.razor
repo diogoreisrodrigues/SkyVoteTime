@@ -17,117 +17,15 @@
         display: none;
     }
 
-    .main_box {
-        width: 3em;
-        height: 3em;
-        position: relative;
-        margin-left: 18vh;
+    
+    .customtab {
+        color: white !important;
     }
 
-    #share_button {
-        display: none;
+    a.active {
+        color: white !important;
+        background-color: #D4BE74 !important;
     }
-
-
-
-    .sharebtn {
-        position: absolute;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        border-radius: 50%;
-        width: 2em;
-        height: 2em;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%,-70%);
-        background-color: rgba(212, 190, 116, 0.9);
-        backdrop-filter: blur(2px);
-        color: #333;
-        font-size: 1.5em;
-        z-index: 1;
-        cursor: pointer;
-        /* border-radius: 30%; */
-    }
-
-    .sm_list {
-        width: 4em;
-        height: 4em;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-40%,-50%);
-    }
-
-        .sm_list a {
-            position: absolute;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border-radius: 50%;
-            width: 2em;
-            height: 2em;
-            border-radius: 50%;
-            text-decoration: none;
-            color: #fff!important;
-            transition: all .3s;
-            font-size: 1.2em;
-
-        }
-
-    #share_button:checked ~ .sm_list a:nth-child(1) {
-        background-color: #3B5998;
-        transition-delay: 0.2s;
-        transform: translateX(-3em);
-    }
-
-
-
-    #share_button:checked ~ .sm_list a:nth-child(2) {
-        background-color: #000f94;
-        transition-delay: 0.3s;
-        transform: translateX(3.5em);
-    }
-
-    #share_button:checked ~ .sm_list a:nth-child(3) {
-        background-color: #1077ec;
-        transition-delay: 0.3s;
-        transform: translateX(-6em);
-    }
-
-    #share_button:checked ~ .sm_list a:nth-child(4) {
-        background-color: rgb(10, 63, 0);
-        transition-delay: 0.4s;
-        transform: translateX(6.5em);
-    }
-
-
-
-    /* Hovering Effects */
-    #share_button:checked ~ .sm_list a:nth-child(1):hover {
-        background-color: #ffffff;
-        color: #3B5998 !important;
-        /* transition-delay: 0.2s;
-        transform: translateX(-6em); */
-    }
-
-
-
-    #share_button:checked ~ .sm_list a:nth-child(2):hover {
-        color: #000f94 !important;
-        background-color: #fff;
-    }
-
-    #share_button:checked ~ .sm_list a:nth-child(3):hover {
-        color: #1077ec!important;
-        background-color: #fff;
-    }
-
-    #share_button:checked ~ .sm_list a:nth-child(4):hover {
-        color: rgb(10, 63, 0) !important;
-        background-color: #fff;
-    }
-
 
 
     span:visited {
@@ -136,8 +34,7 @@
 </style>
 
 <div class="container">
-    
-    <div class="my-5" style="margin-top: 50px; padding: 50px; background: rgba(0,0,0,0.6); backdrop-filter: blur(2px)">
+    <div class="my-5" style="margin-top: 50px; padding: 30px; background: rgba(0,0,0,0.6); backdrop-filter: blur(2px)">
         <div style="display:flex">
             <img src="/Assets/Profile4.png" style="width:16vh" />
             <div>
@@ -147,28 +44,99 @@
         </div>
 
         <div>
-            <hr />
+            <ul class="nav nav-tabs" id="myTabs">
+                <li class="nav-item" style="
+    cursor: pointer;
+">
+                    <a class="nav-link customtab @(activeTab == "saved" ? "active" : "")" @onclick="(() => SetActiveTab(saved))" style="font-size:larger">Saved For Later</a>
+                </li>
+                <li class="nav-item" style="
+    cursor: pointer;
+">
+                    <a class="nav-link customtab @(activeTab == "voted" ? "active" : "")" @onclick="(() => SetActiveTab(voted))" style="font-size:larger">Voted Competitions</a>
+                </li>
+            </ul>
+           
 
-            <div class="">
-                <div style="text-align:center">
-                    <h1 class="text-light">Saved For Later</h1>
-                </div>
-                @if (competitionList.Count != 0)
-                {
-                    <div class="row mb-5">
-                        @foreach (Competition competition in competitionList)
-                        {
-
-                            List<String> categories = JsonSerializer.Deserialize<List<String>>(competition.CategoriesJson);
-                            List<String> emailsSaved = JsonSerializer.Deserialize<List<String>>(competition.savedEmailsJson);
-                            if (competition.State == currentState && currentState == CompetitionState.Public && emailsSaved.Contains(email))
+            <div class="tab-content mt-4">
+                <div class="tab-pane fade @(activeTab == "saved" ? "show active" : "")" id="saved">
+                    
+                    @if (competitionList.Count != 0)
+                    {
+                        <div class="row mb-5">
+                            @foreach (Competition competition in competitionList)
                             {
 
+                                List<String> categories = JsonSerializer.Deserialize<List<String>>(competition.CategoriesJson);
+                                List<String> emailsSaved = JsonSerializer.Deserialize<List<String>>(competition.savedEmailsJson);
+                                if (competition.State == currentState && currentState == CompetitionState.Public && emailsSaved.Contains(email))
+                                {
 
 
-                                <div class="blog-card">
 
-                                    <img class="blog-img" src=@competition.ImageUrl />
+                                    <div class="blog-card" style="margin:1vh">
+
+                                        <img class="blog-img" src=@competition.ImageUrl />
+                                        <div class="text-overlay">
+                                            <div class="row">
+                                                <div class="col-12 my-3" style="display: flex; align-items: center">
+                                                    @if (categories.Count == 0)
+                                                    {
+                                                        <span class="badge badge-pill badge-dark" style="margin-right: 15px; background-color: #D4BE74;padding: 6px;  font-size:12px">None</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        @foreach (var category in categories)
+                                                        {
+                                                            <span class="badge badge-pill badge-dark" style="margin-right: 15px; background-color: #D4BE74; padding: 6px;  font-size:12px">@category</span>
+                                                        }
+                                                    }
+                                                </div>
+
+                                            </div>
+                                            <h3>@competition.Name</h3>
+                                            <p style="max-height: 50px;overflow: overlay;">@competition.Description</p>
+
+
+                                            <div style="text-align: center; display:flex; justify-content: space-around;">
+
+                                                <a href="/nom/@competition.Id" style="color: #fff">
+
+                                                    <button class="button-50" role="button"><b>View Nominees!</b></button>
+
+                                                </a>
+
+                                                <button class="button-50" style="background-color:red; color: #fff" role="button" @onclick="() => removeSaveForLater(competition, emailsSaved)"><b>Remove from Saved</b></button>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                }
+
+                            }
+
+
+                        </div>
+
+                    }
+                    else
+                    {
+                        <div style="height: 50vh; text-align:center; padding-top:5vh" class="m-5">
+                            <h2 class="text-light mt-5 pt-5">No Competitions Saved yet.</h2>
+                        </div>
+
+                    }
+                </div>
+                <div class="tab-pane fade @(activeTab == "voted" ? "show active" : "")" id="voted">
+                    <div class="row mb-5">
+                        @foreach (Competition competitionVoted in competitionVotedList)
+                        {
+                            List<String> categories = JsonSerializer.Deserialize<List<String>>(competitionVoted.CategoriesJson);
+                            if (!(competitionVoted.State == CompetitionState.Finished))
+                            {
+                                <div class="blog-card" style="margin:1vh">
+                                    <img class="blog-img" src=@competitionVoted.ImageUrl />
                                     <div class="text-overlay">
                                         <div class="row">
                                             <div class="col-12 my-3" style="display: flex; align-items: center">
@@ -186,45 +154,31 @@
                                             </div>
 
                                         </div>
-                                        <h3>@competition.Name</h3>
-                                        <p style="max-height: 50px;overflow: overlay;">@competition.Description</p>
+                                        <h3>@competitionVoted.Name</h3>
+                                        <p>@competitionVoted.Description</p>
 
-                                        
                                         <div style="text-align: center; display:flex; justify-content: space-around;">
 
-                                            <a href="/nom/@competition.Id" style="color: #fff">
+                                            <a href="/ChangeVote/@competitionVoted.Id" style="color: #fff">
 
-                                                <button class="button-50" role="button"><b>View Nominees!</b></button>
+                                                <button class="button-50" style="background-color:darkgray" role="button"><b>Change Vote!</b></button>
 
                                             </a>
 
-                                            <button class="button-50" style="background-color:red; color: #fff" role="button" @onclick="() => removeSaveForLater(competition, emailsSaved)"><b>Remove from Saved</b></button>
+                                            <button class="button-50" style="background-color:red; color: #fff" role="button" @onclick="() => deleteVote(competitionVoted)"><b>Delete Vote</b></button>
 
                                         </div>
 
                                     </div>
                                 </div>
                             }
-
                         }
-
-                    
                     </div>
-
-                }
-                else
-                {
-                    <div style="height: 50vh; text-align:center; padding-top:5vh" class="m-5">
-                        <h2 class="text-light mt-5 pt-5">No Competitions Saved yet.</h2>
-                    </div>
-
-                }
+                </div>
             </div>
-
         </div>
     </div>
 </div>
-
         
 
 
@@ -274,6 +228,17 @@
     private Task<AuthenticationState>? authenticationState { get; set; }
 
     string? email;
+
+    private string saved = "saved";
+
+    private string voted = "voted";
+
+    private string activeTab = "saved";
+
+    private void SetActiveTab(string tab)
+    {
+        activeTab = tab;
+    }
 
     private void SetCompetitionType(String type)
     {
@@ -429,6 +394,10 @@
         var response = await _httpClient.GetAsync("api/competition/GetAll/" + email);
         response.EnsureSuccessStatusCode();
         competitionList = await response.Content.ReadFromJsonAsync<List<Competition>>();
+
+        var responseVoted = await _httpClient.GetAsync("api/competition/GetAllVoted/" + email);
+        responseVoted.EnsureSuccessStatusCode();
+        competitionVotedList = await responseVoted.Content.ReadFromJsonAsync<List<Competition>>();
 
         
 

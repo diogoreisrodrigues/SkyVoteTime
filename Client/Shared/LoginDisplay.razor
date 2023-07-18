@@ -2,6 +2,13 @@
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 @inject NavigationManager Navigation
 
+<style>
+    .dropdown-item.active, .dropdown-item:active {
+        color: #fff;
+        text-decoration: none;
+        background-color: rgba(212, 190, 116, 1)!important;
+    }
+</style>
 
 <AuthorizeView>
     <Authorized>
@@ -15,10 +22,11 @@
     top: 90%;
     font-size:16px
 " aria-labelledby="navbarDropdownMenuLink">
-                <a class="dropdown-item" href="backoffice">Backoffice</a>
-            <a class="dropdown-item" href="saveForLate">Saved for Later <i class="fas fa-user-clock"></i></a>
+                
+            <a class="dropdown-item" href="saveForLate">Subscriptions <i class="fas fa-user-clock"></i></a>
             <a class="dropdown-item" href="authentication/profile">Edit Profile <i class="fa-solid fa-user mx-1"></i></a>
             <a class="dropdown-item" href="" @onclick="BeginLogOut">Log Out <i class="fa-solid fa-right-from-bracket mx-1"></i></a>
+            <a class="dropdown-item" href="backoffice">Backoffice</a>
             </div>
         
         
